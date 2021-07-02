@@ -1,13 +1,11 @@
-package com.burt.demo;
+package com.burt;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
-
+public class AccessingDataApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(AccessingDataApplication.class, args);
 	}
-
 }
