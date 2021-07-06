@@ -1,20 +1,24 @@
-/*
 package com.burt.Controller;
 
-
-import com.burt.service.BirthService;
+import com.burt.dao.BirthRepository;
+import com.burt.Entity.Birth;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
 
 @RestController
-@RequestMapping("/api/birth")
-public interface BirthController {
-
+@RequestMapping("/birth")
+public class BirthController {
     @Autowired
+     BirthRepository birthRepository;
 
-    public void searchById(Long id);
+    public BirthController(BirthRepository birthRepository) {
+        this.birthRepository = birthRepository;
+    }
 
-    public void searchByRelationship(String relation);
+    @GetMapping("/{FORENAME}")
+    List<Birth> byName(@PathVariable String FORENAME) {
+        return birthRepository.findByForeName(FORENAME);
+    }
 }
-*/
