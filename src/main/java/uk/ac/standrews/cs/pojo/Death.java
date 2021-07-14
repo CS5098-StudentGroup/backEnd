@@ -1,4 +1,5 @@
-package com.burt.Entity;
+package uk.ac.standrews.cs.pojo;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,32 +10,29 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 
-
-
-
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Node("Birth")
-public class Birth {
+@Node("Death")
+public class Death {
     @Id
     @GeneratedValue
-    public Long id;
+    private Long id;
 
     @Property("SURNAME")
-    String surName;
+    private String surName;
 
     @Property("FORENAME")
-    String foreName;
+    private String foreName;
 
-    @Property("BIRTH_YEAR")
-    String birthYear;
+    @Property("Death_YEAR")
+    private String deathYear;
 
-    @Property("BIRTH_MONTH")
-    String birthMonth;
+    @Property("DEATH_MONTH")
+    private String deathMonth;
 
-    @Property("BIRTH_DAY")
-    String birthDay;
+    @Property("DEATH_DAY")
+    private String deathDay;
+
 }

@@ -1,4 +1,4 @@
-package com.burt;
+package uk.ac.standrews.cs;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

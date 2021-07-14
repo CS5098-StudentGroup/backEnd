@@ -43,9 +43,26 @@
 			<artifactId>neo4j-ogm-http-driver</artifactId>
 			<version>3.2.1</version>
 		</dependency>
+
+		<dependency>
+			<groupId>uk.ac.standrews.cs</groupId>
+			<artifactId>neo-storr</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>uk.ac.standrews.cs</groupId>
+			<artifactId>population-records</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.xmlunit</groupId>
+            <artifactId>xmlunit-core</artifactId>
         </dependency>
     </dependencies>
 
