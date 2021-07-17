@@ -1,25 +1,20 @@
 package uk.ac.standrews.cs.pojo;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.stereotype.Component;
 
-@Component
-@Getter
-@Setter
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Node("Death")
+@Data
 public class Death {
     @Id
-    @GeneratedValue
     private Long query_number;
 
     @Property("STORR_ID")
