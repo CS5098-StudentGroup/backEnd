@@ -1,12 +1,12 @@
 package uk.ac.standrews.cs.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 import uk.ac.standrews.cs.pojo.Birth;
-
 import java.util.List;
 
 
+@Repository
 public interface BirthService {
-    public List<Birth> findByName (String surName, String foreName) throws JsonProcessingException;
+    List<Birth> findByName (String SURNAME, String FORENAME);
 }

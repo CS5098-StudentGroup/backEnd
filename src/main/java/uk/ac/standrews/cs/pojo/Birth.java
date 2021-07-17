@@ -1,14 +1,12 @@
 package uk.ac.standrews.cs.pojo;
+
 import lombok.*;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
-import org.springframework.stereotype.Component;
 
-@Component
+
 @Getter
 @Setter
 @AllArgsConstructor

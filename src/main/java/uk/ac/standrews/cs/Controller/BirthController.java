@@ -1,37 +1,41 @@
 package uk.ac.standrews.cs.Controller;
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.ComponentScan;
+import lombok.NoArgsConstructor;
+import uk.ac.standrews.cs.dao.BirthRepository;
 import uk.ac.standrews.cs.pojo.Birth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.standrews.cs.service.BirthService;
+import uk.ac.standrews.cs.service.BirthServiceImpl;
+
 import java.util.List;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @RestController
-@ResponseBody
 @RequestMapping("/birth")
 public class BirthController {
 
     @Autowired
-    private BirthService birthService;
+    BirthService birthService;
+    BirthRepository birthRepository;
 
     //List all the records of birth distinguished by foreName
-   /* @GetMapping("/foreName/{FORENAME}")
-    List<Birth> byForeName(@PathVariable String FORENAME) {
-        return birthService.findByForeName(FORENAME);
-    }
-*/
-    //List all the records of birth distinguished by surName
-    /*@GetMapping("/surName/{SURNAME}")
-    List<Birth> bySurName(@PathVariable String SURNAME) {
-        return birthRepository.findBySurName(SURNAME);
-    }*/
+//    @GetMapping("/foreName/{FORENAME}")
+//    List<Birth> byForeName(@PathVariable String FORENAME) {
+//        return birthService.findByForeName(FORENAME);
+//    }
+//
+//    //List all the records of birth distinguished by surName
+//    @GetMapping("/surName/{SURNAME}")
+//    List<Birth> bySurName(@PathVariable String SURNAME) {
+//        return birthRepository.findBySurName(SURNAME);
+//    }
 
     //List all the records of birth distinguished by fullName
     @GetMapping("/queryByName/{SURNAME}/{FORENAME}")
-    List<Birth> byName(@PathVariable String SURNAME, @PathVariable String FORENAME) throws JsonProcessingException {
+    public List<Birth> byName(@PathVariable String SURNAME, @PathVariable String FORENAME) {
         return birthService.findByName(SURNAME,FORENAME);
     }
 }
