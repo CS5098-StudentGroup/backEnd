@@ -20,9 +20,20 @@ public interface DeathRepository extends Neo4jRepository<Death, Long> {
                 "END AND " +
                 "CASE WHEN NOT $gender IS NULL " +
                 "THEN p1.SEX = $gender ELSE TRUE " +
+                "END AND " +
+                "CASE WHEN NOT $deathDay IS NULL " +
+                "THEN p1.DEATH_DAY=$deathDay ELSE TRUE " +
+                "END AND " +
+                "CASE WHEN NOT $deathMonth IS NULL " +
+                "THEN p1.DEATH_Month=$deathMonth ELSE TRUE " +
+                "END AND " +
+                "CASE WHEN NOT $deathYear IS NULL " +
+                "THEN p1.DEATH_Year=$deathYear ELSE TRUE " +
                 "END " +
                 "RETURN p1")
-        List<Death> findByName (@Param("surName") String surName, @Param("foreName") String foreName, @Param("gender") String gender, @Param("dateOfBirth") String dateOfBirth, @Param("dateOfDeath") String dateOfDeath, @Param("dateOfMarriage") String dateOfMarriage);
+        List<Death> findByName (@Param("surName") String surName, @Param("foreName") String foreName, @Param("gender") String gender, @Param("dateOfBirth") String dateOfBirth,
+                                @Param("deathDay") String deathDay, @Param("deathMonth") String deathMonth, @Param("deathYear") String deathYear,
+                                @Param("dateOfMarriage") String dateOfMarriage);
         /*Collection<PersonalDetails> getResult (@Param("surName") String surName, @Param("foreName") String foreName);*/
 
     /*@Query*/

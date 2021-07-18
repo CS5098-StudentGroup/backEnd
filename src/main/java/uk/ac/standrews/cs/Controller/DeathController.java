@@ -24,7 +24,7 @@ public class DeathController {
     String surName;
     String gender;
     String dateOfBirth;
-    String dateOfDeath;
+    String[] dateOfDeath;
     String dateOfMarriage;
 
     @ResponseBody
@@ -34,13 +34,18 @@ public class DeathController {
         this.surName = params.get("surName");
         this.dateOfBirth = params.get("dateOfBirth");
         this.dateOfMarriage = params.get("dateOfMarriage");
-        this.dateOfDeath = params.get("dateOfDeath");
+
+        this.dateOfDeath = params.get("dateOfDeath").split("-");
+        String deathDay = dateOfDeath[0];
+        String deathMonth = dateOfDeath[1];
+        String deathYear = dateOfDeath[2];
+
         switch (params.get("gender")){
             case "male" : this.gender = "M";break;
             case "female" : this.gender = "F";break;
             default: this.gender = null;
         }
         System.out.println(params);
-        return deathService.findByName(surName, foreName, gender, dateOfBirth, dateOfDeath, dateOfMarriage);
+        return deathService.findByName(surName, foreName, gender, dateOfBirth, deathDay, deathMonth, deathYear, dateOfMarriage);
     }
 }

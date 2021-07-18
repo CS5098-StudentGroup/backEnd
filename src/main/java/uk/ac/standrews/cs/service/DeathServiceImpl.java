@@ -17,7 +17,7 @@ public class DeathServiceImpl implements DeathService {
     private DeathRepository deathRepository;
 
     @Override
-    public List<Death> findByName(String surName, String foreName, String gender, String dateOfBirth, String dateOfDeath, String dateOfMarriag) {
-        return deathRepository.findByName(surName, foreName, gender, dateOfBirth, dateOfDeath, dateOfMarriag);
+    public List<Death> findByName(String surName, String foreName, String gender, String dateOfBirth, String deathDay, String deathMonth, String deathYear,  String dateOfMarriage) {
+        return deathRepository.findByName(surName, foreName, gender, dateOfBirth, deathDay, deathMonth, deathYear, dateOfMarriage);
     }
 }
