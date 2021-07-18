@@ -5,7 +5,9 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 
-
+/**
+ * @Author Dongyao Liu
+ **/
 @AllArgsConstructor
 @NoArgsConstructor
 @Node("Death")
@@ -32,7 +34,10 @@ public class Death {
     @Property("DATE_OF_BIRTH")
     private String birth;
 
-    @Property("Death_YEAR")
+    @Property("AGE_AT_DEATH")
+    private String age_death;
+
+    @Property("DEATH_YEAR")
     private String deathYear;
 
     @Property("DEATH_MONTH")
