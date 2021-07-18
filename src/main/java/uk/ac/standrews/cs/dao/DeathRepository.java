@@ -9,11 +9,10 @@ import java.util.List;
 
 @Repository
 public interface DeathRepository extends Neo4jRepository<Death, Long> {
-    //查找关于Death的详细数据
-
-
-        @Query("MATCH(p1:Death) WHERE p1.SURNAME=$surName AND p1.FORENAME=$foreName RETURN p1")
-        List<Death> findByName (@Param("surName") String surName, @Param("foreName") String foreName);
+        //查找关于Death的详细数据
+        /*@Query("MATCH(p1:Death) WHERE p1.SURNAME=$surName AND p1.FORENAME=$foreName RETURN p1")*/
+        @Query("MATCH(p1:Death) WHERE p1.SURNAME:$surName, p1.FORENAME:$foreName AND p1.SEX = $gender RETURN p1")
+        List<Death> findByName (@Param("surName") String surName, @Param("foreName") String foreName, @Param("gender") String gender);
         /*Collection<PersonalDetails> getResult (@Param("surName") String surName, @Param("foreName") String foreName);*/
 
     /*@Query*/

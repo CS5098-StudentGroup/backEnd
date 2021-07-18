@@ -7,8 +7,6 @@ import uk.ac.standrews.cs.pojo.Birth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.standrews.cs.service.BirthService;
-
-
 import java.util.List;
 
 @AllArgsConstructor
