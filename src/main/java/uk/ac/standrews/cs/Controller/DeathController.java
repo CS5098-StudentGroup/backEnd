@@ -29,31 +29,18 @@ public class DeathController {
 
     @ResponseBody
     @GetMapping("/queryByName")
-    public String byName(@RequestParam Map<String, String> params){
+    public List<Death> byName(@RequestParam Map<String, String> params){
         this.foreName = params.get("foreName");
         this.surName = params.get("surName");
-
+        this.dateOfBirth = params.get("dateOfBirth");
+        this.dateOfMarriage = params.get("dateOfMarriage");
+        this.dateOfDeath = params.get("dateOfDeath");
         switch (params.get("gender")){
             case "male" : this.gender = "M";break;
             case "female" : this.gender = "F";break;
             default: this.gender = null;
         }
-
-        this.dateOfBirth = params.get("dateOfBirth");
-        this.dateOfMarriage = params.get("dateOfMarriage");
-        this.dateOfDeath = params.get("dateOfDeath");
         System.out.println(params);
-        return params.toString();
-    }
-
-    @GetMapping("/query")
-    public List<Death> findByName() {
         return deathService.findByName(surName, foreName, gender, dateOfBirth, dateOfDeath, dateOfMarriage);
     }
-
-
-    /*@RequestMapping(value = "/query/{data}", method= RequestMethod.GET)
-    public String test(@RequestParam String data) {
-        System.out.println(data);
-        return "Data:" + data;*/
-    }
+}
