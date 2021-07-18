@@ -3,7 +3,6 @@ package uk.ac.standrews.cs.Controller;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.standrews.cs.pojo.Death;
@@ -31,19 +30,25 @@ public class DeathController {
     @ResponseBody
     @GetMapping("/queryByName")
     public String byName(@RequestParam Map<String, String> params){
-        System.out.println(params);
         this.foreName = params.get("foreName");
         this.surName = params.get("surName");
-        this.gender = params.get("gender");
+
+        switch (params.get("gender")){
+            case "male" : this.gender = "M";break;
+            case "female" : this.gender = "F";break;
+            default: this.gender = null;
+        }
+
         this.dateOfBirth = params.get("dateOfBirth");
         this.dateOfMarriage = params.get("dateOfMarriage");
         this.dateOfDeath = params.get("dateOfDeath");
+        System.out.println(params);
         return params.toString();
     }
 
     @GetMapping("/query")
     public List<Death> findByName() {
-        return deathService.findByName(this.surName, this.foreName, this.gender);
+        return deathService.findByName(surName, foreName, gender, dateOfBirth, dateOfDeath, dateOfMarriage);
     }
 
 

@@ -26,6 +26,9 @@ public class Death {
     @Property("FORENAME")
     private String foreName;
 
+    @Property("SEX")
+    private String gender;
+
     @Property("DATE_OF_BIRTH")
     private String birth;
 
