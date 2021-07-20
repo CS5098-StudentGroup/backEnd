@@ -51,9 +51,9 @@ public class DeathController {
             deathYear = death[2];
         }
         else {
-            deathDay = "--";
-            deathMonth = "--";
-            deathYear = "----";
+            deathDay = null;
+            deathMonth = null;
+            deathYear = null;
         }
 
         switch (params.get("gender")){
