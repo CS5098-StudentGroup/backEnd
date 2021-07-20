@@ -59,7 +59,7 @@ public class DeathController {
         switch (params.get("gender")){
             case "male" : this.gender = "M";break;
             case "female" : this.gender = "F";break;
-            default: this.gender = null;
+            default: gender = null; break;
         }
         System.out.println(deathDay);
         System.out.println(params);
