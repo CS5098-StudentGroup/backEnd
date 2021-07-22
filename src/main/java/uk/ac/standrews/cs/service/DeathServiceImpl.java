@@ -19,7 +19,7 @@ public class DeathServiceImpl implements DeathService {
 
     @Autowired
     private DeathRepository deathRepository;
-    List<Death> list;
+    private List<Death> list;
 
     @Override
     public List<Death> findData(String surName, String foreName, String gender, String dateOfBirth, String deathDay, String deathMonth, String deathYear, String dateOfMarriage) {
@@ -69,7 +69,7 @@ public class DeathServiceImpl implements DeathService {
         }
         //foreName +surName + date + gender
         if (!surName.equals("") && !foreName.equals("") && !(gender == null) && !(deathDay ==null) && !(deathMonth ==null) && !(deathYear ==null)) {
-            list = deathRepository.findFSDate(surName, foreName, gender, dateOfBirth, deathDay, deathMonth, deathYear, dateOfMarriage);
+            list = deathRepository.findAllDate(surName, foreName, gender, dateOfBirth, deathDay, deathMonth, deathYear, dateOfMarriage);
         }
         return list;
     }

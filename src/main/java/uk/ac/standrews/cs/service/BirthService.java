@@ -5,5 +5,5 @@ import java.util.List;
 
 
 public interface BirthService {
-    List<Birth> findName (String SURNAME, String FORENAME);
+    List<Birth> findData (String surName, String foreName, String gender, String birthDay, String birthMonth, String birthYear);
 }

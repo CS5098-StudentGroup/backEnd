@@ -17,13 +17,19 @@ public class Birth {
     private Long birth_ID;
 
     @Property("STORR_ID")
-    private long storr_id;
+    private Long storr_id;
+
+    @Property("ORIGINAL_ID")
+    private String original_id;
 
     @Property("SURNAME")
     private String surName;
 
     @Property("FORENAME")
     private  String foreName;
+
+    @Property("SEX")
+    private String gender;
 
     @Property("BIRTH_YEAR")
     private String birthYear;
@@ -33,4 +39,10 @@ public class Birth {
 
     @Property("BIRTH_DAY")
     private String birthDay;
+
+    @Property("PLACE_OF_BIRTH")
+    private String birthPlace;
+
+    @Property("DEATH_RECORD_IDENTITY")
+    private String death_record_identity;
 }

@@ -69,20 +69,17 @@ public class DataController {
                 gender = null;
                 break;
         }
-        System.out.println(deathDay);
-        System.out.println(deathMonth);
-        System.out.println(deathYear);
         System.out.println(params);
 
-        /*births = birthService.findName(surName, foreName);*/
+        births = birthService.findData(surName, foreName, gender, birthDay, birthMonth, birthYear);
         deaths = deathService.findData(surName, foreName, gender, dateOfBirth, deathDay, deathMonth, deathYear, dateOfMarriage);
-        System.out.println(deaths);
+        System.out.println(births);
         List<Object> list = new ArrayList<>();
-        /*if(deaths != null){list.addAll(deaths);}*/
-        /*if(births != null) {list.addAll(births);}*/
-        list.addAll(deaths);
+        if(deaths != null){list.addAll(deaths);}
+        if(births != null) {list.addAll(births);}
         return list;
     }
+
 
     private void splitBirth(String dateOfBirth) {
         if (!dateOfBirth.equals("null")) {
