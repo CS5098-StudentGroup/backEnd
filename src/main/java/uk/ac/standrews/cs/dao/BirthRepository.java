@@ -10,16 +10,14 @@ import java.util.List;
 
 @Repository
 public interface BirthRepository extends Neo4jRepository<Birth, Long> {
+    @Query("MATCH (p:Birth) WHERE " +
+            "CASE WHEN NOT $surName IS NULL " +
+            "THEN p.SURNAME=$surName ELSE TRUE " +
+            "END AND " +
+            "CASE WHEN NOT $foreName IS NULL " +
+            "THEN p.FORENAME=$foreName ELSE TRUE " +
+            "END " +
+            "RETURN p")
+    List<Birth> findName(@Param("surName")String surName, @Param("foreName") String foreName);
 
-    //根据foreName查找自身的出生记录
-    @Query("MATCH (p1:Birth ) where p1.FORENAME=$foreName return p1")
-    List<Birth> findByForeName(@Param("foreName") String foreName);
-
-    //根据surName查找出生记录
-    @Query("MATCH (p1:Birth ) where p1.SURNAME=$surName return p1")
-    List<Birth> findBySurName(@Param("surName") String surName);
-
-    //根据foreName和surName精确查找
-    @Query("MATCH (p1:Birth ) where p1.SURNAME=$surName AND p1.FORENAME=$foreName return p1")
-    List<Birth> findByName(@Param("surName")String surName, @Param("foreName") String foreName);
 }

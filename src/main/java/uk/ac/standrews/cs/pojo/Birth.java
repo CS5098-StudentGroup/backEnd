@@ -1,33 +1,29 @@
 package uk.ac.standrews.cs.pojo;
 
 import lombok.*;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Node("Birth")
 public class Birth {
+
     @Id
-    private Long id;
+    @GeneratedValue
+    private Long birth_ID;
+
+    @Property("STORR_ID")
+    private long storr_id;
 
     @Property("SURNAME")
     private String surName;
 
     @Property("FORENAME")
-    private String foreName;
-
-    @Property("SEX")
-    private  String sex;
-
-    @Property("STORR_ID")
-    private long storr_id;
-
-    @Property("ORIGINAL_ID")
-    private String original_id;
+    private  String foreName;
 
     @Property("BIRTH_YEAR")
     private String birthYear;

@@ -1,3 +1,4 @@
+/*
 package uk.ac.standrews.cs.Controller;
 
 import lombok.AllArgsConstructor;
@@ -10,10 +11,6 @@ import uk.ac.standrews.cs.service.DeathService;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @Author Dongyao Liu
- * @Description
- **/
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,8 +37,6 @@ public class DeathController {
 
         this.foreName = params.get("foreName");
         this.surName = params.get("surName");
-        this.dateOfBirth = params.get("dateOfBirth");
-        this.dateOfMarriage = params.get("dateOfMarriage");
         dateOfDeath = params.get("dateOfDeath");
 
         if(!dateOfDeath.equals("null")) {
@@ -66,3 +61,4 @@ public class DeathController {
         return deathService.findByName(surName, foreName, gender, dateOfBirth, deathDay, deathMonth, deathYear, dateOfMarriage);
     }
 }
+*/

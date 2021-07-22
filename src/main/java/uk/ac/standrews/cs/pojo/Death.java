@@ -1,20 +1,20 @@
 package uk.ac.standrews.cs.pojo;
 
 import lombok.*;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 
-/**
- * @Author Dongyao Liu
- **/
 @AllArgsConstructor
 @NoArgsConstructor
-@Node("Death")
 @Data
+@Node("Death")
 public class Death {
+
     @Id
-    private Long query_number;
+    @GeneratedValue
+    private Long death_ID;
 
     @Property("STORR_ID")
     private Long storr_id;
@@ -31,9 +31,6 @@ public class Death {
     @Property("SEX")
     private String gender;
 
-    @Property("DATE_OF_BIRTH")
-    private String birth;
-
     @Property("AGE_AT_DEATH")
     private String age_death;
 
@@ -49,5 +46,6 @@ public class Death {
     @Property("PLACE_OF_DEATH")
     private String deathPlace;
 
-
+    @Property("DATE_OF_BIRTH")
+    private String birthDate;
 }
