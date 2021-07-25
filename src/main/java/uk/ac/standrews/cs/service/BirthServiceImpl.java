@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.pojo.Birth;
 import uk.ac.standrews.cs.dao.BirthRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,13 +15,48 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BirthServiceImpl implements BirthService {
+
     @Autowired
     private BirthRepository birthRepository;
-    private List<Birth> list;
-
+    int i=0;
+    String query1;
     @Override
     public List<Birth> findData(String surName, String foreName, String gender, String birthDay, String birthMonth, String birthYear) {
-        if (!surName.equals("") && foreName.equals("") && gender == null && birthDay == null && birthMonth == null && birthYear == null) {
+        StringBuilder q = new StringBuilder();
+
+        q.append("MATCH (p:Birth)");
+        q.append(" WHERE");
+
+
+        if( !surName.equals("") && i > 0) {
+            q.append(" AND p.SURNAME=").append(surName); // or could add these to params
+        }
+        if(!surName.equals("") && i == 0){i++; q.append( " p.SURNAME="+surName);  }
+
+        if( !foreName.equals("") && i > 0) {
+            q.append(" AND p.FORENAME=").append(foreName);
+        }
+        if(! foreName.equals("") && i == 0){i++; q.append(" p.FORENAME=").append(foreName); }
+
+        if(!(gender == null) && i> 0){
+            q.append(" AND p.SEX=").append(gender);
+        }
+        if(!(gender == null) && i == 0){i++; q.append(" p.SEX=").append(gender); }
+
+        if(!(birthDay == null) && !(birthMonth == null) && !(birthYear == null) && i>0){
+            q.append(" AND p.BIRTH_DAY=").append(birthDay).append(" AND p.BIRTH_MONTH=").append(birthMonth).append(" AND p.BIRTH_YEAR=").append(birthYear);
+        }
+        if(!(birthDay == null) && !(birthMonth == null) && !(birthYear == null) && i==0){
+            i++;
+            q.append(" p.BIRTH_DAY=").append(birthDay).append(" AND p.BIRTH_MONTH=").append(birthMonth).append(" AND p.BIRTH_YEAR=").append(birthYear);
+
+        }
+        q.append(" RETURN p ");
+
+        i=0;
+        query1 = q.toString();
+        return birthRepository.findByForeName(surName,foreName,gender,birthDay,birthMonth,birthYear);
+        /*if (!surName.equals("") && foreName.equals("") && gender == null && birthDay == null && birthMonth == null && birthYear == null) {
             list = birthRepository.findBySurName(surName, foreName, gender, birthDay, birthMonth, birthYear);
         }
         //foreName
@@ -67,6 +103,6 @@ public class BirthServiceImpl implements BirthService {
         if (!surName.equals("") && !foreName.equals("") && !(gender == null) && !(birthDay == null) && !(birthMonth == null) && !(birthYear == null)) {
             list = birthRepository.findAllDate(surName, foreName, gender, birthDay,birthMonth,birthYear);
         }
-        return list;
+        return list;*/
     }
 }

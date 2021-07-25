@@ -19,15 +19,40 @@ public class DeathServiceImpl implements DeathService {
 
     @Autowired
     private DeathRepository deathRepository;
-    private List<Death> list;
+    int i = 0;
+    String query1;
 
     @Override
-    public List<Death> findData(String surName, String foreName, String gender, String dateOfBirth, String deathDay, String deathMonth, String deathYear, String dateOfMarriage) {
-        //surName
-        if (!surName.equals("") && foreName.equals("") && gender == null && deathDay==null && deathMonth==null && deathYear==null) {
-             list = deathRepository.findBySurName(surName, foreName, gender, dateOfBirth, deathDay, deathMonth, deathYear, dateOfMarriage);
+    public String findData(String surName, String foreName, String gender, String dateOfBirth, String deathDay, String deathMonth, String deathYear) {
+        StringBuilder q = new StringBuilder();
+        q.append("MATCH (p:Death)");
+        q.append(" WHERE");
+        if( !surName.equals("") && i > 0) {
+            q.append(" AND p.SURNAME=").append('"').append(surName).append('"'); // or could add these to params
         }
-        //foreName
+        if(!surName.equals("") && i == 0){i++; q.append(" p.SURNAME=").append('"').append(surName).append('"');  }
+
+        if( !foreName.equals("") && i > 0) {
+            q.append(" AND p.FORENAME=").append('"').append(foreName).append('"');
+        }
+        if(! foreName.equals("") && i == 0){i++; q.append(" p.FORENAME=").append('"').append(foreName).append('"'); }
+
+        if(!(gender == null) && i> 0){
+            q.append(" AND p.SEX=").append(gender);
+        }
+        if(!(gender == null) && i == 0){i++; q.append(" p.SEX=").append(gender); }
+        q.append(" RETURN p.SURNAME AS surName, p.FORENAME AS foreName, p.");
+
+        System.out.println(q.toString());
+        i=0;
+        query1 = q.toString();
+        System.out.println(query1);
+        return query1/*deathRepository.findBySurName(surName,foreName,gender,dateOfBirth,deathDay,deathMonth,deathYear,query1)*/;
+
+        /*if (!surName.equals("") && foreName.equals("") && gender == null && deathDay==null && deathMonth==null && deathYear==null) {
+             list = deathRepository.findBySurName(surName, foreName, gender, dateOfBirth, deathDay, deathMonth, deathYear, dateOfMarriage);
+        }*/
+        /*//foreName
         if (surName.equals("") && !foreName.equals("") && gender == null && deathDay==null && deathMonth==null && deathYear==null) {
             list = deathRepository.findByForeName(surName, foreName, gender, dateOfBirth, deathDay, deathMonth, deathYear, dateOfMarriage);
         }
@@ -71,6 +96,6 @@ public class DeathServiceImpl implements DeathService {
         if (!surName.equals("") && !foreName.equals("") && !(gender == null) && !(deathDay ==null) && !(deathMonth ==null) && !(deathYear ==null)) {
             list = deathRepository.findAllDate(surName, foreName, gender, dateOfBirth, deathDay, deathMonth, deathYear, dateOfMarriage);
         }
-        return list;
+        return list;*/
     }
 }

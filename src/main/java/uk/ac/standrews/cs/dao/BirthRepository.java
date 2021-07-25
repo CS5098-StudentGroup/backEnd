@@ -1,22 +1,24 @@
 package uk.ac.standrews.cs.dao;
 
+import org.neo4j.springframework.data.repository.query.Query;
 import org.springframework.stereotype.Repository;
 import uk.ac.standrews.cs.pojo.Birth;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
-import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 
 @Repository
 public interface BirthRepository extends Neo4jRepository<Birth, Long> {
+    @Query("MATCH (p:Birth) WHERE p.FORENAME=$foreName RETURN p")
+    List<Birth> findByForeName(@Param("surName") String surName, @Param("foreName") String foreName, @Param("gender") String gender,
+                               @Param("birthDay") String birthDay, @Param("birthMonth") String birthMonth, @Param("birthYear") String birthYear);
 
-    //根据surname查找关于Death的详细数据
-    @Query("MATCH (p:Birth) WHERE p.SURNAME=$surName RETURN p ")
-    List<Birth> findBySurName(@Param("surName") String surName, @Param("foreName") String foreName, @Param("gender") String gender,
-                              @Param("birthDay") String birthDay, @Param("birthMonth") String birthMonth, @Param("birthYear") String birthYear);
-
-    //根据forename查找关于Death的详细数据
+    /*@Query("MATCH (p:Birth) WHERE p.FORENAME=$foreName RETURN ")
+    List<Birth> findBySurName(@Param("surName") String surName, @Param("foreName") String foreName, @Param("gender") String gender, @Param("birthDay") String birthDay,
+                              @Param("birthMonth") String birthMonth, @Param("birthYear") String birthYear, @Param("query") String query);
+*/
+    /*//根据forename查找关于Death的详细数据
     @Query("MATCH (p:Birth) WHERE p.FORENAME=$foreName RETURN p")
     List<Birth> findByForeName(@Param("surName") String surName, @Param("foreName") String foreName, @Param("gender") String gender,
                               @Param("birthDay") String birthDay, @Param("birthMonth") String birthMonth, @Param("birthYear") String birthYear);
@@ -77,6 +79,6 @@ public interface BirthRepository extends Neo4jRepository<Birth, Long> {
     @Query("MATCH (p:Birth) WHERE p.SEX=$gender AND p.SURNAME=$surName AND p.FORENAME=$foreName AND p.BIRTH_DAY=$birthDay AND p.BIRTH_MONTH=$birthMonth AND p.BIRTH_YEAR=$birthYear RETURN p")
     List<Birth> findAllDate(@Param("surName") String surName, @Param("foreName") String foreName, @Param("gender") String gender,
                            @Param("birthDay") String birthDay, @Param("birthMonth") String birthMonth, @Param("birthYear") String birthYear);
-
+*/
 
 }

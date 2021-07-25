@@ -3,13 +3,16 @@ package uk.ac.standrews.cs.Controller;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.json.JSONObject;
+import org.neo4j.driver.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import uk.ac.standrews.cs.neoStorr.util.NeoDbCypherBridge;
 import uk.ac.standrews.cs.pojo.Birth;
-import uk.ac.standrews.cs.pojo.Death;
 import uk.ac.standrews.cs.service.BirthService;
 import uk.ac.standrews.cs.service.DeathService;
-import java.util.ArrayList;
+import uk.ac.standrews.cs.service.Neo4jService;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +21,7 @@ import java.util.Map;
  * @Author Dongyao Liu
  * @Description 主控器
  **/
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,7 +32,9 @@ public class DataController {
     DeathService deathService;
     @Autowired
     BirthService birthService;
-
+    @Autowired
+    private Neo4jService neo4jService;
+    private Driver driver;
     String foreName;
     String surName;
     String gender;
@@ -43,18 +49,19 @@ public class DataController {
     String deathDay;
     String deathMonth;
     String deathYear;
-    List<Death> deaths;
+    String query;
+    String deaths;
     List<Birth> births;
+    Result result;
+    NeoDbCypherBridge bridge = new NeoDbCypherBridge();
 
     @ResponseBody
-    @GetMapping("/queryByName")
-    public List<Object> byName(@RequestParam Map<String, String> params) {
-
+    @GetMapping(path="/queryByName", produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject byName(@RequestParam Map<String, String> params) throws Exception {
         this.foreName = params.get("foreName");
         this.surName = params.get("surName");
         dateOfDeath = params.get("dateOfDeath");
         dateOfBirth = params.get("dateOfBirth");
-
         splitDeath(dateOfDeath);
         splitBirth(dateOfBirth);
 
@@ -69,15 +76,10 @@ public class DataController {
                 gender = null;
                 break;
         }
-        System.out.println(params);
-
-        births = birthService.findData(surName, foreName, gender, birthDay, birthMonth, birthYear);
-        deaths = deathService.findData(surName, foreName, gender, dateOfBirth, deathDay, deathMonth, deathYear, dateOfMarriage);
-        System.out.println(births);
-        List<Object> list = new ArrayList<>();
-        if(deaths != null){list.addAll(deaths);}
-        if(births != null) {list.addAll(births);}
-        return list;
+        /*births = birthService.findData(surName, foreName, gender, birthDay, birthMonth, birthYear);*/
+        deaths = deathService.findData(surName, foreName, gender, dateOfBirth, deathDay, deathMonth, deathYear);
+        System.out.println("controller:" + deaths);
+        return neo4jService.printJson(deaths);
     }
 
 

@@ -51,6 +51,49 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-ogm-core</artifactId>
+			<version>3.2.24</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Only add if you're using the Bolt driver -->
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-ogm-bolt-driver</artifactId>
+			<version>3.2.24</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Only add if you're using the HTTP driver -->
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-ogm-http-driver</artifactId>
+			<version>3.2.24</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Only add if you're using the Embedded driver -->
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-ogm-embedded-driver</artifactId>
+			<version>3.2.24</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j</artifactId>
+			<version>4.2.7</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.2</version>
+		</dependency>
+
+		<dependency>
 			<groupId>uk.ac.standrews.cs</groupId>
 			<artifactId>population-records</artifactId>
 			<version>1.0-SNAPSHOT</version>

@@ -9,7 +9,7 @@ import org.springframework.data.neo4j.core.schema.Property;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Node("Death")
+
 public class Death {
 
     @Id
