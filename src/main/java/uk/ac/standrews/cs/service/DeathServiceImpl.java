@@ -41,7 +41,7 @@ public class DeathServiceImpl implements DeathService {
             q.append(" AND p.SEX=").append(gender);
         }
         if(!(gender == null) && i == 0){i++; q.append(" p.SEX=").append(gender); }
-        q.append(" RETURN p.SURNAME AS surName, p.FORENAME AS foreName, p.");
+        q.append(" RETURN p.SURNAME AS surName, p.FORENAME AS foreName");
 
         System.out.println(q.toString());
         i=0;
