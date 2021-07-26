@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.dao;
+/*package uk.ac.standrews.cs.dao;
 
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
@@ -8,17 +8,17 @@ import uk.ac.standrews.cs.pojo.Death;
 
 import java.util.List;
 
-/**
+*//**
  * @Author Dongyao Liu
  * @Description neo4j查询控制语句
- **/
+ **//*
 @Repository
 public interface DeathRepository extends Neo4jRepository<Death, Long> {
         //根据surname查找关于Death的详细数据
 
         List<Death> findBySurName(@Param("surName") String surName, @Param("foreName") String foreName, @Param("gender") String gender, @Param("dateOfBirth") String dateOfBirth,
                                   @Param("deathDay") String deathDay, @Param("deathMonth") String deathMonth, @Param("deathYear") String deathYear,
-                                  @Param("query") String query);
+                                  @Param("query") String query);*/
 
         //根据forename查找关于Death的详细数据
         /*@Query("MATCH (p:Death) WHERE p.FORENAME=$foreName RETURN p")
@@ -84,4 +84,3 @@ public interface DeathRepository extends Neo4jRepository<Death, Long> {
         List<Death> findAllDate (@Param("surName") String surName, @Param("foreName") String foreName, @Param("gender") String gender, @Param("dateOfBirth") String dateOfBirth,
                                 @Param("deathDay") String deathDay, @Param("deathMonth") String deathMonth, @Param("deathYear") String deathYear,
                                 @Param("dateOfMarriage") String dateOfMarriage);*/
-}

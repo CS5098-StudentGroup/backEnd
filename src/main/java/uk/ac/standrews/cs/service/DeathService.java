@@ -8,8 +8,8 @@ import java.util.StringTokenizer;
 
 /**
  * @Author Dongyao Liu
- * @Description 服务接口
+ * @Description Service interface
  **/
 public interface DeathService {
-    String findData (String surName, String foreName, String gender, String dateOfBirth, String deathDay, String deathMonth, String deathYear);
+    String getQuery (String surName, String foreName, String gender, String dateOfBirth, String deathDay, String deathMonth, String deathYear);
 }
