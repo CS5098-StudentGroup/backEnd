@@ -19,6 +19,8 @@ public class BirthDeathServiceIml implements BirthDeathService{
         query.append("-[r:GROUND_TRUTH_BIRTH_DEATH_IDENTITY]-");
         query.append("(d:Death)");
         query.append(" WHERE");
+
+        //surName
         if( !surName.equals("") && i > 0) {
             query.append(" AND b.SURNAME=").append('"').append(surName)
                     .append('"').append(" AND b.SURNAME=d.SURNAME");
@@ -26,12 +28,14 @@ public class BirthDeathServiceIml implements BirthDeathService{
         if(!surName.equals("") && i == 0){i++; query.append(" b.SURNAME=")
                 .append("'").append(surName).append("'").append(" AND b.SURNAME=d.SURNAME");;  }
 
+        //foreName
         if( !foreName.equals("") && i > 0) {
             query.append(" AND b.FORENAME=")
                     .append('"').append(foreName).append('"').append(" AND b.FORENAME=d.FORENAME");
         }
         if(! foreName.equals("") && i == 0){i++; query.append(" b.FORENAME=").append('"').append(foreName).append('"').append(" AND b.FORENAME=d.FORENAME"); }
 
+        //gender
         if(!(gender == null) && i> 0){
             query.append(" AND b.SEX=").append('"').append(gender).append('"');
         }
@@ -39,6 +43,7 @@ public class BirthDeathServiceIml implements BirthDeathService{
             i++; query.append(" b.SEX=").append('"').append(gender).append('"');
         }
 
+        //deathDay
         if (!(deathDay ==null) && !(deathMonth ==null) && !(deathYear ==null) && i>0) {
             query.append(" AND d.DEATH_DAY=").append('"').append(deathDay).append('"')
                     .append(" AND d.DEATH_MONTH=").append('"').append(deathMonth).append('"')
@@ -51,6 +56,7 @@ public class BirthDeathServiceIml implements BirthDeathService{
                     .append(" AND d.DEATH_YEAR=").append('"').append(deathYear).append('"');
         }
 
+        //birthday
         if (!(birthDay ==null) && !(birthMonth ==null) && !(birthYear ==null) && i>0) {
             query.append(" AND b.BIRTH_DAY=").append('"').append(birthDay).append('"')
                     .append(" AND b.BIRTH_MONTH=").append('"').append(birthMonth).append('"')

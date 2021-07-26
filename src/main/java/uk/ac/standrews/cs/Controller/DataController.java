@@ -3,11 +3,9 @@ package uk.ac.standrews.cs.Controller;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.neo4j.driver.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.standrews.cs.service.BirthDeathService;
-import uk.ac.standrews.cs.service.DeathService;
 import uk.ac.standrews.cs.service.Neo4jService;
 import java.util.Map;
 
@@ -23,8 +21,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/death")
 public class DataController {
-    @Autowired
-    DeathService deathService;
     @Autowired
     BirthDeathService birthDeathService;
     @Autowired
