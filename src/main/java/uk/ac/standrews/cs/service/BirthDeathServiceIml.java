@@ -26,14 +26,14 @@ public class BirthDeathServiceIml implements BirthDeathService {
         removeEmptyMap(map);
         map.forEach((key, value) -> {
             if(key.contains("birth_Day")||key.contains("birth_Month")||key.contains("birth_Year")||key.contains("surName")||key.contains("foreName")||key.contains("sex")) {
-                query.append(" b.").append(key.toUpperCase()).append("=").append('"').append(value).append('"').append(" AND");
+                query.append(" b.").append(key.toUpperCase()).append("=").append('"').append(value.toUpperCase()).append('"').append(" AND");
             }
             if(key.contains("death_Day")||key.contains("death_Month")||key.contains("death_Year")){
-                query.append(" d.").append(key.toUpperCase()).append("=").append('"').append(value).append('"').append(" AND");
+                query.append(" d.").append(key.toUpperCase()).append("=").append('"').append(value.toUpperCase()).append('"').append(" AND");
             }
         });
         query.delete(query.length()-3, query.length());
-        query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, d.DATE_OF_BIRTH AS birthDate, d.DEATH_DAY AS deathDay");
+        query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, d.DATE_OF_BIRTH AS birthDate, d.DEATH_DAY AS deathDay, d.DEATH_MONTH AS deathMonth, d.DEATH_YEAR AS deathYear");
         System.out.println("Query is: " + query);
         return query.toString();
     }
