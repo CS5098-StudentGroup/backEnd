@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.standrews.cs.service.BirthDeathService;
 import uk.ac.standrews.cs.service.Neo4jService;
+
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -25,8 +27,6 @@ public class DataController {
     BirthDeathService birthDeathService;
     @Autowired
     private Neo4jService neo4jService;
-    String foreName;
-    String surName;
     String gender;
     String dateOfMarriage;
     String[] birth;
@@ -45,16 +45,24 @@ public class DataController {
     @ResponseBody
     @GetMapping(path="/queryByName")
     public StringBuilder BirthDeathByName(@RequestParam Map<String, String> params) throws Exception {
-        this.foreName = params.get("foreName");
-        this.surName = params.get("surName");
         splitDeath(params.get("dateOfDeath"));
         splitBirth(params.get("dateOfBirth"));
         setSex(params.get("gender"));
-        birthDeath = birthDeathService.getQuery(surName,foreName,gender,birthDay,birthMonth,birthYear,deathDay,deathMonth,deathYear);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("foreName", params.get("foreName"));
+        map.put("surName", params.get("surName"));
+        map.put("sex", gender);
+        map.put("birth_Day", birthDay);
+        map.put("birth_Month", birthMonth);
+        map.put("birth_Year", birthYear);
+        map.put("death_Day", deathDay);
+        map.put("death_Month", deathMonth);
+        map.put("death_Year", deathYear);
+
+        birthDeath = birthDeathService.getQuery(map);
         return neo4jService.printJson(birthDeath);
     }
-
-
 
     public void setSex(String sex){
         switch (sex) {
