@@ -1,17 +1,9 @@
 package uk.ac.standrews.cs.service;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.apache.commons.text.StringEscapeUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.neo4j.driver.*;
 import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.neoStorr.util.NeoDbCypherBridge;
-
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 /**
