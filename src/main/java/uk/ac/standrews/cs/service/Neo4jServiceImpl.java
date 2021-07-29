@@ -45,4 +45,12 @@ public class Neo4jServiceImpl implements Neo4jService {
             finalData.append("[").append(formatJson).append("]");
             return finalData;
     }
+
+    public static StringBuilder formatMarriageJson(StringBuilder s1, StringBuilder s2){
+        s1.deleteCharAt(s1.length()-1);
+        s2.deleteCharAt(0);
+        s1.append(",");
+        return s1.append(s2);
+    }
+
 }

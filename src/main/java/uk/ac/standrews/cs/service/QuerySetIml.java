@@ -33,7 +33,7 @@ public class QuerySetIml implements QuerySet {
         query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
                 "b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate, " +
                 "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate");
-        System.out.println("bride"+query);
+        /*System.out.println("bride"+query);*/
         return query.toString();
     }
 
@@ -46,7 +46,7 @@ public class QuerySetIml implements QuerySet {
         query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
                 "b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate, " +
                 "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate");
-        System.out.println("groom"+query);
+        /*System.out.println("groom"+query);*/
         return query.toString();
     }
 
@@ -63,7 +63,7 @@ public class QuerySetIml implements QuerySet {
         query.delete(query.length()-3, query.length());
         query.append(" RETURN m.GROOM_FORENAME AS foreName, m.GROOM_SURNAME AS surName," +
                 " m.MARRIAGE_DAY+'/'+m.MARRIAGE_MONTH+'/'+m.MARRIAGE_YEAR AS marriageDate ");
-        System.out.println("querymarriage: "+query);
+        /*System.out.println("querymarriage: "+query);*/
         return query.toString();
     }
 
@@ -127,6 +127,37 @@ public class QuerySetIml implements QuerySet {
                 break;
         }
         return sex;
+    }
+
+
+    public static String[] splitBirth(String dateOfBirth) {
+        String[] birth = new String[3];
+        if (!dateOfBirth.equals("null")) {
+            birth = dateOfBirth.split("-");
+        } else {
+            birth[0] = birth[1] = birth[2] = null;
+        }
+        return birth;
+    }
+
+    public static String[] splitDeath(String dateOfDeath) {
+        String[] death = new String[3];
+        if (!dateOfDeath.equals("null")) {
+            death = dateOfDeath.split("-");
+        } else {
+            death[0] = death[1] = death[2] = null;
+        }
+        return death;
+    }
+
+    public static String[] splitMarriage(String dateOfMarriage) {
+        String[] marriage = new String[3];
+        if (!dateOfMarriage.equals("null")) {
+            marriage = dateOfMarriage.split("-");
+        } else {
+            marriage[0] = marriage[1] = marriage[2] = null;
+        }
+        return marriage;
     }
 
 
