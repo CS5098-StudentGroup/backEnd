@@ -16,6 +16,8 @@ import java.util.List;
 @Service
 public class Neo4jServiceImpl implements Neo4jService {
 
+    //Setting and processing json format
+    //return json data
     @Override
     public StringBuilder printJson(String query) throws Exception {
             JSONObject js1 = new JSONObject();
