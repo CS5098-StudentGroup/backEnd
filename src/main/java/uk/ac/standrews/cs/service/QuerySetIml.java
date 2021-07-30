@@ -10,8 +10,6 @@ import java.util.*;
  **/
 @Service
 public class QuerySetIml implements QuerySet {
-
-
     //Get cypher and formatting it
     //get data when user input deathDate or birthDate
     @Override
@@ -25,7 +23,7 @@ public class QuerySetIml implements QuerySet {
                 "b.CHILD_IDENTITY AS Child_identity, b.FATHER_FORENAME AS Father_foreName, b.FATHER_SURNAME AS Father_surName," +
                 "b.FATHER_OCCUPATION AS Father_occupation, b.MOTHER_IDENTITY AS Mother_identity, b.MOTHER_SURNAME AS Mother_surName, b.MOTHER_FORENAME AS Mother_foreName," +
                 "b.MOTHER_OCCUPATION AS Mother_occupation, b.MARRIAGE_RECORD_IDENTITY1 AS Marriage_record_identity1, b.MARRIAGE_RECORD_IDENTITY2 AS Marriage_record_identity2," +
-                "b.MARRIAGE_RECORD_IDENTITY3 AS Marriage_record_identity3");
+                "b.MARRIAGE_RECORD_IDENTITY3 AS Marriage_record_identity3, b.DEATH AS Death");
         return query.toString();
     }
 
@@ -37,7 +35,7 @@ public class QuerySetIml implements QuerySet {
         query.append(getAttribute(map));
         query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
                 "b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate, " +
-                "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, b.STANDARDISED_ID AS standardised_ID");
+                "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, b.STANDARDISED_ID AS standardised_ID, b.DEATH AS Death");
         /*System.out.println("bride"+query);*/
         return query.toString();
     }
@@ -50,21 +48,24 @@ public class QuerySetIml implements QuerySet {
         query.append(getAttribute(map));
         query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
                 "b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate, " +
-                "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate");
+                "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, b.DEATH AS Death");
         /*System.out.println("groom"+query);*/
         return query.toString();
     }
 
+    //without return birthday
+    @Override
     public String getGroomQuery(Map<String, String> map) {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m:Marriage)");
         query.append(getAttribute(map));
         query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
                 "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, m.BRIDE_AGE_OR_DATE_OF_BIRTH " +
-                "AS BirthDate of Bride, m.GROOM_AGE_OR_DATE_OF_BIRTH AS BirthDate of Groom");
+                "AS BirthDate of Bride, m.GROOM_AGE_OR_DATE_OF_BIRTH AS BirthDate of Groom, b.DEATH AS Death");
         return query.toString();
     }
 
+    //without return birthday
     @Override
     public String getBrideQuery(Map<String, String> map) {
         StringBuilder query = new StringBuilder();
@@ -72,10 +73,73 @@ public class QuerySetIml implements QuerySet {
         query.append(getAttribute(map));
         query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
                 "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, m.BRIDE_AGE_OR_DATE_OF_BIRTH " +
-                "AS BirthDate_of_Bride, m.GROOM_AGE_OR_DATE_OF_BIRTH AS BirthDate_of_Groom");
+                "AS BirthDate_of_Bride, m.GROOM_AGE_OR_DATE_OF_BIRTH AS BirthDate_of_Groom, b.DEATH AS Death");
         /*System.out.println("bride"+query);*/
         return query.toString();
     }
+
+    @Override
+    public String addPeopleNotDie(Map<String, String> map) {
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (b:Birth) ");
+        query.append(getAttribute(map));
+        query.append(" AND b.DEATH=\"\" ");
+        query.append("RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate,"+
+                "b.STANDARDISED_ID AS standardised_ID, b.BIRTH_ADDRESS AS Address," +
+                "b.STORR_ID AS Storr_ID, b.ORIGINAL_ID AS Original_ID, b.CHANGED_FORENAME AS Changed_foreName, b.CHANGED_SURNAME AS Changed_surName," +
+                "b.CHILD_IDENTITY AS Child_identity, b.FATHER_FORENAME AS Father_foreName, b.FATHER_SURNAME AS Father_surName," +
+                "b.FATHER_OCCUPATION AS Father_occupation, b.MOTHER_IDENTITY AS Mother_identity, b.MOTHER_SURNAME AS Mother_surName, b.MOTHER_FORENAME AS Mother_foreName," +
+                "b.MOTHER_OCCUPATION AS Mother_occupation, b.MARRIAGE_RECORD_IDENTITY1 AS Marriage_record_identity1, b.MARRIAGE_RECORD_IDENTITY2 AS Marriage_record_identity2," +
+                "b.MARRIAGE_RECORD_IDENTITY3 AS Marriage_record_identity3, b.DEATH AS Death");
+        System.out.println(query.toString());
+        return query.toString();
+    }
+
+    //it has marriage record and not die
+    @Override
+    public String getDetailsAboutGroomAndBirth(Map<String, String> map) {
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m:Marriage)");
+        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_BRIDE_IDENTITY]->(m:Marriage)");
+        query.append(" MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b1:Birth) ");
+        query.append("WHERE b.STANDARDISED_ID=b1.STANDARDISED_ID AND ");
+        query.append("b.STANDARDISED_ID = ").append(map.get("standardised_ID"));
+        query.append(getReturn());
+        return query.toString();
+    }
+
+    //not die and has married
+    @Override
+    public String getDetailsAboutBrideAndBirth(Map<String, String> map) {
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_BRIDE_IDENTITY]->(m:Marriage)");
+        query.append(" MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b1:Birth) ");
+        query.append("WHERE b.STANDARDISED_ID=b1.STANDARDISED_ID AND ");
+        query.append("b.STANDARDISED_ID = ").append(map.get("standardised_ID"));
+        query.append(getReturn());
+        return query.toString();
+    }
+
+
+
+    private static String getReturn() {
+
+        return " Return b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate," +
+                "b.STANDARDISED_ID AS birth_StandardisedID, b.BIRTH_ADDRESS AS Address,b.STORR_ID AS birth_Storr_ID," +
+                "b.ORIGINAL_ID AS birth_OriginalID, b.CHANGED_FORENAME AS Changed_foreName, b.CHANGED_SURNAME AS Changed_surName," +
+                "b.CHILD_IDENTITY AS Child_identity, b.FATHER_FORENAME AS Father_foreName, b.FATHER_SURNAME AS Father_surName," +
+                "b.FATHER_OCCUPATION AS Father_occupation, b.MOTHER_IDENTITY AS Mother_identity, b.MOTHER_SURNAME AS Mother_surName, b.MOTHER_FORENAME AS Mother_foreName," +
+                "b.MOTHER_OCCUPATION AS Mother_occupation, b.MARRIAGE_RECORD_IDENTITY1 AS Marriage_record_identity1, b.MARRIAGE_RECORD_IDENTITY2 AS Marriage_record_identity2," +
+                "b.MARRIAGE_RECORD_IDENTITY3 AS Marriage_record_identity3, b.DEATH AS Death," +
+                "d.DEATH_DAY+'/'+d.DEATH_MONTH+'/'+d.DEATH_YEAR AS deathDate, d.AGE_AT_DEATH AS age_at_death, d.DECEASED_IDENTITY AS Deceased_Identity, d.STORR_ID AS death_StorrID," +
+                "d.MARITAL_STATUS AS Marital_Status, d.PLACE_OF_DEATH AS Death_Place, d.YEAR_OF_REGISTRATION AS Registration_Year, d.STANDARDISED_ID AS death_StandardisedID" +
+                "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, ";
+    }
+
+
+
+
+
 
     //Setting the attribute format in cypher
     private static String getAttribute(Map<String, String> attribute) {
@@ -139,6 +203,13 @@ public class QuerySetIml implements QuerySet {
         return sex;
     }
 
+    public static boolean marriageRecordIsEmpty(String value, String value1) {
+        boolean isEmpty = false;
+        if(value.length()-3 <= 0 && value1.length()-3 <= 0){
+            isEmpty = true;
+        }
+        return isEmpty;
+    }
 
     public static String[] splitBirth(String dateOfBirth) {
         String[] birth = new String[3];
@@ -172,3 +243,5 @@ public class QuerySetIml implements QuerySet {
 
 
 }
+
+

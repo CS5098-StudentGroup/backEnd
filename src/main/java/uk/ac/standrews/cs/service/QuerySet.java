@@ -14,4 +14,9 @@ public interface QuerySet {
 
     public String getBrideQuery(Map<String, String> map);
 
+    public String addPeopleNotDie(Map<String, String> map);
+
+    public String getDetailsAboutGroomAndBirth(Map<String, String> map);
+
+    public String getDetailsAboutBrideAndBirth(Map<String, String> map);
 }

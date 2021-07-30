@@ -62,15 +62,27 @@ public class DataController {
                 default:
                     cypher = querySet.getBirthGroomQuery(map);
                     cypher2 = querySet.getBirthBrideQuery(map);
-                    s1 = neo4jService.printJson(cypher);
-                    s2 = neo4jService.printJson(cypher2);
-                    finalJson = Neo4jServiceImpl.linkJson(s1, s2);
+                    finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(cypher), neo4jService.printJson(cypher2));
                     System.out.println(finalJson);
             }
         }
         else {
-            cypher = querySet.getBirthDeathQuery(map);
-            finalJson = neo4jService.printJson(cypher);
+            if(params.get("dateOfDeath").equals("null")) {
+                cypher = querySet.getBirthDeathQuery(map);
+                cypher2 = querySet.addPeopleNotDie(map);
+                if(neo4jService.printJson(cypher).length() > 5) {
+                    finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(cypher), neo4jService.printJson(cypher2));
+                }
+                else {
+                    finalJson = neo4jService.printJson(cypher2);
+                }
+
+                System.out.println(finalJson);
+            }
+            else {
+                cypher = querySet.getBirthDeathQuery(map);
+                finalJson = neo4jService.printJson(cypher);
+            }
         }
 
         return finalJson;
