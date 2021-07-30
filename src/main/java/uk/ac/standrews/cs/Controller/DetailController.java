@@ -1,6 +1,7 @@
 package uk.ac.standrews.cs.Controller;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.standrews.cs.service.*;
 
@@ -18,14 +19,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/details")
 public class DetailController {
-    String birthDeathCypher;
-    String marriageCypher;
+    @Autowired
     QuerySet querySet;
+    @Autowired
     Neo4jService neo4jService;
+    @Autowired
     Judge judge;
-    String isDeath;
-    String groomCypher;
-    String brideCypher;
     StringBuilder finalJson = new StringBuilder();
     @ResponseBody
     @GetMapping(path="/getDetails")

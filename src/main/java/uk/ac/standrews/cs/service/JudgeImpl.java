@@ -1,6 +1,7 @@
 package uk.ac.standrews.cs.service;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -17,7 +18,9 @@ public class JudgeImpl implements Judge{
 
     String birthDeathCypher;
     String marriageCypher;
+    @Autowired
     QuerySet querySet;
+    @Autowired
     Neo4jService neo4jService;
     Judge judge;
     String isDeath;
@@ -53,6 +56,40 @@ public class JudgeImpl implements Judge{
                     case "M": finalJson = neo4jService.printJson(querySet.getDetailsAboutGroomAndBirth(valueMap)); break;
                     case "F": finalJson = neo4jService.printJson(querySet.getDetailsAboutBrideAndBirth(valueMap)); break;
                 }
+            }
+        }
+        return finalJson;
+    }
+
+    @Override
+    public StringBuilder setJson(Map<String, String> map, Map<String, String> params) throws Exception {
+        if(!params.get("dateOfMarriage").equals("null")) {
+            switch (params.get("gender")) {
+                case "male":
+                    finalJson = neo4jService.printJson(querySet.getBirthGroomQuery(map));
+                    break;
+                case "female":
+                    finalJson = neo4jService.printJson(querySet.getBirthBrideQuery(map));
+                    break;
+                default:
+                    finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.getBirthGroomQuery(map)), neo4jService.printJson(querySet.getBirthBrideQuery(map)));
+                    System.out.println(finalJson);
+            }
+        }
+        else {
+            if(params.get("dateOfDeath").equals("null")) {
+
+                if(neo4jService.printJson(querySet.getBirthDeathQuery(map)).length() > 5) {
+                    finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.getBirthDeathQuery(map)), neo4jService.printJson(querySet.addPeopleNotDie(map)));
+                }
+                else {
+                    finalJson = neo4jService.printJson(querySet.addPeopleNotDie(map));
+                }
+
+                System.out.println(finalJson);
+            }
+            else {
+                finalJson = neo4jService.printJson(querySet.getBirthDeathQuery(map));
             }
         }
         return finalJson;

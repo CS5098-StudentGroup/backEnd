@@ -3,10 +3,8 @@ package uk.ac.standrews.cs.Controller;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.standrews.cs.service.Neo4jServiceImpl;
-import uk.ac.standrews.cs.service.QuerySet;
-import uk.ac.standrews.cs.service.QuerySetIml;
-import uk.ac.standrews.cs.service.Neo4jService;
+import uk.ac.standrews.cs.service.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,15 +18,7 @@ import java.util.Map;
 @RequestMapping("/death")
 public class DataController {
     @Autowired
-    QuerySet querySet;
-    @Autowired
-    private Neo4jService neo4jService;
-    Neo4jService neo;
-    String cypher;
-    String cypher2;
-    StringBuilder finalJson = new StringBuilder();
-    StringBuilder s1 = new StringBuilder();
-    StringBuilder s2 = new StringBuilder();
+    Judge judge;
 
     @ResponseBody
     @GetMapping(path="/queryByName")
@@ -48,44 +38,7 @@ public class DataController {
         map.put("marriage_Month", QuerySetIml.splitMarriage(params.get("dateOfMarriage"))[1]);
         map.put("marriage_Year", QuerySetIml.splitMarriage(params.get("dateOfMarriage"))[2]);
 
-
-        if(!params.get("dateOfMarriage").equals("null")) {
-            switch (params.get("gender")) {
-                case "male":
-                    cypher = querySet.getBirthGroomQuery(map);
-                    finalJson = neo4jService.printJson(cypher);
-                    break;
-                case "female":
-                    cypher = querySet.getBirthBrideQuery(map);
-                    finalJson = neo4jService.printJson(cypher);
-                    break;
-                default:
-                    cypher = querySet.getBirthGroomQuery(map);
-                    cypher2 = querySet.getBirthBrideQuery(map);
-                    finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(cypher), neo4jService.printJson(cypher2));
-                    System.out.println(finalJson);
-            }
-        }
-        else {
-            if(params.get("dateOfDeath").equals("null")) {
-                cypher = querySet.getBirthDeathQuery(map);
-                cypher2 = querySet.addPeopleNotDie(map);
-                if(neo4jService.printJson(cypher).length() > 5) {
-                    finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(cypher), neo4jService.printJson(cypher2));
-                }
-                else {
-                    finalJson = neo4jService.printJson(cypher2);
-                }
-
-                System.out.println(finalJson);
-            }
-            else {
-                cypher = querySet.getBirthDeathQuery(map);
-                finalJson = neo4jService.printJson(cypher);
-            }
-        }
-
-        return finalJson;
+        return judge.setJson(map,params);
     }
 
 }
