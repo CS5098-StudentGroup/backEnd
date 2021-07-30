@@ -10,7 +10,8 @@ public interface QuerySet {
 
     public String getBirthGroomQuery(Map<String, String> map);
 
-    public String getMarriageQuery(Map<String, String> map);
+    public String getGroomQuery(Map<String, String> map);
 
+    public String getBrideQuery(Map<String, String> map);
 
 }

@@ -11,6 +11,7 @@ import java.util.*;
 @Service
 public class QuerySetIml implements QuerySet {
 
+
     //Get cypher and formatting it
     //get data when user input deathDate or birthDate
     @Override
@@ -19,8 +20,12 @@ public class QuerySetIml implements QuerySet {
         query.append("MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b:Birth) ");
         query.append(getAttribute(map));
         query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate," +
-                " d.DEATH_DAY+'/'+d.DEATH_MONTH+'/'+d.DEATH_YEAR AS deathDate");
-        System.out.println("Query is: " + query);
+                "d.DEATH_DAY+'/'+d.DEATH_MONTH+'/'+d.DEATH_YEAR AS deathDate, b.STANDARDISED_ID AS standardised_ID, b.BIRTH_ADDRESS AS Address, " +
+                "b.STORR_ID AS Storr_ID, b.ORIGINAL_ID AS Original_ID, b.CHANGED_FORENAME AS Changed_foreName, b.CHANGED_SURNAME AS Changed_surName," +
+                "b.CHILD_IDENTITY AS Child_identity, b.FATHER_FORENAME AS Father_foreName, b.FATHER_SURNAME AS Father_surName," +
+                "b.FATHER_OCCUPATION AS Father_occupation, b.MOTHER_IDENTITY AS Mother_identity, b.MOTHER_SURNAME AS Mother_surName, b.MOTHER_FORENAME AS Mother_foreName," +
+                "b.MOTHER_OCCUPATION AS Mother_occupation, b.MARRIAGE_RECORD_IDENTITY1 AS Marriage_record_identity1, b.MARRIAGE_RECORD_IDENTITY2 AS Marriage_record_identity2," +
+                "b.MARRIAGE_RECORD_IDENTITY3 AS Marriage_record_identity3");
         return query.toString();
     }
 
@@ -32,7 +37,7 @@ public class QuerySetIml implements QuerySet {
         query.append(getAttribute(map));
         query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
                 "b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate, " +
-                "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate");
+                "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, b.STANDARDISED_ID AS standardised_ID");
         /*System.out.println("bride"+query);*/
         return query.toString();
     }
@@ -50,30 +55,34 @@ public class QuerySetIml implements QuerySet {
         return query.toString();
     }
 
-    //query when user only input date of marriage
-    @Override
-    public String getMarriageQuery(Map<String, String> map) {
+    public String getGroomQuery(Map<String, String> map) {
         StringBuilder query = new StringBuilder();
-        query.append("MATCH (m:Marriage)");
-        query.append(" WHERE");
-        QuerySetIml.removeEmptyMap(map);
-        map.forEach((key,value) -> {
-            query.append(" m.").append(key.toUpperCase()).append("=").append('"').append(value.toUpperCase()).append('"').append(" AND");
-        });
-        query.delete(query.length()-3, query.length());
-        query.append(" RETURN m.GROOM_FORENAME AS foreName, m.GROOM_SURNAME AS surName," +
-                " m.MARRIAGE_DAY+'/'+m.MARRIAGE_MONTH+'/'+m.MARRIAGE_YEAR AS marriageDate ");
-        /*System.out.println("querymarriage: "+query);*/
+        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m:Marriage)");
+        query.append(getAttribute(map));
+        query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
+                "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, m.BRIDE_AGE_OR_DATE_OF_BIRTH " +
+                "AS BirthDate of Bride, m.GROOM_AGE_OR_DATE_OF_BIRTH AS BirthDate of Groom");
         return query.toString();
     }
 
+    @Override
+    public String getBrideQuery(Map<String, String> map) {
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_BRIDE_IDENTITY]->(m:Marriage)");
+        query.append(getAttribute(map));
+        query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
+                "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, m.BRIDE_AGE_OR_DATE_OF_BIRTH " +
+                "AS BirthDate_of_Bride, m.GROOM_AGE_OR_DATE_OF_BIRTH AS BirthDate_of_Groom");
+        /*System.out.println("bride"+query);*/
+        return query.toString();
+    }
 
     //Setting the attribute format in cypher
-    private String getAttribute(Map<String, String> map) {
+    private static String getAttribute(Map<String, String> attribute) {
         StringBuilder query = new StringBuilder();
         query.append(" WHERE");
-        removeEmptyMap(map);
-        map.forEach((key, value) -> {
+        removeEmptyMap(attribute);
+        attribute.forEach((key, value) -> {
             switch (key) {
                 case "surName" : query.append(" b.SURNAME=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
                 case "foreName" : query.append(" b.FORENAME=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
@@ -87,6 +96,7 @@ public class QuerySetIml implements QuerySet {
                 case "marriage_Day" : query.append(" m.MARRIAGE_DAY=").append('"').append(value).append('"').append(" AND");break;
                 case "marriage_Month" : query.append(" m.MARRIAGE_MONTH=").append('"').append(value).append('"').append(" AND");break;
                 case "marriage_Year" : query.append(" m.MARRIAGE_YEAR=").append('"').append(value).append('"').append(" AND");break;
+                case "standardised_ID" : query.append(" b.STANDARDISED_ID").append('"').append(value).append('"').append(" AND");break;
                 default: query.append(" AND");
             }
         });

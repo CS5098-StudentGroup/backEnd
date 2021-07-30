@@ -46,7 +46,7 @@ public class Neo4jServiceImpl implements Neo4jService {
             return finalData;
     }
 
-    public static StringBuilder formatMarriageJson(StringBuilder s1, StringBuilder s2){
+    public static StringBuilder linkJson(StringBuilder s1, StringBuilder s2){
         s1.deleteCharAt(s1.length()-1);
         s2.deleteCharAt(0);
         s1.append(",");

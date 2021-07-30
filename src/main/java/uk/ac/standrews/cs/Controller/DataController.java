@@ -1,8 +1,6 @@
 package uk.ac.standrews.cs.Controller;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.standrews.cs.service.Neo4jServiceImpl;
@@ -18,8 +16,6 @@ import java.util.Map;
  **/
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @RestController
 @RequestMapping("/death")
 public class DataController {
@@ -33,6 +29,7 @@ public class DataController {
     StringBuilder finalJson = new StringBuilder();
     StringBuilder s1 = new StringBuilder();
     StringBuilder s2 = new StringBuilder();
+
     @ResponseBody
     @GetMapping(path="/queryByName")
     public StringBuilder BirthDeathByName(@RequestParam Map<String, String> params) throws Exception {
@@ -67,7 +64,7 @@ public class DataController {
                     cypher2 = querySet.getBirthBrideQuery(map);
                     s1 = neo4jService.printJson(cypher);
                     s2 = neo4jService.printJson(cypher2);
-                    finalJson = Neo4jServiceImpl.formatMarriageJson(s1, s2);
+                    finalJson = Neo4jServiceImpl.linkJson(s1, s2);
                     System.out.println(finalJson);
             }
         }
