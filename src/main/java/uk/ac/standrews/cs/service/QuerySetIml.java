@@ -36,7 +36,6 @@ public class QuerySetIml implements QuerySet {
         query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
                 "b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate, " +
                 "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, b.STANDARDISED_ID AS standardised_ID, b.DEATH AS Death");
-        /*System.out.println("bride"+query);*/
         return query.toString();
     }
 
@@ -49,7 +48,7 @@ public class QuerySetIml implements QuerySet {
         query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
                 "b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate, " +
                 "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, b.DEATH AS Death");
-        /*System.out.println("groom"+query);*/
+        System.out.println("判断："+ query.toString());
         return query.toString();
     }
 
@@ -74,7 +73,6 @@ public class QuerySetIml implements QuerySet {
         query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
                 "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, m.BRIDE_AGE_OR_DATE_OF_BIRTH " +
                 "AS BirthDate_of_Bride, m.GROOM_AGE_OR_DATE_OF_BIRTH AS BirthDate_of_Groom, b.DEATH AS Death");
-        /*System.out.println("bride"+query);*/
         return query.toString();
     }
 
@@ -91,7 +89,6 @@ public class QuerySetIml implements QuerySet {
                 "b.FATHER_OCCUPATION AS Father_occupation, b.MOTHER_IDENTITY AS Mother_identity, b.MOTHER_SURNAME AS Mother_surName, b.MOTHER_FORENAME AS Mother_foreName," +
                 "b.MOTHER_OCCUPATION AS Mother_occupation, b.MARRIAGE_RECORD_IDENTITY1 AS Marriage_record_identity1, b.MARRIAGE_RECORD_IDENTITY2 AS Marriage_record_identity2," +
                 "b.MARRIAGE_RECORD_IDENTITY3 AS Marriage_record_identity3, b.DEATH AS Death");
-        System.out.println(query.toString());
         return query.toString();
     }
 
@@ -160,8 +157,8 @@ public class QuerySetIml implements QuerySet {
                 case "marriage_Day" : query.append(" m.MARRIAGE_DAY=").append('"').append(value).append('"').append(" AND");break;
                 case "marriage_Month" : query.append(" m.MARRIAGE_MONTH=").append('"').append(value).append('"').append(" AND");break;
                 case "marriage_Year" : query.append(" m.MARRIAGE_YEAR=").append('"').append(value).append('"').append(" AND");break;
-                case "standardised_ID" : query.append(" b.STANDARDISED_ID").append('"').append(value).append('"').append(" AND");break;
-                default: query.append(" AND");
+                case "standardised_ID" : query.append(" b.STANDARDISED_ID=").append('"').append(value).append('"').append(" AND");break;
+                /*default: query.append(" AND");break;*/
             }
         });
         query.delete(query.length()-3, query.length());
@@ -203,9 +200,9 @@ public class QuerySetIml implements QuerySet {
         return sex;
     }
 
-    public static boolean marriageRecordIsEmpty(String value, String value1) {
+    public static boolean marriageRecordIsEmpty(StringBuilder value, StringBuilder value1) {
         boolean isEmpty = false;
-        if(value.length()-3 <= 0 && value1.length()-3 <= 0){
+        if(value.length()-3 < 2 && value1.length()-3 < 2){
             isEmpty = true;
         }
         return isEmpty;
