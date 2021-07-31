@@ -50,6 +50,7 @@ public class JudgeImpl implements Judge{
             //switch(gender) { birth_groom, birth_bride}
             if(QuerySetIml.marriageRecordIsEmpty(groomCypher, brideCypher)){
                 finalJson = neo4jService.printJson(querySet.getBirthDeathQuery(valueMap));
+                System.out.println(finalJson);
             }
             else {
                 switch (valueMap.get("gender")) {
