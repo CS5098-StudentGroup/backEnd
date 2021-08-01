@@ -38,3 +38,10 @@ public class Person {
     }
 
 }
+//fetch my self (node)
+
+// node -> cypher -> parents
+
+// parents -(category)> Member Links(myself,parents)
+
+//parents ->list link -> list

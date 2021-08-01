@@ -3,6 +3,7 @@ package uk.ac.standrews.cs.service;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uk.ac.standrews.cs.Pojo.FamilyTree;
 
 import java.util.Map;
 
@@ -80,19 +81,19 @@ public class JudgeImpl implements Judge{
             }
         }
         else {
-            if(params.get("dateOfDeath").equals("null")) {
+            if (params.get("dateOfDeath").equals("null")) {
 
-                if(neo4jService.printJson(querySet.getBirthDeathQuery(map)).length() > 5) {
+                if (neo4jService.printJson(querySet.getBirthDeathQuery(map)).length() > 5) {
                     finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.getBirthDeathQuery(map)), neo4jService.printJson(querySet.addPeopleNotDie(map)));
-                }
-                else {
+                } else {
                     finalJson = neo4jService.printJson(querySet.addPeopleNotDie(map));
                 }
-            }
-            else {
+            } else {
                 finalJson = neo4jService.printJson(querySet.getBirthDeathQuery(map));
             }
         }
         return finalJson;
     }
 }
+
+// new tree -> tree.getPersonList().add(person)
