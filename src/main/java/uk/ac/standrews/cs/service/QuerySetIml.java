@@ -78,6 +78,7 @@ public class QuerySetIml implements QuerySet {
         query.append("MATCH (b:Birth) ");
         query.append(getAttribute(map));
         query.append(" AND b.DEATH=\"\" ");
+        query.append(" RETURN ");
         query.append(getBirthReturn());
         return query.toString();
     }
@@ -93,6 +94,7 @@ public class QuerySetIml implements QuerySet {
         query.append(" RETURN ");
         query.append(getBirthReturn());
         query.append(",").append(getDeathReturn()).append(",").append(getMarriageReturn());
+        query.append(",m.BRIDE_ADDRESS AS SPOUSE_ADDRESS,");
         System.out.println(query.toString());
         return query.toString();
     }
@@ -109,9 +111,36 @@ public class QuerySetIml implements QuerySet {
         query.append(getBirthReturn());
         query.append(",").append(getDeathReturn());
         query.append(",").append(getMarriageReturn());
+        query.append(", m.GROOM_ADDRESS AS SPOUSE_ADDRESS");
         return query.toString();
     }
 
+    @Override
+    public String getDetailOfBride(Map<String, String> map) {
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_BRIDE_IDENTITY]->(m:Marriage)");
+        query.append(getAttribute(map));
+        query.append(" RETURN ");
+        query.append(getBirthReturn());
+        query.append(getMarriageReturn());
+        query.append(", m.BRIDE_ADDRESS AS SPOUSE_ADDRESS, m.BRIDE_SURNAME AS SPOUSE_SURNAME, m.BRIDE_FORENAME AS SPOUSE_FORENAME, m.BRIDE_IDENTITY AS SPOUSE_IDENTITY," +
+                "m.BRIDE_OCCUPATION AS SPOUSE_OCCUPATION, m.BRIDE_BIRTH_RECORD_IDENTITY AS SPOUSE_BIRTH_RECORD_IDENTITY, m.BRIDE_MARITAL_STATUS AS SPOUSE_MARITAL_STATUS");
+        return query.toString();
+    }
+
+    @Override
+    public String getDetailOfGroom(Map<String, String> map) {
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m:Marriage)");
+        query.append(getAttribute(map));
+        query.append(" RETURN ");
+        query.append(getBirthReturn());
+        query.append(getMarriageReturn());
+        query.append(", m.GROOM_ADDRESS AS SPOUSE_ADDRESS, m.GROOM_SURNAME AS SPOUSE_SURNAME, m.GROOM_FORENAME AS SPOUSE_FORENAME, m.GROOM_IDENTITY AS SPOUSE_IDENTITY," +
+                "m.GROOM_OCCUPATION AS GROOM_OCCUPATION, m.GROOM_BIRTH_RECORD_IDENTITY AS SPOUSE_BIRTH_RECORD_IDENTITY, m.GROOM_MARITAL_STATUS AS SPOUSE_MARITAL_STATUS");
+
+        return null;
+    }
 
 
     private static String getBirthReturn() {
@@ -122,13 +151,13 @@ public class QuerySetIml implements QuerySet {
                 "b.CHILD_IDENTITY AS Child_identity, b.FATHER_FORENAME AS Father_foreName, b.FATHER_SURNAME AS Father_surName," +
                 "b.FATHER_OCCUPATION AS Father_occupation, b.MOTHER_IDENTITY AS Mother_identity, b.MOTHER_SURNAME AS Mother_surName, b.MOTHER_FORENAME AS Mother_foreName," +
                 "b.MOTHER_OCCUPATION AS Mother_occupation, b.MARRIAGE_RECORD_IDENTITY1 AS Marriage_record_identity1, b.MARRIAGE_RECORD_IDENTITY2 AS Marriage_record_identity2," +
-                "b.MARRIAGE_RECORD_IDENTITY3 AS Marriage_record_identity3, b.DEATH AS Death";
+                "b.MARRIAGE_RECORD_IDENTITY3 AS Marriage_record_identity3, b.ADOPTION AS Adoption, b.FATHER_IDENTITY AS Father_Identity, b.DEATH AS Death";
 
     }
     private static String getDeathReturn() {
 
         return  "d.DEATH_DAY+'/'+d.DEATH_MONTH+'/'+d.DEATH_YEAR AS deathDate, d.AGE_AT_DEATH AS age_at_death, d.DECEASED_IDENTITY AS Deceased_Identity, d.STORR_ID AS death_StorrID," +
-                "d.MARITAL_STATUS AS Marital_Status, d.PLACE_OF_DEATH AS Death_Place, d.YEAR_OF_REGISTRATION AS DeathRegistration_Year, d.STANDARDISED_ID AS death_StandardisedID";
+                "d.MARITAL_STATUS AS Marital_Status, d.PLACE_OF_DEATH AS Death_Place, d.YEAR_OF_REGISTRATION AS DeathRegistration_Year, d.STANDARDISED_ID AS death_StandardisedID, d.BIRTH_RECORD_IDENTITY AS Birth_Record_Identity";
 
     }
 

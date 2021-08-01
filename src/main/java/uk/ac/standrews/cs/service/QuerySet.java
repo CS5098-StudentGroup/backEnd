@@ -19,4 +19,8 @@ public interface QuerySet {
     public String getDetailsAboutGroomAndBirth(Map<String, String> map);
 
     public String getDetailsAboutBrideAndBirth(Map<String, String> map);
+
+    public String getDetailOfGroom(Map<String, String> map);
+
+    public String getDetailOfBride(Map<String, String> map);
 }
