@@ -9,6 +9,5 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @create: 2021-07-31 17:14
  **/
 public class NodePointer {
-    @Autowired
-    Category category;
+
 }

@@ -11,8 +11,9 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum Category {
-    father("1"), mother("2"), siblings("3"), bride("4"), groom("5");
+    father(1, "father"), mother(2, "mother"), siblings(3, "siblings"), bride(4, "bride"), groom(5,"groom");
 
+    public final int number;
     public final String relationValue;
 
     @Override

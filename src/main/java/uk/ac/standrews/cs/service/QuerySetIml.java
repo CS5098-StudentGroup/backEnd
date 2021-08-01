@@ -44,7 +44,7 @@ public class QuerySetIml implements QuerySet {
         query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
                 "b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate, " +
                 "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, b.DEATH AS Death");
-        System.out.println("判断："+ query.toString());
+        /*System.out.println("判断："+ query.toString());*/
         return query.toString();
     }
 
@@ -78,13 +78,7 @@ public class QuerySetIml implements QuerySet {
         query.append("MATCH (b:Birth) ");
         query.append(getAttribute(map));
         query.append(" AND b.DEATH=\"\" ");
-        query.append("RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate,"+
-                "b.STANDARDISED_ID AS standardised_ID, b.BIRTH_ADDRESS AS Address," +
-                "b.STORR_ID AS Storr_ID, b.ORIGINAL_ID AS Original_ID, b.CHANGED_FORENAME AS Changed_foreName, b.CHANGED_SURNAME AS Changed_surName," +
-                "b.CHILD_IDENTITY AS Child_identity, b.FATHER_FORENAME AS Father_foreName, b.FATHER_SURNAME AS Father_surName," +
-                "b.FATHER_OCCUPATION AS Father_occupation, b.MOTHER_IDENTITY AS Mother_identity, b.MOTHER_SURNAME AS Mother_surName, b.MOTHER_FORENAME AS Mother_foreName," +
-                "b.MOTHER_OCCUPATION AS Mother_occupation, b.MARRIAGE_RECORD_IDENTITY1 AS Marriage_record_identity1, b.MARRIAGE_RECORD_IDENTITY2 AS Marriage_record_identity2," +
-                "b.MARRIAGE_RECORD_IDENTITY3 AS Marriage_record_identity3, b.DEATH AS Death");
+        query.append(getBirthReturn());
         return query.toString();
     }
 
@@ -93,12 +87,13 @@ public class QuerySetIml implements QuerySet {
     public String getDetailsAboutGroomAndBirth(Map<String, String> map) {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m:Marriage)");
-        query.append(" MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b1:Birth) ");
+        query.append(" MATCH (d:Death)-[s:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b1:Birth) ");
         query.append("WHERE b.STANDARDISED_ID=b1.STANDARDISED_ID AND ");
-        query.append("b.STANDARDISED_ID = ").append(map.get("standardised_ID"));
+        query.append("b.STANDARDISED_ID = ").append('"').append(map.get("standardised_ID")).append('"');
         query.append(" RETURN ");
         query.append(getBirthReturn());
         query.append(",").append(getDeathReturn()).append(",").append(getMarriageReturn());
+        System.out.println(query.toString());
         return query.toString();
     }
 
@@ -107,12 +102,13 @@ public class QuerySetIml implements QuerySet {
     public String getDetailsAboutBrideAndBirth(Map<String, String> map) {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_BRIDE_IDENTITY]->(m:Marriage)");
-        query.append(" MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b1:Birth) ");
+        query.append(" MATCH (d:Death)-[s:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b1:Birth) ");
         query.append("WHERE b.STANDARDISED_ID=b1.STANDARDISED_ID AND ");
-        query.append("b.STANDARDISED_ID = ").append(map.get("standardised_ID"));
+        query.append("b.STANDARDISED_ID = ").append('"').append(map.get("standardised_ID")).append('"');
         query.append(" RETURN ");
         query.append(getBirthReturn());
-        query.append(",").append(getDeathReturn()).append(",").append(getMarriageReturn());
+        query.append(",").append(getDeathReturn());
+        query.append(",").append(getMarriageReturn());
         return query.toString();
     }
 
@@ -165,7 +161,6 @@ public class QuerySetIml implements QuerySet {
                 case "marriage_Month" : query.append(" m.MARRIAGE_MONTH=").append('"').append(value).append('"').append(" AND");break;
                 case "marriage_Year" : query.append(" m.MARRIAGE_YEAR=").append('"').append(value).append('"').append(" AND");break;
                 case "standardised_ID" : query.append(" b.STANDARDISED_ID=").append('"').append(value).append('"').append(" AND");break;
-                /*default: query.append(" AND");break;*/
             }
         });
         query.delete(query.length()-3, query.length());

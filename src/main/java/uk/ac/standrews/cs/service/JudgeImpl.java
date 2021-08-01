@@ -31,7 +31,7 @@ public class JudgeImpl implements Judge{
     public StringBuilder getFinalJson(Map<String, String> valueMap) throws Exception {
         groomCypher = neo4jService.printJson(querySet.getBirthGroomQuery(valueMap));
         brideCypher = neo4jService.printJson(querySet.getBirthBrideQuery(valueMap));
-        System.out.println("groom json:" + groomCypher);
+
         if(valueMap.get("death").equals("")) {
             //not die
             //birth + marriage(switch:gender)
@@ -39,8 +39,10 @@ public class JudgeImpl implements Judge{
                 finalJson = neo4jService.printJson(querySet.addPeopleNotDie(valueMap));
             }
             else {
+                //die married birth
                 switch (valueMap.get("gender")) {
-                    case "M": finalJson = neo4jService.printJson(querySet.getBirthGroomQuery(valueMap)); break;
+                    case "M": finalJson = neo4jService.printJson(querySet.getBirthGroomQuery(valueMap));
+                    break;
                     case "F": finalJson = neo4jService.printJson(querySet.getBirthBrideQuery(valueMap)); break;
                  }
             }
@@ -50,11 +52,11 @@ public class JudgeImpl implements Judge{
             //switch(gender) { birth_groom, birth_bride}
             if(QuerySetIml.marriageRecordIsEmpty(groomCypher, brideCypher)){
                 finalJson = neo4jService.printJson(querySet.getBirthDeathQuery(valueMap));
-                System.out.println(finalJson);
             }
             else {
                 switch (valueMap.get("gender")) {
                     case "M": finalJson = neo4jService.printJson(querySet.getDetailsAboutGroomAndBirth(valueMap));
+                        System.out.println(finalJson);
                         break;
                     case "F": finalJson = neo4jService.printJson(querySet.getDetailsAboutBrideAndBirth(valueMap)); break;
                 }
@@ -67,10 +69,10 @@ public class JudgeImpl implements Judge{
     public StringBuilder setJson(Map<String, String> map, Map<String, String> params) throws Exception {
         if(!params.get("dateOfMarriage").equals("null")) {
             switch (params.get("gender")) {
-                case "male":
+                case "M":
                     finalJson = neo4jService.printJson(querySet.getBirthGroomQuery(map));
                     break;
-                case "female":
+                case "F":
                     finalJson = neo4jService.printJson(querySet.getBirthBrideQuery(map));
                     break;
                 default:
