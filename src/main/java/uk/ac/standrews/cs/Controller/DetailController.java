@@ -29,6 +29,7 @@ public class DetailController {
     @ResponseBody
     @GetMapping(path="/getDetails")
     public StringBuilder getDetails(@RequestParam Map<String, String> params) throws Exception {
+        System.out.println(params.toString());
         Map<String, String> valueMap = new HashMap<>();
         valueMap.put("standardised_ID", params.get("standardised_id"));
         valueMap.put("gender", params.get("gender"));

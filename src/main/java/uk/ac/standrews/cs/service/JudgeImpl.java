@@ -3,8 +3,6 @@ package uk.ac.standrews.cs.service;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.ac.standrews.cs.Pojo.FamilyTree;
-
 import java.util.Map;
 
 /**
@@ -56,10 +54,10 @@ public class JudgeImpl implements Judge{
             else {
                 //die married birth
                 switch (valueMap.get("gender")) {
-                    case "M": finalJson = neo4jService.printJson(querySet.getDetailsAboutGroomAndBirth(valueMap));
+                    case "M": finalJson = neo4jService.printJson(querySet.getDetailsAboutBrideAndBirth(valueMap));
                         System.out.println(finalJson);
                         break;
-                    case "F": finalJson = neo4jService.printJson(querySet.getDetailsAboutBrideAndBirth(valueMap)); break;
+                    case "F": finalJson = neo4jService.printJson(querySet.getDetailsAboutGroomAndBirth(valueMap)); break;
                 }
             }
         }
