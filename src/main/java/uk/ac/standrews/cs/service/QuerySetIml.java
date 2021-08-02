@@ -85,7 +85,7 @@ public class QuerySetIml implements QuerySet {
     @Override
     public String getDetailsAboutGroomAndBirth(Map<String, String> map) {
         StringBuilder query = new StringBuilder();
-        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m:Marriage)");
+        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_BRIDE_IDENTITY]->(m:Marriage)");
         query.append(" MATCH (d:Death)-[s:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b1:Birth) ");
         query.append("WHERE b.STANDARDISED_ID=b1.STANDARDISED_ID AND ");
         query.append("b.STANDARDISED_ID = ").append('"').append(map.get("standardised_ID")).append('"');
@@ -102,7 +102,7 @@ public class QuerySetIml implements QuerySet {
     @Override
     public String getDetailsAboutBrideAndBirth(Map<String, String> map) {
         StringBuilder query = new StringBuilder();
-        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_BRIDE_IDENTITY]->(m:Marriage)");
+        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m:Marriage)");
         query.append(" MATCH (d:Death)-[s:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b1:Birth) ");
         query.append("WHERE b.STANDARDISED_ID=b1.STANDARDISED_ID AND ");
         query.append("b.STANDARDISED_ID = ").append('"').append(map.get("standardised_ID")).append('"');
@@ -112,6 +112,7 @@ public class QuerySetIml implements QuerySet {
         query.append(",").append(getMarriageReturn());
         query.append(", m.BRIDE_ADDRESS AS SPOUSE_ADDRESS, m.BRIDE_SURNAME AS SPOUSE_SURNAME, m.BRIDE_FORENAME AS SPOUSE_FORENAME, m.BRIDE_IDENTITY AS SPOUSE_IDENTITY," +
                 "m.BRIDE_OCCUPATION AS SPOUSE_OCCUPATION, m.BRIDE_BIRTH_RECORD_IDENTITY AS SPOUSE_BIRTH_RECORD_IDENTITY, m.BRIDE_MARITAL_STATUS AS SPOUSE_MARITAL_STATUS");
+        System.out.println(query.toString());
         return query.toString();
     }
 

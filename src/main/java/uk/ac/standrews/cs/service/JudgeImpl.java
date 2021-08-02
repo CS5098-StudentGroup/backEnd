@@ -31,6 +31,7 @@ public class JudgeImpl implements Judge{
         groomCypher = neo4jService.printJson(querySet.getBirthGroomQuery(valueMap));
         brideCypher = neo4jService.printJson(querySet.getBirthBrideQuery(valueMap));
 
+        System.out.println(valueMap);
         if(valueMap.get("death").equals("")) {
             //not die
             //birth + marriage(switch:gender)
