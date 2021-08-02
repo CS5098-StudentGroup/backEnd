@@ -3,8 +3,10 @@ package uk.ac.standrews.cs.service;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Map;
+import uk.ac.standrews.cs.Pojo.FamilyTree;
 
+import java.util.HashMap;
+import java.util.Map;
 /**
  * @program: backEnd
  * @description:
@@ -21,7 +23,10 @@ public class JudgeImpl implements Judge{
     QuerySet querySet;
     @Autowired
     Neo4jService neo4jService;
+    @Autowired
     Judge judge;
+    @Autowired
+    FamilyTree familyTree;
     String isDeath;
     StringBuilder groomCypher;
     StringBuilder brideCypher;
@@ -92,6 +97,17 @@ public class JudgeImpl implements Judge{
             }
         }
         return finalJson;
+    }
+
+    @Override
+    public FamilyTree setTree(Map<String, String> params) {
+        Map<String, String> valueMap = new HashMap<>();
+        valueMap.put("standardised_ID", params.get("standardised_id"));
+        valueMap.put("gender", params.get("gender"));
+        familyTree.getMember(valueMap);
+        familyTree.getCategory();
+        familyTree.getPointer(valueMap);
+        return familyTree;
     }
 }
 
