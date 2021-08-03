@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.service.GetInfo;
 import java.util.Map;
-
 /**
  * @program: backEnd
  * @description:

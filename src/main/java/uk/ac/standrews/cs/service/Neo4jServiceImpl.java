@@ -4,7 +4,6 @@ import org.json.JSONObject;
 import org.neo4j.driver.*;
 import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.neoStorr.util.NeoDbCypherBridge;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,11 +70,6 @@ public class Neo4jServiceImpl implements Neo4jService {
         }
         return getDetails;
     }
-
-
-
-
-
 
     public static StringBuilder linkJson(StringBuilder s1, StringBuilder s2){
         s1.deleteCharAt(s1.length()-1);

@@ -4,7 +4,6 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.Pojo.FamilyTree;
-
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -31,6 +30,7 @@ public class JudgeImpl implements Judge{
     StringBuilder groomCypher;
     StringBuilder brideCypher;
     StringBuilder finalJson = new StringBuilder();
+
     @Override
     public StringBuilder getFinalJson(Map<String, String> valueMap) throws Exception {
         groomCypher = neo4jService.printJson(querySet.getBirthGroomQuery(valueMap));
@@ -109,6 +109,15 @@ public class JudgeImpl implements Judge{
         familyTree.getPointer(valueMap);
         return familyTree;
     }
+
+    @Override
+    public void getParams(Map<String, String> map) {
+        Map<String,String> setMap = new HashMap<>();
+        setMap.put("standardised_ID", map.get("standardised_id"));
+        setMap.put("storr_ID", map.get("storr_id"));
+        setMap.put("original_Id", map.get("original_id"));
+    }
 }
+
 
 // new tree -> tree.getPersonList().add(person)

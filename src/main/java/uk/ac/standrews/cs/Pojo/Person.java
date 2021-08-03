@@ -1,6 +1,5 @@
 package uk.ac.standrews.cs.Pojo;
 
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -73,12 +72,4 @@ public class Person {
         }
         return c;
     }
-
 }
-//fetch my self (node)
-
-// node -> cypher -> parents
-
-// parents -(category)> Member Links(myself,parents)
-
-//parents ->list link -> list

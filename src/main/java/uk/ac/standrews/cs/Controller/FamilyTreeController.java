@@ -3,14 +3,8 @@ package uk.ac.standrews.cs.Controller;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.standrews.cs.Pojo.Category;
 import uk.ac.standrews.cs.Pojo.FamilyTree;
-import uk.ac.standrews.cs.Pojo.Person;
-import uk.ac.standrews.cs.service.GetInfo;
 import uk.ac.standrews.cs.service.Judge;
-import uk.ac.standrews.cs.service.Neo4jService;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,8 +21,11 @@ public class FamilyTreeController {
     @Autowired
     Judge judge;
 
+
     @GetMapping(path="/getFamilyTree")
     public @ResponseBody FamilyTree getDetails(@RequestParam Map<String, String> params) {
+
+        judge.setTree(params);
         return judge.setTree(params);
     }
 
