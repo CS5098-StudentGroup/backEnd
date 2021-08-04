@@ -26,7 +26,6 @@ public class JudgeImpl implements Judge{
     Judge judge;
     @Autowired
     FamilyTree familyTree;
-    String isDeath;
     StringBuilder groomCypher;
     StringBuilder brideCypher;
     StringBuilder finalJson = new StringBuilder();
@@ -118,6 +117,3 @@ public class JudgeImpl implements Judge{
         setMap.put("original_Id", map.get("original_id"));
     }
 }
-
-
-// new tree -> tree.getPersonList().add(person)

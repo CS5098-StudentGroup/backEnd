@@ -34,6 +34,5 @@ public class DetailController {
         valueMap.put("gender", params.get("gender"));
         valueMap.put("death", params.get("Death"));
         return judge.getFinalJson(valueMap);
-
     }
 }

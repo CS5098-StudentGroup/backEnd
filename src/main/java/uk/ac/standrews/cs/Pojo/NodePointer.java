@@ -4,6 +4,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.service.GetInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 /**
  * @program: backEnd
@@ -68,10 +71,14 @@ public class NodePointer {
         return new NodePointer(source,target);
     }
 
-    public NodePointer toSibling(Map<String, String> valueMap) {
+    public List<NodePointer> toSibling(Map<String, String> valueMap) {
         target = getInfo.getSelf(valueMap).name;
-        source = getInfo.getSiblings(valueMap).name;
-        return new NodePointer(source,target);
+        List<NodePointer> a = new ArrayList<>();
+        List<Person> list = getInfo.getSiblings(valueMap);
+        for(int i = 0 ; i < list.size()-1; i++) {
+            a.add(new NodePointer(list.get(i).name, target));
+        }
+        return a;
     }
 
     @Override

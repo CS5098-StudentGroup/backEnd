@@ -94,7 +94,6 @@ public class QuerySetIml implements QuerySet {
         query.append(",").append(getDeathReturn()).append(",").append(getMarriageReturn());
         query.append(", m.GROOM_ADDRESS AS SPOUSE_ADDRESS, m.GROOM_SURNAME AS SPOUSE_SURNAME, m.GROOM_FORENAME AS SPOUSE_FORENAME, m.GROOM_IDENTITY AS SPOUSE_IDENTITY," +
                 "m.GROOM_OCCUPATION AS SPOUSE_OCCUPATION, m.GROOM_BIRTH_RECORD_IDENTITY AS SPOUSE_BIRTH_RECORD_IDENTITY, m.GROOM_MARITAL_STATUS AS SPOUSE_MARITAL_STATUS");
-        System.out.println(query.toString());
         return query.toString();
     }
 

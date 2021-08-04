@@ -24,8 +24,6 @@ public class FamilyTreeController {
 
     @GetMapping(path="/getFamilyTree")
     public @ResponseBody FamilyTree getDetails(@RequestParam Map<String, String> params) {
-
-        judge.setTree(params);
         return judge.setTree(params);
     }
 

@@ -3,10 +3,10 @@ package uk.ac.standrews.cs.service;
 import org.json.JSONObject;
 import org.neo4j.driver.*;
 import org.springframework.stereotype.Service;
+import uk.ac.standrews.cs.Pojo.Person;
 import uk.ac.standrews.cs.neoStorr.util.NeoDbCypherBridge;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 /**
  * @program: backEnd
@@ -69,6 +69,31 @@ public class Neo4jServiceImpl implements Neo4jService {
             }
         }
         return getDetails;
+    }
+
+    @Override
+    public List<Person> getAll(String query) {
+        List<Person> personList = new ArrayList<>();
+        Map<String, String> getDetails = new HashMap<>();
+        NeoDbCypherBridge bridge = new NeoDbCypherBridge();
+        Session session = bridge.getNewSession();
+        Result result = session.run(query);
+        while (result.hasNext()) {
+            Record record = result.next();
+            List<String> keys = record.keys();
+            for (String key : keys) {
+                // keys1.get(i);
+                Value value = record.get(key);
+                String[] getValue = value.toString().split("\"");
+                if (getValue.length == 0) {
+                    getDetails.put(key, "");
+                } else {
+                    getDetails.put(key, getValue[getValue.length - 1]);
+                }
+            }
+             personList.add(new Person(getDetails.get("Name"), getDetails.get("gender"), 3));
+        }
+        return personList;
     }
 
     public static StringBuilder linkJson(StringBuilder s1, StringBuilder s2){
