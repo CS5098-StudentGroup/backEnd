@@ -1,12 +1,24 @@
 package uk.ac.standrews.cs.Pojo.details;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.stereotype.Service;
+
 /**
  * @program: backEnd
  * @description:
  * @author: Dongyao Liu
  * @create: 2021-08-04 14:13
  **/
-public class Death {
+
+@Getter
+@Setter
+@Service
+@AllArgsConstructor
+@NoArgsConstructor
+public class DeathRecords {
     String deathDate;
     String age_at_death;
     String Deceased_Identity;

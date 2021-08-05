@@ -1,14 +1,19 @@
 package uk.ac.standrews.cs.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import uk.ac.standrews.cs.Pojo.details.PersonalDetails;
 import uk.ac.standrews.cs.Pojo.familyTree.FamilyTree;
 import java.util.Map;
 public interface Judge {
-    public StringBuilder getFinalJson(Map<String, String> valueMap) throws Exception;
+    StringBuilder getFinalJson(Map<String, String> valueMap) throws Exception;
 
-    public StringBuilder setJson(Map<String, String> map, Map<String, String> params) throws Exception;
+    StringBuilder setJson(Map<String, String> map, Map<String, String> params) throws Exception;
 
-    public FamilyTree setTree(Map<String, String> params);
+    FamilyTree setTree(Map<String, String> params) throws Exception;
 
-    public void getParams(Map<String, String> map);
+    void getParams(Map<String, String> map);
+
+    PersonalDetails setDetails(Map<String, String> params) throws Exception;
 }
 

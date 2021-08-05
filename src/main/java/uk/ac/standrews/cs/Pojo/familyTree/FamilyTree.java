@@ -15,9 +15,14 @@ import java.util.*;
 @Service
 @Data
 public class FamilyTree {
-
+    @Autowired
+    NodePointer nodePointer;
     @Autowired
     GetInfo getInfo;
+
+    List<NodePointer> pointerList;
+    List<Person> personList;
+    List<Category> categoryList;
 
     public FamilyTree() {
         pointerList = new ArrayList<>();
@@ -25,14 +30,7 @@ public class FamilyTree {
         categoryList = new ArrayList<>();
     }
 
-    List<NodePointer> pointerList;
-    List<Person> personList;
-    List<Category> categoryList;
-    @Autowired
-    NodePointer nodePointer;
-
-
-    public List<Person> Family(Map<String, String> valueMap) {
+    public List<Person> Family(Map<String, String> valueMap) throws Exception {
         List<Person> family = new ArrayList<>();
         Person self = getInfo.getSelf(valueMap);
         Person father = getInfo.getFather(valueMap);
@@ -43,11 +41,7 @@ public class FamilyTree {
         return family;
     }
 
-
-
-
-
-    public void getMember(Map<String, String> valueMap) {
+    public void getMember(Map<String, String> valueMap) throws Exception {
         personList.clear();
         //self
         List<Person> familyList = Family(valueMap);
@@ -55,13 +49,13 @@ public class FamilyTree {
         //mother
         if(familyList.get(2).name != null) {personList.add(familyList.get(2));}
         //bride
-        if(getInfo.getBride(valueMap).name != null && valueMap.get("gender").equals("M")) {personList.add(getInfo.getBride(valueMap));}
+        if(!getInfo.getBride(valueMap).isEmpty() && valueMap.get("gender").equals("M")) {personList.addAll(getInfo.getBride(valueMap));}
         //groom
-        if(getInfo.getBride(valueMap).name != null && valueMap.get("gender").equals("F")) {personList.add(getInfo.getGroom(valueMap));}
+        if(!getInfo.getGroom(valueMap).isEmpty() && valueMap.get("gender").equals("F")) {personList.addAll(getInfo.getGroom(valueMap));}
         //father
         if(familyList.get(1).name != null) {personList.add(familyList.get(1));}
         //siblings
-        if(getInfo.getSiblings(valueMap).size() != 0) {personList.addAll(getInfo.getSiblings(valueMap));}
+        if(!getInfo.getSiblings(valueMap).isEmpty()) {personList.addAll(getInfo.getSiblings(valueMap));}
         familyList.clear();
     }
 
@@ -75,14 +69,14 @@ public class FamilyTree {
         categoryList.add(Category.groom);
     }
 
-    public void getPointer(Map<String, String> valueMap){
+    public void getPointer(Map<String, String> valueMap) throws Exception {
         pointerList.clear();
         List<Person> familyList = Family(valueMap);
         if(familyList.get(1).name != null) {pointerList.add(nodePointer.toFather(valueMap));}
         if(familyList.get(2).name != null) {pointerList.add(nodePointer.toMother(valueMap));}
-        if(getInfo.getBride(valueMap).name != null && valueMap.get("gender").equals("M")) {pointerList.add(nodePointer.toBride(valueMap));}
-        if(getInfo.getGroom(valueMap).name != null && valueMap.get("gender").equals("F")) {pointerList.add(nodePointer.toGroom(valueMap));}
-        if(getInfo.getSiblings(valueMap).size() != 0) {pointerList.addAll(nodePointer.toSibling(valueMap));}
+        if(!getInfo.getBride(valueMap).isEmpty() && valueMap.get("gender").equals("M")) {pointerList.addAll(nodePointer.toBride(valueMap));}
+        if(!getInfo.getGroom(valueMap).isEmpty() && valueMap.get("gender").equals("F")) {pointerList.addAll(nodePointer.toGroom(valueMap));}
+        if(!getInfo.getSiblings(valueMap).isEmpty()) {pointerList.addAll(nodePointer.toSibling(valueMap));}
         familyList.clear();
     }
 }

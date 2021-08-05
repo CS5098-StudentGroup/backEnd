@@ -21,9 +21,8 @@ public class FamilyTreeController {
     @Autowired
     Judge judge;
 
-
     @GetMapping(path="/getFamilyTree")
-    public @ResponseBody FamilyTree getDetails(@RequestParam Map<String, String> params) {
+    public @ResponseBody FamilyTree getDetails(@RequestParam Map<String, String> params) throws Exception {
         return judge.setTree(params);
     }
 

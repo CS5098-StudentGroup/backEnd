@@ -2,7 +2,7 @@ package uk.ac.standrews.cs.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.ac.standrews.cs.Pojo.familyTree.FamilyTree;
+
 import uk.ac.standrews.cs.Pojo.familyTree.Person;
 import java.util.*;
 /**
@@ -15,10 +15,8 @@ import java.util.*;
 public class GetInfo {
     @Autowired
     Neo4jService neo4jService;
-    @Autowired
-    FamilyTree familyTree;
     Map<String, String> detail = new HashMap<>();
-    public Person getSelf(Map<String, String> map) {
+    public Person getSelf(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth) ");
         query.append("WHERE b.STANDARDISED_ID=").append('"').append(map.get("standardised_ID")).append('"');
@@ -28,7 +26,7 @@ public class GetInfo {
         return new Person(detail.get("Name"), detail.get("gender"), 0 );
     }
 
-    public Person getFather(Map<String, String> map) {
+    public Person getFather(Map<String, String> map) throws Exception {
         String selfName = getSelf(map).getName();
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_PARENTS_MARRIAGE]->(m:Marriage) ");
@@ -45,7 +43,7 @@ public class GetInfo {
         }
     }
 
-    public Person getMother(Map<String, String> map) {
+    public Person getMother(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_MOTHER_IDENTITY]->(b1:Birth) ");
         query.append("WHERE b1.STANDARDISED_ID=").append('"').append(map.get("standardised_ID")).append('"');
@@ -55,35 +53,36 @@ public class GetInfo {
         return new Person(detail.get("Name"), detail.get("gender"), 2);
     }
 
-    public Person getBride(Map<String, String> map) {
+    public List<Person> getBride(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m:Marriage) ");
         query.append("WHERE b.STANDARDISED_ID=").append('"').append(map.get("standardised_ID")).append('"');
         query.append(" AND b.SEX=").append('"').append(map.get("gender")).append('"');
         query.append(" RETURN m.BRIDE_FORENAME+'-'+m.BRIDE_SURNAME AS Name");
-        detail = neo4jService.getPerson(query.toString());
-        detail.put("gender","F");
-        return new Person(detail.get("Name"), detail.get("gender"), 4);
+        return neo4jService.getAll(query.toString(), 4);
     }
 
-    public Person getGroom(Map<String,String> map) {
+    public List<Person> getGroom(Map<String,String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_BRIDE_IDENTITY]->(m:Marriage) ");
         query.append("WHERE b.STANDARDISED_ID=").append('"').append(map.get("standardised_ID")).append('"');
         query.append(" AND b.SEX=").append('"').append(map.get("gender")).append('"');
         query.append(" RETURN m.GROOM_FORENAME+'-'+m.GROOM_SURNAME AS Name");
-        detail = neo4jService.getPerson(query.toString());
-        detail.put("gender","M");
-        return new Person(detail.get("Name"), detail.get("gender"), 5);
+        return neo4jService.getAll(query.toString(), 5);
     }
 
-    public List<Person> getSiblings(Map<String ,String> map) {
+    public List<Person> getSiblings(Map<String ,String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_SIBLING_LINKAGE]->(b1:Birth) ");
         query.append("WHERE b.STANDARDISED_ID=").append('"').append(map.get("standardised_ID")).append('"');
         query.append(" AND b.SEX=").append('"').append(map.get("gender")).append('"');
         query.append(" RETURN b1.FORENAME+'-'+b1.SURNAME AS Name, b1.SEX AS gender");
-        List<Person> list = neo4jService.getAll(query.toString());
-        return list;
+        return neo4jService.getAll(query.toString(),3);
     }
+
+
+
+
+
+
 }

@@ -1,8 +1,6 @@
 package uk.ac.standrews.cs.Pojo.details;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,11 +10,12 @@ import org.springframework.stereotype.Service;
  * @create: 2021-08-04 14:12
  **/
 
-@Data
+@Getter
+@Setter
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
-public class Birth {
+public class BirthRecords {
     String surName;
     String foreName;
     String gender;

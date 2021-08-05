@@ -44,7 +44,6 @@ public class QuerySetIml implements QuerySet {
         query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
                 "b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate, " +
                 "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, b.DEATH AS Death, b.STANDARDISED_ID AS standardised_ID");
-        /*System.out.println("判断："+ query.toString());*/
         return query.toString();
     }
 
@@ -111,7 +110,6 @@ public class QuerySetIml implements QuerySet {
         query.append(",").append(getMarriageReturn());
         query.append(", m.BRIDE_ADDRESS AS SPOUSE_ADDRESS, m.BRIDE_SURNAME AS SPOUSE_SURNAME, m.BRIDE_FORENAME AS SPOUSE_FORENAME, m.BRIDE_IDENTITY AS SPOUSE_IDENTITY," +
                 "m.BRIDE_OCCUPATION AS SPOUSE_OCCUPATION, m.BRIDE_BIRTH_RECORD_IDENTITY AS SPOUSE_BIRTH_RECORD_IDENTITY, m.BRIDE_MARITAL_STATUS AS SPOUSE_MARITAL_STATUS");
-        System.out.println(query.toString());
         return query.toString();
     }
 

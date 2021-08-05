@@ -1,9 +1,18 @@
 package uk.ac.standrews.cs.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonArray;
 import lombok.Data;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uk.ac.standrews.cs.Pojo.details.PersonalDetails;
 import uk.ac.standrews.cs.Pojo.familyTree.FamilyTree;
+
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -24,16 +33,19 @@ public class JudgeImpl implements Judge{
     Judge judge;
     @Autowired
     FamilyTree familyTree = new FamilyTree();
+    @Autowired
+    PersonalDetails personalDetails = new PersonalDetails();
+
+    ObjectMapper objectMapper = new ObjectMapper();
     StringBuilder groomCypher;
     StringBuilder brideCypher;
     StringBuilder finalJson = new StringBuilder();
     public static final String EMPTY = "empty";
+    Map<String, String> valueMap = new HashMap<>();
     @Override
     public StringBuilder getFinalJson(Map<String, String> valueMap) throws Exception {
         groomCypher = neo4jService.printJson(querySet.getBirthGroomQuery(valueMap));
         brideCypher = neo4jService.printJson(querySet.getBirthBrideQuery(valueMap));
-
-        System.out.println(valueMap);
         if(valueMap.get("death").equals(EMPTY)) {
             //not die
             //birth + marriage(switch:gender)
@@ -97,8 +109,7 @@ public class JudgeImpl implements Judge{
                         finalJson = neo4jService.printJson(querySet.getDeathBride(map));
                         break;
                     case "":
-                        finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.getDeathGroom(map)), neo4jService.printJson(querySet.getDeathBride(map)));
-                        System.out.println(finalJson);break;
+                        finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.getDeathGroom(map)), neo4jService.printJson(querySet.getDeathBride(map)));break;
                 }
             }
         }
@@ -118,7 +129,7 @@ public class JudgeImpl implements Judge{
     }
 
     @Override
-    public FamilyTree setTree(Map<String, String> params) {
+    public FamilyTree setTree(Map<String, String> params) throws Exception {
         Map<String, String> valueMap = new HashMap<>();
         valueMap.put("standardised_ID", params.get("standardised_id"));
         valueMap.put("gender", params.get("gender"));
@@ -128,11 +139,31 @@ public class JudgeImpl implements Judge{
         return familyTree;
     }
 
+
+
     @Override
     public void getParams(Map<String, String> map) {
         Map<String,String> setMap = new HashMap<>();
         setMap.put("standardised_ID", map.get("standardised_id"));
         setMap.put("storr_ID", map.get("storr_id"));
-        setMap.put("original_Id", map.get("original_id"));
+        setMap.put("original_ID", map.get("original_id"));
+    }
+
+    @Override
+    public PersonalDetails setDetails(Map<String, String> params) throws Exception {
+        valueMap.put("standardised_ID", params.get("standardised_id"));
+        valueMap.put("gender", params.get("gender"));
+        valueMap.put("death", params.get("Death"));
+
+        personalDetails.getBirth(valueMap);
+        personalDetails.getDeath(valueMap);
+        personalDetails.getMarriage(valueMap);
+
+        return personalDetails;
+    }
+
+    @Override
+    public String toString() {
+        return null;
     }
 }
