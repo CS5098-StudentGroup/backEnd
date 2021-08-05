@@ -1,13 +1,13 @@
-package uk.ac.standrews.cs.Pojo;
+package uk.ac.standrews.cs.Pojo.familyTree;
 
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.service.GetInfo;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 /**
  * @program: backEnd
  * @description:
@@ -75,14 +75,9 @@ public class NodePointer {
         target = getInfo.getSelf(valueMap).name;
         List<NodePointer> a = new ArrayList<>();
         List<Person> list = getInfo.getSiblings(valueMap);
-        for(int i = 0 ; i < list.size()-1; i++) {
-            a.add(new NodePointer(list.get(i).name, target));
+        for (Person person : list) {
+            a.add(new NodePointer(person.name, target));
         }
         return a;
-    }
-
-    @Override
-    public String toString() {
-        return source + " " + target;
     }
 }

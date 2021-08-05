@@ -3,7 +3,7 @@ package uk.ac.standrews.cs.service;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.ac.standrews.cs.Pojo.FamilyTree;
+import uk.ac.standrews.cs.Pojo.familyTree.FamilyTree;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -16,8 +16,6 @@ import java.util.Map;
 @Service
 public class JudgeImpl implements Judge{
 
-    String birthDeathCypher;
-    String marriageCypher;
     @Autowired
     QuerySet querySet;
     @Autowired
@@ -25,18 +23,18 @@ public class JudgeImpl implements Judge{
     @Autowired
     Judge judge;
     @Autowired
-    FamilyTree familyTree;
+    FamilyTree familyTree = new FamilyTree();
     StringBuilder groomCypher;
     StringBuilder brideCypher;
     StringBuilder finalJson = new StringBuilder();
-
+    public static final String EMPTY = "empty";
     @Override
     public StringBuilder getFinalJson(Map<String, String> valueMap) throws Exception {
         groomCypher = neo4jService.printJson(querySet.getBirthGroomQuery(valueMap));
         brideCypher = neo4jService.printJson(querySet.getBirthBrideQuery(valueMap));
 
         System.out.println(valueMap);
-        if(valueMap.get("death").equals("")) {
+        if(valueMap.get("death").equals(EMPTY)) {
             //not die
             //birth + marriage(switch:gender)
             if(QuerySetIml.marriageRecordIsEmpty(groomCypher, brideCypher)){
@@ -72,20 +70,41 @@ public class JudgeImpl implements Judge{
     @Override
     public StringBuilder setJson(Map<String, String> map, Map<String, String> params) throws Exception {
         if(!params.get("dateOfMarriage").equals("null")) {
-            switch (params.get("gender")) {
-                case "male":
-                    finalJson = neo4jService.printJson(querySet.getBirthGroomQuery(map));
-                    break;
-                case "female":
-                    finalJson = neo4jService.printJson(querySet.getBirthBrideQuery(map));
-                    break;
-                default:
-                    finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.getBirthGroomQuery(map)), neo4jService.printJson(querySet.getBirthBrideQuery(map)));
+            //input marriageDate
+            if (params.get("dateOfDeath").equals("null")) {
+                //judge deathDate
+                ///no deathDate
+                switch (params.get("gender")) {
+                    case "male":
+                        finalJson = neo4jService.printJson(querySet.getBirthGroomQuery(map));
+                        break;
+                    case "female":
+                        finalJson = neo4jService.printJson(querySet.getBirthBrideQuery(map));
+                        break;
+                    case "":
+                        finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.getBirthGroomQuery(map)), neo4jService.printJson(querySet.getBirthBrideQuery(map)));break;
+                }
+            } else {
+                //
+                finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.getDeathGroom(map)), neo4jService.printJson(querySet.getDeathBride(map)));
+                System.out.println(finalJson);
+                switch (params.get("gender")) {
+                    case "male":
+                        finalJson = neo4jService.printJson(querySet.getDeathGroom(map));
+                        System.out.println(finalJson);
+                        break;
+                    case "female":
+                        finalJson = neo4jService.printJson(querySet.getDeathBride(map));
+                        break;
+                    case "":
+                        finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.getDeathGroom(map)), neo4jService.printJson(querySet.getDeathBride(map)));
+                        System.out.println(finalJson);break;
+                }
             }
         }
         else {
             if (params.get("dateOfDeath").equals("null")) {
-
+                //not married
                 if (neo4jService.printJson(querySet.getBirthDeathQuery(map)).length() > 5) {
                     finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.getBirthDeathQuery(map)), neo4jService.printJson(querySet.addPeopleNotDie(map)));
                 } else {

@@ -3,7 +3,7 @@ package uk.ac.standrews.cs.Controller;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.standrews.cs.Pojo.FamilyTree;
+import uk.ac.standrews.cs.Pojo.familyTree.FamilyTree;
 import uk.ac.standrews.cs.service.Judge;
 import java.util.Map;
 

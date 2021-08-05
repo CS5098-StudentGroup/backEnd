@@ -2,7 +2,8 @@ package uk.ac.standrews.cs.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.ac.standrews.cs.Pojo.Person;
+import uk.ac.standrews.cs.Pojo.familyTree.FamilyTree;
+import uk.ac.standrews.cs.Pojo.familyTree.Person;
 import java.util.*;
 /**
  * @program: backEnd
@@ -14,6 +15,8 @@ import java.util.*;
 public class GetInfo {
     @Autowired
     Neo4jService neo4jService;
+    @Autowired
+    FamilyTree familyTree;
     Map<String, String> detail = new HashMap<>();
     public Person getSelf(Map<String, String> map) {
         StringBuilder query = new StringBuilder();
@@ -26,15 +29,20 @@ public class GetInfo {
     }
 
     public Person getFather(Map<String, String> map) {
+        String selfName = getSelf(map).getName();
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_PARENTS_MARRIAGE]->(m:Marriage) ");
         query.append("WHERE b.STANDARDISED_ID=").append('"').append(map.get("standardised_ID")).append('"');
         query.append(" AND b.SEX=").append('"').append(map.get("gender")).append('"');
         query.append(" RETURN m.GROOM_FORENAME+'-'+m.GROOM_SURNAME AS Name");
-        System.out.println(query);
         detail = neo4jService.getPerson(query.toString());
         detail.put("gender","M");
-        return new Person(detail.get("Name"), detail.get("gender"), 1 );
+        if(selfName.equals(detail.get("Name"))) {
+            return new Person(detail.get("Name") + "-(f)", detail.get("gender"), 1);
+        }
+        else {
+            return new Person(detail.get("Name"), detail.get("gender"), 1);
+        }
     }
 
     public Person getMother(Map<String, String> map) {
@@ -44,7 +52,6 @@ public class GetInfo {
         query.append(" AND b.SEX=").append('"').append(map.get("gender")).append('"');
         query.append(" RETURN b.FORENAME+'-'+b.SURNAME AS Name, b.SEX AS gender");
         detail = neo4jService.getPerson(query.toString());
-        System.out.println("mother:"+query);
         return new Person(detail.get("Name"), detail.get("gender"), 2);
     }
 

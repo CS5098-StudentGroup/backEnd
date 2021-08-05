@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.Pojo;
+package uk.ac.standrews.cs.Pojo.familyTree;
 
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;

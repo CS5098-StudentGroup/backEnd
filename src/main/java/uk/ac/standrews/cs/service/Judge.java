@@ -1,6 +1,6 @@
 package uk.ac.standrews.cs.service;
 
-import uk.ac.standrews.cs.Pojo.FamilyTree;
+import uk.ac.standrews.cs.Pojo.familyTree.FamilyTree;
 import java.util.Map;
 public interface Judge {
     public StringBuilder getFinalJson(Map<String, String> valueMap) throws Exception;

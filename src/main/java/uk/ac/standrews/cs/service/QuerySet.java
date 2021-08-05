@@ -23,4 +23,8 @@ public interface QuerySet {
     public String getDetailOfGroom(Map<String, String> map);
 
     public String getDetailOfBride(Map<String, String> map);
+
+    public String getDeathGroom(Map<String, String> map);
+
+    public String getDeathBride(Map<String, String> map);
 }

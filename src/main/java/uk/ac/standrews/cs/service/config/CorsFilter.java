@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.Controller;
+package uk.ac.standrews.cs.service.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;

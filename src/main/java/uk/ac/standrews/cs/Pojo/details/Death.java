@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.Pojo;
+package uk.ac.standrews.cs.Pojo.details;
 
 /**
  * @program: backEnd

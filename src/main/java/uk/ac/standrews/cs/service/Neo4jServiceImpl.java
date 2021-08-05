@@ -3,7 +3,7 @@ package uk.ac.standrews.cs.service;
 import org.json.JSONObject;
 import org.neo4j.driver.*;
 import org.springframework.stereotype.Service;
-import uk.ac.standrews.cs.Pojo.Person;
+import uk.ac.standrews.cs.Pojo.familyTree.Person;
 import uk.ac.standrews.cs.neoStorr.util.NeoDbCypherBridge;
 
 import java.util.*;

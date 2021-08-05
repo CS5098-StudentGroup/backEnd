@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.Pojo;
+package uk.ac.standrews.cs.Pojo.familyTree;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +31,38 @@ public class FamilyTree {
     @Autowired
     NodePointer nodePointer;
 
+
+    public List<Person> Family(Map<String, String> valueMap) {
+        List<Person> family = new ArrayList<>();
+        Person self = getInfo.getSelf(valueMap);
+        Person father = getInfo.getFather(valueMap);
+        Person mother = getInfo.getMother(valueMap);
+        family.add(self);
+        family.add(father);
+        family.add(mother);
+        return family;
+    }
+
+
+
+
+
     public void getMember(Map<String, String> valueMap) {
         personList.clear();
         //self
-        if(getInfo.getSelf(valueMap).name != null) {personList.add(getInfo.getSelf(valueMap));}
+        List<Person> familyList = Family(valueMap);
+        if(familyList.get(0).name != null) {personList.add(familyList.get(0));}
         //mother
-        if(getInfo.getMother(valueMap).name != null) {personList.add(getInfo.getMother(valueMap));}
+        if(familyList.get(2).name != null) {personList.add(familyList.get(2));}
         //bride
         if(getInfo.getBride(valueMap).name != null && valueMap.get("gender").equals("M")) {personList.add(getInfo.getBride(valueMap));}
         //groom
         if(getInfo.getBride(valueMap).name != null && valueMap.get("gender").equals("F")) {personList.add(getInfo.getGroom(valueMap));}
         //father
-        if(getInfo.getFather(valueMap).name != null) {personList.add(getInfo.getFather(valueMap));}
+        if(familyList.get(1).name != null) {personList.add(familyList.get(1));}
         //siblings
         if(getInfo.getSiblings(valueMap).size() != 0) {personList.addAll(getInfo.getSiblings(valueMap));}
+        familyList.clear();
     }
 
     public void getCategory() {
@@ -59,10 +77,12 @@ public class FamilyTree {
 
     public void getPointer(Map<String, String> valueMap){
         pointerList.clear();
-        if(getInfo.getFather(valueMap).name != null) {pointerList.add(nodePointer.toFather(valueMap));}
-        if(getInfo.getMother(valueMap).name != null) {pointerList.add(nodePointer.toMother(valueMap));}
+        List<Person> familyList = Family(valueMap);
+        if(familyList.get(1).name != null) {pointerList.add(nodePointer.toFather(valueMap));}
+        if(familyList.get(2).name != null) {pointerList.add(nodePointer.toMother(valueMap));}
         if(getInfo.getBride(valueMap).name != null && valueMap.get("gender").equals("M")) {pointerList.add(nodePointer.toBride(valueMap));}
         if(getInfo.getGroom(valueMap).name != null && valueMap.get("gender").equals("F")) {pointerList.add(nodePointer.toGroom(valueMap));}
         if(getInfo.getSiblings(valueMap).size() != 0) {pointerList.addAll(nodePointer.toSibling(valueMap));}
+        familyList.clear();
     }
 }
