@@ -20,10 +20,10 @@ public class GetDeathById {
 
     public DeathRecords getDeathByDeathId(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
-        query.append("MATCH(d:Death) ");
+        query.append("MATCH (d:Death) ");
         query.append(getIdAttribute(map));
         query.append(" RETURN ");
-        query.append(QuerySetIml.getBirthReturn());
+        query.append(QuerySetIml.getDeathReturn());
         detail = neo4jService.getPerson(query.toString());
         return new DeathRecords(detail.get("deathDate"), detail.get("age_at_death"), detail.get("Deceased_Identity"), detail.get("death_StorrID"), detail.get("Marital_Status"), detail.get("Death_Place"),
                 detail.get("DeathRegistration_Year"), detail.get("death_StandardisedID"), detail.get("Birth_Record_Identity"));
@@ -34,7 +34,7 @@ public class GetDeathById {
         query.append("MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b:Birth) ");
         query.append(getIdAttribute(map));
         query.append(" RETURN ");
-        query.append(QuerySetIml.getDeathReturn());
+        query.append(QuerySetIml.getBirthReturn());
         detail = neo4jService.getPerson(query.toString());
         return new BirthRecords(detail.get("surName"), detail.get("foreName"), detail.get("gender"), detail.get("birthDate"), detail.get("standardised_ID")
                 , detail.get("Address"), detail.get("birth_Storr_ID"), detail.get("birth_OriginalID"), detail.get("Changed_foreName"), detail.get("Changed_surName"), detail.get("Child_identity"), detail.get("Father_foreName")
@@ -73,9 +73,9 @@ public class GetDeathById {
         QuerySetIml.removeEmptyMap(attribute);
         attribute.forEach((key, value) -> {
             switch (key) {
-                case "storr_ID" : query.append(" b.STORR_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
-                case "original_ID" : query.append(" b.ORIGINAL_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
-                case "standardised_ID" : query.append(" b.STANDARDISED_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "storr_ID" : query.append(" d.STORR_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "original_ID" : query.append(" d.ORIGINAL_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "standardised_ID" : query.append(" d.STANDARDISED_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
             }
         });
         query.delete(query.length()-3, query.length());
