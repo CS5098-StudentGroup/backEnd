@@ -62,7 +62,7 @@ public class GetDeathById {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (d:Death) ");
         query.append(getIdAttribute(map));
-        query.append(" RETURN d.SEX");
+        query.append(" RETURN d.SEX AS gender");
         detail = neo4jService.getPerson(query.toString());
         return detail;
     }
@@ -73,9 +73,9 @@ public class GetDeathById {
         QuerySetIml.removeEmptyMap(attribute);
         attribute.forEach((key, value) -> {
             switch (key) {
-                case "STORR_ID" : query.append(" d.STORR_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
-                case "ORIGINAL_ID" : query.append(" d.ORIGINAL_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
-                case "STANDARDISED_ID" : query.append(" d.STANDARDISED_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "storr_ID" : query.append(" b.STORR_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "original_ID" : query.append(" b.ORIGINAL_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "standardised_ID" : query.append(" b.STANDARDISED_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
             }
         });
         query.delete(query.length()-3, query.length());
