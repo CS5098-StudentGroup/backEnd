@@ -23,8 +23,15 @@ public class IDController {
     IDSearch idSearch;
 
     @ResponseBody
-    @GetMapping("/getIDs")
+    @GetMapping("/getBirthById")
     public PersonalDetails getBirthID(@RequestParam Map<String, String> params) throws Exception {
-        return idSearch.setDetails(params);
+        return idSearch.setDetailsByBirthId(params);
     }
+
+    @ResponseBody
+    @GetMapping("/getDeathById")
+    public PersonalDetails getDeathID(@RequestParam Map<String, String> params) throws Exception {
+        return idSearch.setDetailsByDeathId(params);
+    }
+
 }
