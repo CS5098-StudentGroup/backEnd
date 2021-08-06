@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.service.DetailsService;
-import uk.ac.standrews.cs.service.GetID;
+import uk.ac.standrews.cs.service.GetBirthById;
+import uk.ac.standrews.cs.service.GetDeathById;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,8 @@ public class PersonalDetails {
 
     @Autowired
     DetailsService detailsService;
-    GetID detailsServiceById;
+    GetBirthById detailsServiceByBirthId;
+    GetDeathById detailsServiceByDeathId;
 
     BirthRecords birthRecords;
     DeathRecords deathRecords;
@@ -43,20 +45,31 @@ public class PersonalDetails {
     }
 
     public void getMarriage(Map<String, String> valueMap) throws Exception {
-        /*marriageRecordsList = detailsService.getMarriageRecords(valueMap);*/
         marriageRecordsList.addAll(detailsService.getMarriageRecords(valueMap));
     }
 
-    public void getBirthById(Map<String, String> valueMap) throws Exception {
-        birthRecords = detailsServiceById.getBirthById(valueMap);
+    public void getBirthByBirthId(Map<String, String> valueMap) throws Exception {
+        birthRecords = detailsServiceByBirthId.getBirthById(valueMap);
     }
 
-    public void getDeathById(Map<String, String> valueMap) throws Exception {
-        deathRecords = detailsServiceById.getDeathById(valueMap);
+    public void getDeathByBirthId(Map<String, String> valueMap) throws Exception {
+        deathRecords = detailsServiceByBirthId.getDeathById(valueMap);
     }
 
-    public void getMarriageById(Map<String, String> valueMap) throws Exception {
-        /*marriageRecordsList = detailsService.getMarriageRecords(valueMap);*/
-        marriageRecordsList.addAll(detailsServiceById.getMarriageById(valueMap));
+    public void getMarriageByBirthId(Map<String, String> valueMap) throws Exception {
+        marriageRecordsList.addAll(detailsServiceByBirthId.getMarriageById(valueMap));
     }
+
+    public void getBirthByDeathId(Map<String, String> valueMap) throws Exception {
+        birthRecords = detailsServiceByDeathId.getBirthByDeathId(valueMap);
+    }
+
+    public void getDeathByDeathId(Map<String, String> valueMap) throws Exception {
+        deathRecords = detailsServiceByDeathId.getDeathByDeathId(valueMap);
+    }
+
+    public void getMarriageByDeathId(Map<String, String> valueMap) throws Exception {
+        marriageRecordsList.addAll(detailsServiceByDeathId.getMarriageByDeathId(valueMap));
+    }
+
 }

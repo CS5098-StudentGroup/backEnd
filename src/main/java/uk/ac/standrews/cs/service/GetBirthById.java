@@ -13,7 +13,7 @@ import java.util.*;
 
 
 @Service
-public class GetID {
+public class GetBirthById {
 
     @Autowired
     Neo4jServiceImpl neo4jService;
@@ -58,7 +58,7 @@ public class GetID {
         return neo4jService.getMarriage(query.toString(), map);
     }
 
-    public Map<String,String> getGender(Map<String,String> map) throws Exception {
+    public Map<String,String> getGender(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth) ");
         query.append(getIdAttribute(map));
@@ -67,15 +67,15 @@ public class GetID {
         return detail;
     }
 
-    private static String getIdAttribute(Map<String, String> attribute) {
+    static String getIdAttribute(Map<String, String> attribute) {
         StringBuilder query = new StringBuilder();
         query.append(" WHERE");
         QuerySetIml.removeEmptyMap(attribute);
         attribute.forEach((key, value) -> {
             switch (key) {
-                case "STORR_ID" : query.append(" d.STORR_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
-                case "ORIGINAL_ID" : query.append(" d.ORIGINAL_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
-                case "STANDARDISED_ID" : query.append(" d.STANDARDISED_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "STORR_ID" : query.append(" b.STORR_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "ORIGINAL_ID" : query.append(" b.ORIGINAL_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "STANDARDISED_ID" : query.append(" b.STANDARDISED_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
             }
         });
         query.delete(query.length()-3, query.length());
