@@ -54,7 +54,7 @@ public class GetDeathById {
         }
         query.append(getIdAttribute(map));
         query.append(" RETURN ");
-        query.append(QuerySetIml.getMarriageReturn());
+        query.append(GetBirthById.getMarriageReturn(map));
 
         return neo4jService.getMarriage(query.toString());
     }
