@@ -21,7 +21,7 @@ public class GetBirthById {
 
     public BirthRecords getBirthById(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
-        query.append("MATCH(b:Birth) ");
+        query.append("MATCH (b:Birth) ");
         query.append(getIdAttribute(map));
         query.append(" RETURN ");
         query.append(QuerySetIml.getBirthReturn());
@@ -62,7 +62,7 @@ public class GetBirthById {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth) ");
         query.append(getIdAttribute(map));
-        query.append(" RETURN b.SEX");
+        query.append(" RETURN b.SEX AS gender");
         detail = neo4jService.getPerson(query.toString());
         return detail;
     }
@@ -73,9 +73,9 @@ public class GetBirthById {
         QuerySetIml.removeEmptyMap(attribute);
         attribute.forEach((key, value) -> {
             switch (key) {
-                case "STORR_ID" : query.append(" b.STORR_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
-                case "ORIGINAL_ID" : query.append(" b.ORIGINAL_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
-                case "STANDARDISED_ID" : query.append(" b.STANDARDISED_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "storr_ID" : query.append(" b.STORR_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "original_ID" : query.append(" b.ORIGINAL_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "standardised_ID" : query.append(" b.STANDARDISED_ID=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
             }
         });
         query.delete(query.length()-3, query.length());

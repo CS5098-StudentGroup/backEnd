@@ -28,7 +28,9 @@ public class PersonalDetails {
 
     @Autowired
     DetailsService detailsService;
+    @Autowired
     GetBirthById detailsServiceByBirthId;
+    @Autowired
     GetDeathById detailsServiceByDeathId;
 
     BirthRecords birthRecords;
@@ -48,6 +50,9 @@ public class PersonalDetails {
         marriageRecordsList.addAll(detailsService.getMarriageRecords(valueMap));
     }
 
+
+
+
     public void getBirthByBirthId(Map<String, String> valueMap) throws Exception {
         birthRecords = detailsServiceByBirthId.getBirthById(valueMap);
     }
@@ -59,6 +64,11 @@ public class PersonalDetails {
     public void getMarriageByBirthId(Map<String, String> valueMap) throws Exception {
         marriageRecordsList.addAll(detailsServiceByBirthId.getMarriageById(valueMap));
     }
+
+
+
+
+
 
     public void getBirthByDeathId(Map<String, String> valueMap) throws Exception {
         birthRecords = detailsServiceByDeathId.getBirthByDeathId(valueMap);
