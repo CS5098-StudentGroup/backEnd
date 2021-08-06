@@ -3,11 +3,9 @@ package uk.ac.standrews.cs.Controller;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import uk.ac.standrews.cs.Pojo.details.PersonalDetails;
 import uk.ac.standrews.cs.service.IDSearch;
-import uk.ac.standrews.cs.service.Judge;
-import uk.ac.standrews.cs.service.QuerySetIml;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -19,19 +17,14 @@ import java.util.Map;
 
 @Data
 @RestController
-@RequestMapping("/death")
+@RequestMapping("/id")
 public class IDController {
     @Autowired
     IDSearch idSearch;
 
     @ResponseBody
-    @GetMapping("/querybyId")
-    public StringBuilder getBirthID(@RequestParam Map<String, String> params) throws Exception {
-        //idSearch.getParams(params);
-        Map<String, String> map = new HashMap<>();
-        map.put("STORR_ID", params.get("storrId"));
-        map.put("ORIGINAL_ID", params.get("originalId"));
-        map.put("STANDARDISED_ID", params.get("standardisedId"));
-        return idSearch.setJson(map,params);
+    @GetMapping("/getIDs")
+    public PersonalDetails getBirthID(@RequestParam Map<String, String> params) throws Exception {
+        return idSearch.setDetails(params);
     }
 }

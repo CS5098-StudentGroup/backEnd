@@ -174,7 +174,7 @@ public class QuerySetIml implements QuerySet {
     }
 
 
-    private static String getBirthReturn() {
+    static String getBirthReturn() {
 
         return  "b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate," +
                 "b.STANDARDISED_ID AS standardised_ID, b.BIRTH_ADDRESS AS Address,b.STORR_ID AS birth_Storr_ID," +
@@ -185,14 +185,14 @@ public class QuerySetIml implements QuerySet {
                 "b.MARRIAGE_RECORD_IDENTITY3 AS Marriage_record_identity3, b.ADOPTION AS Adoption, b.FATHER_IDENTITY AS Father_Identity, b.DEATH AS Death";
 
     }
-    private static String getDeathReturn() {
+    static String getDeathReturn() {
 
         return  "d.DEATH_DAY+'/'+d.DEATH_MONTH+'/'+d.DEATH_YEAR AS deathDate, d.AGE_AT_DEATH AS age_at_death, d.DECEASED_IDENTITY AS Deceased_Identity, d.STORR_ID AS death_StorrID," +
                 "d.MARITAL_STATUS AS Marital_Status, d.PLACE_OF_DEATH AS Death_Place, d.YEAR_OF_REGISTRATION AS DeathRegistration_Year, d.STANDARDISED_ID AS death_StandardisedID, d.BIRTH_RECORD_IDENTITY AS Birth_Record_Identity";
 
     }
 
-    private static String getMarriageReturn() {
+    static String getMarriageReturn() {
         return "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, m.PLACE_OF_MARRIAGE AS MarriagePlace, m.STANDARDISED_ID AS marriage_StandardisedID," +
                 "m.STORR_ID AS marriage_StorrID, m.YEAR_OF_REGISTRATION AS MarriageRegistration_Year";
     }
@@ -230,7 +230,7 @@ public class QuerySetIml implements QuerySet {
 
 
     //remove empty value stored in Map
-    private static void removeEmptyMap(Map<String, String> maps) {
+    static void removeEmptyMap(Map<String, String> maps) {
         Set<String> set = maps.keySet();
         Iterator<String> it = set.iterator();
         List<String> listKey = new ArrayList<>();
