@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.service;
+package uk.ac.standrews.cs.service.GetID;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.Pojo.details.BirthRecords;
 import uk.ac.standrews.cs.Pojo.details.DeathRecords;
 import uk.ac.standrews.cs.Pojo.details.MarriageRecords;
-
+import uk.ac.standrews.cs.service.CommonTool.Neo4jServiceImpl;
+import uk.ac.standrews.cs.service.Search.QuerySetIml;
 import java.util.*;
 
 
@@ -55,7 +56,7 @@ public class GetDeathById {
         query.append(" RETURN ");
         query.append(QuerySetIml.getMarriageReturn());
 
-        return neo4jService.getMarriage(query.toString(), map);
+        return neo4jService.getMarriage(query.toString());
     }
 
     public Map<String,String> getGender(Map<String, String> map) throws Exception {

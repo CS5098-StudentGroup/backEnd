@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.standrews.cs.Pojo.details.PersonalDetails;
-import uk.ac.standrews.cs.service.IDSearch;
+import uk.ac.standrews.cs.service.GetID.IDSearch;
 
 import java.util.Map;
 

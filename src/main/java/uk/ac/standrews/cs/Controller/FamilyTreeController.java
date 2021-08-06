@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.standrews.cs.Pojo.familyTree.FamilyTree;
-import uk.ac.standrews.cs.service.Judge;
+import uk.ac.standrews.cs.service.CommonTool.Judge;
 import java.util.Map;
 
 /**

@@ -1,9 +1,9 @@
-package uk.ac.standrews.cs.service;
+package uk.ac.standrews.cs.service.Details;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import uk.ac.standrews.cs.Pojo.familyTree.Person;
+import uk.ac.standrews.cs.service.CommonTool.Neo4jService;
 import java.util.*;
 /**
  * @program: backEnd

@@ -1,10 +1,12 @@
-package uk.ac.standrews.cs.service;
+package uk.ac.standrews.cs.service.Details;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.Pojo.details.BirthRecords;
 import uk.ac.standrews.cs.Pojo.details.DeathRecords;
 import uk.ac.standrews.cs.Pojo.details.MarriageRecords;
+import uk.ac.standrews.cs.service.CommonTool.Neo4jService;
+
 import java.util.*;
 
 
@@ -41,7 +43,6 @@ public class DetailsService {
         query.append(" RETURN ");
         query.append(getDeathReturn());
         detail = neo4jService.getPerson(query.toString());
-
         return new DeathRecords(detail.get("deathDate"), detail.get("age_at_death"), detail.get("Deceased_Identity"), detail.get("death_StorrID"), detail.get("Marital_Status"), detail.get("Death_Place"),
                 detail.get("DeathRegistration_Year"), detail.get("death_StandardisedID"), detail.get("Birth_Record_Identity"));
     }
@@ -56,13 +57,13 @@ public class DetailsService {
         query.append(" RETURN ");
         query.append(getMarriageReturn(map));
 
-        return neo4jService.getMarriage(query.toString(), map);
+        return neo4jService.getMarriage(query.toString());
     }
 
 
 
 
-    private static String getBirthReturn() {
+    public static String getBirthReturn() {
 
         return  "b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate," +
                 "b.STANDARDISED_ID AS standardised_ID, b.BIRTH_ADDRESS AS Address,b.STORR_ID AS birth_Storr_ID," +
@@ -74,7 +75,7 @@ public class DetailsService {
 
     }
 
-    private static String getDeathReturn() {
+    public static String getDeathReturn() {
 
         return  "d.DEATH_DAY+'/'+d.DEATH_MONTH+'/'+d.DEATH_YEAR AS deathDate, d.AGE_AT_DEATH AS age_at_death, d.DECEASED_IDENTITY AS Deceased_Identity, d.STORR_ID AS death_StorrID," +
                 "d.MARITAL_STATUS AS Marital_Status, d.PLACE_OF_DEATH AS Death_Place, d.YEAR_OF_REGISTRATION AS DeathRegistration_Year, d.STANDARDISED_ID AS death_StandardisedID, d.BIRTH_RECORD_IDENTITY AS Birth_Record_Identity";

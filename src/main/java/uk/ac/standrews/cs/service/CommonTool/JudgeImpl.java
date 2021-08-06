@@ -1,18 +1,14 @@
-package uk.ac.standrews.cs.service;
+package uk.ac.standrews.cs.service.CommonTool;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonArray;
 import lombok.Data;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.Pojo.details.PersonalDetails;
 import uk.ac.standrews.cs.Pojo.familyTree.FamilyTree;
+import uk.ac.standrews.cs.service.Search.QuerySet;
+import uk.ac.standrews.cs.service.Search.QuerySetIml;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -23,7 +19,7 @@ import java.util.Map;
  **/
 @Data
 @Service
-public class JudgeImpl implements Judge{
+public class JudgeImpl implements Judge {
 
     @Autowired
     QuerySet querySet;

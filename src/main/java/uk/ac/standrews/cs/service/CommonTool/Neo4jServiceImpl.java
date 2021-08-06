@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.service;
+package uk.ac.standrews.cs.service.CommonTool;
 
 import org.json.JSONObject;
 import org.neo4j.driver.*;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.Pojo.details.MarriageRecords;
 import uk.ac.standrews.cs.Pojo.familyTree.Person;
 import uk.ac.standrews.cs.neoStorr.util.NeoDbCypherBridge;
+
 import java.util.*;
 
 /**
@@ -99,7 +100,7 @@ public class Neo4jServiceImpl implements Neo4jService {
     }
 
     @Override
-    public List<MarriageRecords> getMarriage(String query, Map<String, String> map )throws Exception {
+    public List<MarriageRecords> getMarriage(String query)throws Exception {
         List<MarriageRecords> marriageRecords = new ArrayList<>();
         Map<String, String> getDetails = new HashMap<>();
         Result result = session.run(query);
@@ -125,13 +126,16 @@ public class Neo4jServiceImpl implements Neo4jService {
         }
 
 
-    public static StringBuilder linkJson(StringBuilder s1, StringBuilder s2){
-        s1.deleteCharAt(s1.length()-1);
-        s2.deleteCharAt(0);
-        s1.append(",");
-        return s1.append(s2);
+    public static StringBuilder linkJson(StringBuilder s1, StringBuilder s2) {
+        StringBuilder s = new StringBuilder("[{}]");
+        if (s1.toString().equals("[]") && s2.toString().equals("[]")) {
+            return s;
+        } else {
+            s1.deleteCharAt(s1.length() - 1);
+            s2.deleteCharAt(0);
+            s1.append(",");
+            return s1.append(s2);
+        }
     }
-
-
 
 }

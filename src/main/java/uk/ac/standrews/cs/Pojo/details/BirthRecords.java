@@ -1,7 +1,6 @@
 package uk.ac.standrews.cs.Pojo.details;
 
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 /**
  * @program: backEnd
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 @Getter
 @Setter
-@Service
 @AllArgsConstructor
 @NoArgsConstructor
 public class BirthRecords {

@@ -5,9 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.ac.standrews.cs.service.DetailsService;
-import uk.ac.standrews.cs.service.GetBirthById;
-import uk.ac.standrews.cs.service.GetDeathById;
+import uk.ac.standrews.cs.service.Details.DetailsService;
+import uk.ac.standrews.cs.service.GetID.GetBirthById;
+import uk.ac.standrews.cs.service.GetID.GetDeathById;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,7 +3,7 @@ package uk.ac.standrews.cs.Pojo.familyTree;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.ac.standrews.cs.service.GetInfo;
+import uk.ac.standrews.cs.service.Details.GetInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.service;
+package uk.ac.standrews.cs.service.CommonTool;
 
 import uk.ac.standrews.cs.Pojo.details.MarriageRecords;
 import uk.ac.standrews.cs.Pojo.familyTree.Person;
@@ -13,5 +13,5 @@ public interface Neo4jService {
 
     public List<Person> getAll(String query, int i) throws Exception;
 
-    public List<MarriageRecords> getMarriage(String query, Map<String, String> map) throws Exception;
+    public List<MarriageRecords> getMarriage(String query) throws Exception;
 }

@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.service;
+package uk.ac.standrews.cs.service.GetID;
 
 import uk.ac.standrews.cs.Pojo.details.PersonalDetails;
 import uk.ac.standrews.cs.Pojo.familyTree.FamilyTree;

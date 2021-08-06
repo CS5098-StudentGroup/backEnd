@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.service;
+package uk.ac.standrews.cs.service.Search;
 
 
 import java.util.Map;
