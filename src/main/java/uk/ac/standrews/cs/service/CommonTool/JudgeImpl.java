@@ -139,7 +139,10 @@ public class JudgeImpl implements Judge {
     public PersonalDetails setDetails(Map<String, String> params) throws Exception {
         valueMap.put("standardised_ID", params.get("standardised_id"));
         valueMap.put("gender", params.get("gender"));
-        valueMap.put("death", params.get("Death"));
+        if(!params.get("Death").equals("empty")) {
+            valueMap.put("death", params.get("Death"));
+        }
+        else {valueMap.put("death", "");}
 
         personalDetails.getBirth(valueMap);
         personalDetails.getDeath(valueMap);

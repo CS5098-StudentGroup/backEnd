@@ -93,7 +93,7 @@ public class Neo4jServiceImpl implements Neo4jService {
             } switch (i) {
                 case 4: personList.add(new Person(getDetails.get("Name"), "F", i)); break;
                 case 5: personList.add(new Person(getDetails.get("Name"), "M", i)); break;
-                default: personList.add(new Person(getDetails.get("Name"), getDetails.get("gender"), i)); break;
+                case 6: personList.add(new Person(getDetails.get("Name"), getDetails.get("gender"), i)); break;
             }
         }
         return personList;

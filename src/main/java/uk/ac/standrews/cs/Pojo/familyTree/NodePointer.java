@@ -87,4 +87,14 @@ public class NodePointer {
         }
         return a;
     }
+
+    public List<NodePointer> toChildren(Map<String, String> valueMap) throws Exception {
+        target = getInfo.getSelf(valueMap).name;
+        List<NodePointer> a = new ArrayList<>();
+        List<Person> list = getInfo.getChildren(valueMap);
+        for (Person person : list) {
+            a.add(new NodePointer(person.name, target));
+        }
+        return a;
+    }
 }

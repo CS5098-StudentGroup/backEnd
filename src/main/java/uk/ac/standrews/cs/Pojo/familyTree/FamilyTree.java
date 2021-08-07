@@ -56,6 +56,7 @@ public class FamilyTree {
         if(familyList.get(1).name != null) {personList.add(familyList.get(1));}
         //siblings
         if(!getInfo.getSiblings(valueMap).isEmpty()) {personList.addAll(getInfo.getSiblings(valueMap));}
+        if(!getInfo.getChildren(valueMap).isEmpty()) {personList.addAll(getInfo.getChildren(valueMap));}
         familyList.clear();
     }
 
@@ -67,6 +68,7 @@ public class FamilyTree {
         categoryList.add(Category.siblings);
         categoryList.add(Category.bride);
         categoryList.add(Category.groom);
+        categoryList.add(Category.children);
     }
 
     public void getPointer(Map<String, String> valueMap) throws Exception {
@@ -77,6 +79,7 @@ public class FamilyTree {
         if(!getInfo.getBride(valueMap).isEmpty() && valueMap.get("gender").equals("M")) {pointerList.addAll(nodePointer.toBride(valueMap));}
         if(!getInfo.getGroom(valueMap).isEmpty() && valueMap.get("gender").equals("F")) {pointerList.addAll(nodePointer.toGroom(valueMap));}
         if(!getInfo.getSiblings(valueMap).isEmpty()) {pointerList.addAll(nodePointer.toSibling(valueMap));}
+        if(!getInfo.getChildren(valueMap).isEmpty()) {pointerList.addAll(nodePointer.toChildren(valueMap));}
         familyList.clear();
     }
 }

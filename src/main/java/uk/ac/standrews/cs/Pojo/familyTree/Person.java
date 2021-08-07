@@ -68,6 +68,8 @@ public class Person {
                 c = Category.bride; break;
             case 5:
                 c = Category.groom; break;
+            case 6:
+                c = Category.children; break;
             default: throw new RuntimeException("cannot process" + category);
         }
         return c;

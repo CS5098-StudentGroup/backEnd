@@ -25,6 +25,7 @@ public class DetailController {
 
     @GetMapping(path="/getDetails")
     public @ResponseBody PersonalDetails getDetails(@RequestParam Map<String, String> params) throws Exception {
+
         return judge.setDetails(params);
     }
 }

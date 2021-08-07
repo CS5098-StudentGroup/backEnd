@@ -36,7 +36,7 @@ public class GetInfo {
         detail = neo4jService.getPerson(query.toString());
         detail.put("gender","M");
         if(selfName.equals(detail.get("Name"))) {
-            return new Person(detail.get("Name") + "-(f)", detail.get("gender"), 1);
+            return new Person(detail.get("Name") + "-(father)", detail.get("gender"), 1);
         }
         else {
             return new Person(detail.get("Name"), detail.get("gender"), 1);
@@ -45,12 +45,18 @@ public class GetInfo {
 
     public Person getMother(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
+        String selfName = getSelf(map).getName();
         query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_MOTHER_IDENTITY]->(b1:Birth) ");
         query.append("WHERE b1.STANDARDISED_ID=").append('"').append(map.get("standardised_ID")).append('"');
         query.append(" AND b.SEX=").append('"').append(map.get("gender")).append('"');
         query.append(" RETURN b.FORENAME+'-'+b.SURNAME AS Name, b.SEX AS gender");
         detail = neo4jService.getPerson(query.toString());
-        return new Person(detail.get("Name"), detail.get("gender"), 2);
+        if(selfName.equals(detail.get("Name"))) {
+            return new Person(detail.get("Name") + "-(mother)", detail.get("gender"), 2);
+        }
+        else {
+            return new Person(detail.get("Name"), detail.get("gender"), 2);
+        }
     }
 
     public List<Person> getBride(Map<String, String> map) throws Exception {
@@ -80,7 +86,20 @@ public class GetInfo {
         return neo4jService.getAll(query.toString(),3);
     }
 
+    public List<Person> getChildren(Map<String, String> map) throws Exception {
+        StringBuilder query = new StringBuilder();
+        String gender = getSelf(map).getGender();
+        switch (gender) {
+            case "M": query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_FATHER_GROOM_IDENTITY]->(m:Marriage) MATCH(c:Birth)-[a:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m) ");
+            query.append(" WHERE c.STANDARDISED_ID=").append('"').append(map.get("standardised_ID")).append('"');break;
+            case "F": query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_MOTHER_IDENTITY]->(b1:Birth)");
+                query.append(" WHERE b.STANDARDISED_ID=").append('"').append(map.get("standardised_ID")).append('"');
+                query.append(" AND b.SEX=").append('"').append(map.get("gender")).append('"');break;
+        }
+        query.append("RETURN b.FORENAME+'-'+b.SURNAME AS Name, b.SEX AS gender");
 
+        return neo4jService.getAll(query.toString(),6);
+    }
 
 
 
