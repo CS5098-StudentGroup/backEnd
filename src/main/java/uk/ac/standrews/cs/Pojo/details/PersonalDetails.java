@@ -47,6 +47,7 @@ public class PersonalDetails {
     }
 
     public void getMarriage(Map<String, String> valueMap) throws Exception {
+        marriageRecordsList.clear();
         marriageRecordsList.addAll(detailsService.getMarriageRecords(valueMap));
     }
 
