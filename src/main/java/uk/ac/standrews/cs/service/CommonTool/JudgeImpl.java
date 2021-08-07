@@ -8,9 +8,9 @@ import uk.ac.standrews.cs.Pojo.details.PersonalDetails;
 import uk.ac.standrews.cs.Pojo.familyTree.FamilyTree;
 import uk.ac.standrews.cs.service.Search.QuerySet;
 import uk.ac.standrews.cs.service.Search.QuerySetIml;
-
 import java.util.HashMap;
 import java.util.Map;
+
 /**
  * @program: backEnd
  * @description:
@@ -133,16 +133,6 @@ public class JudgeImpl implements Judge {
         familyTree.getCategory();
         familyTree.getPointer(valueMap);
         return familyTree;
-    }
-
-
-
-    @Override
-    public void getParams(Map<String, String> map) {
-        Map<String,String> setMap = new HashMap<>();
-        setMap.put("standardised_ID", map.get("standardised_id"));
-        setMap.put("storr_ID", map.get("storr_id"));
-        setMap.put("original_ID", map.get("original_id"));
     }
 
     @Override

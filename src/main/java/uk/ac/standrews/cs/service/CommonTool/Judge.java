@@ -1,7 +1,5 @@
 package uk.ac.standrews.cs.service.CommonTool;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import uk.ac.standrews.cs.Pojo.details.PersonalDetails;
 import uk.ac.standrews.cs.Pojo.familyTree.FamilyTree;
 import java.util.Map;
@@ -12,7 +10,6 @@ public interface Judge {
 
     FamilyTree setTree(Map<String, String> params) throws Exception;
 
-    void getParams(Map<String, String> map);
 
     PersonalDetails setDetails(Map<String, String> params) throws Exception;
 }
