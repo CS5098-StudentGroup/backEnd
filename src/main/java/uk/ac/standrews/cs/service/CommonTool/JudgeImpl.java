@@ -66,7 +66,6 @@ public class JudgeImpl implements Judge {
                 //die married birth
                 switch (valueMap.get("gender")) {
                     case "M": finalJson = neo4jService.printJson(querySet.getDetailsAboutBrideAndBirth(valueMap));
-                        System.out.println(finalJson);
                         break;
                     case "F": finalJson = neo4jService.printJson(querySet.getDetailsAboutGroomAndBirth(valueMap)); break;
                 }
@@ -99,7 +98,6 @@ public class JudgeImpl implements Judge {
                 switch (params.get("gender")) {
                     case "male":
                         finalJson = neo4jService.printJson(querySet.getDeathGroom(map));
-                        System.out.println(finalJson);
                         break;
                     case "female":
                         finalJson = neo4jService.printJson(querySet.getDeathBride(map));
@@ -143,7 +141,6 @@ public class JudgeImpl implements Judge {
             valueMap.put("death", params.get("Death"));
         }
         else {valueMap.put("death", "");}
-
         personalDetails.getBirth(valueMap);
         personalDetails.getDeath(valueMap);
         personalDetails.getMarriage(valueMap);

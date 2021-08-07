@@ -1,6 +1,8 @@
 package uk.ac.standrews.cs.Pojo.familyTree;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.service.Details.GetInfo;
@@ -16,6 +18,8 @@ import java.util.Map;
 
 
 @Service
+@Getter
+@Setter
 @NoArgsConstructor
 public class NodePointer {
     @Autowired
@@ -28,21 +32,7 @@ public class NodePointer {
         this.target = target;
     }
 
-    public String getTarget() {
-        return target;
-    }
 
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
 
 
     public NodePointer toMother(Map<String, String> valueMap) throws Exception {

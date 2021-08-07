@@ -7,7 +7,6 @@ import uk.ac.standrews.cs.Pojo.details.DeathRecords;
 import uk.ac.standrews.cs.Pojo.details.MarriageRecords;
 import uk.ac.standrews.cs.service.Details.DetailsService;
 import uk.ac.standrews.cs.service.CommonTool.Neo4jService;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

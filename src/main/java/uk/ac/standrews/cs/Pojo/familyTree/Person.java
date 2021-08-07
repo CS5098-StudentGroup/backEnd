@@ -53,7 +53,7 @@ public class Person {
         this.c = c;
     }
 
-    //通过枚举调取category的类型
+    /*//通过枚举调取category的类型
     public Category getCategory(int category) {
         switch (category) {
             case 0:
@@ -73,5 +73,5 @@ public class Person {
             default: throw new RuntimeException("cannot process" + category);
         }
         return c;
-    }
+    }*/
 }

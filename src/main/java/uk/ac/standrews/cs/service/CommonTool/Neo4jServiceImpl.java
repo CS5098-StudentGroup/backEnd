@@ -74,7 +74,7 @@ public class Neo4jServiceImpl implements Neo4jService {
     }
 
     @Override
-    public List<Person> getAll(String query, int i) throws Exception {
+    public List<Person> getAll(String query, int i, String father, String mother, String self) throws Exception {
         List<Person> personList = new ArrayList<>();
         Map<String, String> getDetails = new HashMap<>();
         Result result = session.run(query);
@@ -91,13 +91,54 @@ public class Neo4jServiceImpl implements Neo4jService {
                     getDetails.put(key, getValue[getValue.length - 1]);
                 }
             } switch (i) {
-                case 4: personList.add(new Person(getDetails.get("Name"), "F", i)); break;
-                case 5: personList.add(new Person(getDetails.get("Name"), "M", i)); break;
-                case 6: personList.add(new Person(getDetails.get("Name"), getDetails.get("gender"), i)); break;
+                //sibling
+                case 3:
+                int s = 0;
+                int count = 1;
+                    for (Person person1 : personList) {
+                        if (person1.getName().equals(getDetails.get("Name"))) {
+                            s++;
+                        }
+                    }
+                    if(getDetails.get("Name").equals(father) || getDetails.get("Name").equals(mother) || s>0 || self.equals(getDetails.get("Name"))) {
+                        if(s>0|| self.equals(getDetails.get("Name"))) {personList.add(new Person(getDetails.get("Name")+ "(sibling"+count+")", getDetails.get("gender"), 3));
+                        count++;}
+                        else {personList.add(new Person(getDetails.get("Name")+ "(sibling)", getDetails.get("gender"), 3));}
+                    }
+                    else {if(s>0) {personList.add(new Person(getDetails.get("Name")+ "(sibling"+count+")", getDetails.get("gender"), 3));
+                        count++;}
+                    else {personList.add(new Person(getDetails.get("Name"), getDetails.get("gender"), 3));}}
+                break;
+
+                    //children
+                case 6: int c = 0;
+                    int number = 1;
+                    for (Person person1 : personList) {
+                        if (person1.getName().equals(getDetails.get("Name"))) {
+                            c++;
+                        }
+                    }
+                    if(getDetails.get("Name").equals(father)|| c>0 ) {
+                        if(c>0) {personList.add(new Person(getDetails.get("Name")+ "(children"+number+")", getDetails.get("gender"), 6));
+                            number++;}
+                        else {personList.add(new Person(getDetails.get("Name")+ "(children)", getDetails.get("gender"), 6));}
+                    }
+                    else {if(c>0) {personList.add(new Person(getDetails.get("Name")+ "(children"+number+")", getDetails.get("gender"), 6));
+                        number++;}
+                    else {personList.add(new Person(getDetails.get("Name"), getDetails.get("gender"), 6));}}break;
+
+
+
+                case 4: if(getDetails.get("Name").equals(father) || getDetails.get("Name").equals(mother)) {personList.add(new Person(getDetails.get("Name") + "(Bride)", "F", i));}
+                else {personList.add(new Person(getDetails.get("Name"), "F", i));} break;
+
+                case 5: if(getDetails.get("Name").equals(father) || getDetails.get("Name").equals(mother)) {personList.add(new Person(getDetails.get("Name") + "(Groom)", "M", i));}
+                else {personList.add(new Person(getDetails.get("Name"), "M", i));} break;
             }
         }
         return personList;
     }
+
 
     @Override
     public List<MarriageRecords> getMarriage(String query)throws Exception {
