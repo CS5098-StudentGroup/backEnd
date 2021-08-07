@@ -56,7 +56,7 @@ public class DetailsService {
         query.append(getAttribute(map));
         query.append(" RETURN ");
         query.append(getMarriageReturn(map));
-
+        System.out.println(query.toString());
         return neo4jService.getMarriage(query.toString());
     }
 
