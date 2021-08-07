@@ -33,5 +33,15 @@ public class IDController {
     public PersonalDetails getDeathID(@RequestParam Map<String, String> params) throws Exception {
         return idSearch.setDetailsByDeathId(params);
     }
+    @ResponseBody
+    @GetMapping("/getMarriageByGroomId")
+    public PersonalDetails getMarriageGroomID(@RequestParam Map<String, String> params) throws Exception {
+        return idSearch.setDetailsByMarriageGroomId(params);
+    }
+    @ResponseBody
+    @GetMapping("/getMarriageByBrideId")
+    public PersonalDetails getMarriageBrideID(@RequestParam Map<String, String> params) throws Exception {
+        return idSearch.setDetailsByMarriageBrideId(params);
+    }
 
 }

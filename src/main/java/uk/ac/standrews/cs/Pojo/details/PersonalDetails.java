@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.service.Details.DetailsService;
 import uk.ac.standrews.cs.service.GetID.GetBirthById;
 import uk.ac.standrews.cs.service.GetID.GetDeathById;
+import uk.ac.standrews.cs.service.GetID.GetMarriageById;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +33,14 @@ public class PersonalDetails {
     GetBirthById detailsServiceByBirthId;
     @Autowired
     GetDeathById detailsServiceByDeathId;
+    @Autowired
+    GetMarriageById detailsServiceByMarriageId;
+
 
     BirthRecords birthRecords;
     DeathRecords deathRecords;
     List<MarriageRecords> marriageRecordsList = new ArrayList<>();
+    MarriageRecords marriageRecords;
 
 
     public void getBirth(Map<String, String> valueMap) throws Exception {
@@ -47,6 +52,7 @@ public class PersonalDetails {
     }
 
     public void getMarriage(Map<String, String> valueMap) throws Exception {
+        marriageRecordsList.clear();
         marriageRecordsList.addAll(detailsService.getMarriageRecords(valueMap));
     }
 
@@ -62,6 +68,7 @@ public class PersonalDetails {
     }
 
     public void getMarriageByBirthId(Map<String, String> valueMap) throws Exception {
+        marriageRecordsList.clear();
         marriageRecordsList.addAll(detailsServiceByBirthId.getMarriageById(valueMap));
     }
 
@@ -79,7 +86,36 @@ public class PersonalDetails {
     }
 
     public void getMarriageByDeathId(Map<String, String> valueMap) throws Exception {
+        marriageRecordsList.clear();
         marriageRecordsList.addAll(detailsServiceByDeathId.getMarriageByDeathId(valueMap));
     }
 
+
+
+
+    public void getBirthByMarriageGroomId(Map<String, String> valueMap) throws Exception {
+        birthRecords = detailsServiceByMarriageId.getBirthByMarriageGroomId(valueMap);
+    }
+
+    public void getDeathByMarriageGroomId(Map<String, String> valueMap) throws Exception {
+        deathRecords = detailsServiceByMarriageId.getDeathByMarriageGroomId(valueMap);
+    }
+
+    public void getMarriageByMarriageGroomId(Map<String, String> valueMap) throws Exception {
+        marriageRecordsList.clear();
+        marriageRecordsList.addAll(detailsServiceByMarriageId.getMarriageByMarriageGroomId(valueMap));
+    }
+
+    public void getBirthByMarriageBrideId(Map<String, String> valueMap) throws Exception {
+        birthRecords = detailsServiceByMarriageId.getBirthByMarriageBrideId(valueMap);
+    }
+
+    public void getDeathByMarriageBrideId(Map<String, String> valueMap) throws Exception {
+        deathRecords = detailsServiceByMarriageId.getDeathByMarriageBrideId(valueMap);
+    }
+
+    public void getMarriageByMarriageBrideId(Map<String, String> valueMap) throws Exception {
+        marriageRecordsList.clear();
+        marriageRecordsList.addAll(detailsServiceByMarriageId.getMarriageByMarriageBrideId(valueMap));
+    }
 }

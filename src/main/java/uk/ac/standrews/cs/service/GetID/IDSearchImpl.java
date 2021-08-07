@@ -61,6 +61,32 @@ public class IDSearchImpl implements IDSearch {
         return personalDetails;
     }
 
+    @Override
+    public PersonalDetails setDetailsByMarriageGroomId(Map<String, String> params) throws Exception {
+        valueMap.put("standardised_ID", params.get("standardised_id"));
+        valueMap.put("storr_ID", params.get("storr_id"));
+        valueMap.put("original_ID", params.get("original_id"));
+
+        personalDetails.getBirthByMarriageGroomId(valueMap);
+        personalDetails.getDeathByMarriageGroomId(valueMap);
+        personalDetails.getMarriageByMarriageGroomId(valueMap);
+
+        return personalDetails;
+    }
+
+    @Override
+    public PersonalDetails setDetailsByMarriageBrideId(Map<String, String> params) throws Exception {
+        valueMap.put("standardised_ID", params.get("standardised_id"));
+        valueMap.put("storr_ID", params.get("storr_id"));
+        valueMap.put("original_ID", params.get("original_id"));
+
+        personalDetails.getBirthByMarriageBrideId(valueMap);
+        personalDetails.getDeathByMarriageBrideId(valueMap);
+        personalDetails.getMarriageByMarriageBrideId(valueMap);
+
+        return personalDetails;
+    }
+
 
     @Override
     public StringBuilder setJson(Map<String, String> map, Map<String, String> params) throws Exception {

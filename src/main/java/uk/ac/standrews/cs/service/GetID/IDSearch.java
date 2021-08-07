@@ -14,5 +14,7 @@ public interface IDSearch {
 
     PersonalDetails setDetailsByDeathId(Map<String, String> params) throws Exception;
 
+    PersonalDetails setDetailsByMarriageGroomId(Map<String, String> params) throws Exception;
 
+    PersonalDetails setDetailsByMarriageBrideId(Map<String, String> params) throws Exception;
 }
