@@ -18,22 +18,54 @@ import java.util.Map;
  * @create: 2021-08-06 20:42
  **/
 @Service
-public class GetFatherQuery {
+public class GetSpouseFatherQuery {
     @Autowired
     Neo4jService neo4jService;
     Map<String, String> detail = new HashMap<>();
 
-    public String getFatherID(Map<String, String> map) throws Exception {
+    public Map<String,String> getGender(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
-        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_FATHER_GROOM_IDENTITY]->(m:Marriage) ");
-        query.append(" MATCH(c:Birth)-[a:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m) ");
+        query.append("MATCH (b:Birth) ");
         query.append(" WHERE b.STANDARDISED_ID=").append('"').append(map.get("standardised_ID")).append('"');
-        query.append(" RETURN c.STANDARDISED_ID AS standardised_ID");
+        query.append(" RETURN b.SEX AS gender");
         System.out.println(query);
         detail = neo4jService.getPerson(query.toString());
-        System.out.println(detail);
-        return detail.get("standardised_ID");
+        map.putAll(detail);
+        System.out.println(map.get("standardised_ID"));
+        return map;
     }
+
+    public Map<String,String> getSpouseMarriageId(Map<String, String> map) throws Exception {
+        StringBuilder query = new StringBuilder();
+        Map<String,String> gender = getGender(map);
+
+        switch (gender.get("gender")) {
+            case "M": query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_BRIDE_IDENTITY]->(m:Marriage) ");break;
+            case "F":query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m:Marriage) ");break;
+        }
+        query.append(" WHERE m.STANDARDISED_ID=").append('"').append(gender.get("marriage_standardised_ID")).append('"');
+        query.append(" RETURN ");
+        query.append("b.STANDARDISED_ID AS Spouse_Marriage_id");
+        detail=neo4jService.getPerson(query.toString());
+        System.out.println(detail);
+        map.putAll(detail);
+        return map;
+    }
+
+    public String getFatherID(Map<String, String> map) throws Exception {
+        StringBuilder query = new StringBuilder();
+        Map<String,String> spouseMarriageId = getSpouseMarriageId(map);
+        query.append("MATCH (b:Birth)-[:GROUND_TRUTH_FATHER_GROOM_IDENTITY]->(m:Marriage) ");
+        query.append(" MATCH (c:Birth)-[:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m) ");
+        query.append(" WHERE b.STANDARDISED_ID=").append('"').append(spouseMarriageId.get("Spouse_Marriage_id")).append('"');
+        query.append(" AND m.STANDARDISED_ID=").append('"').append(spouseMarriageId.get("marriage_standardised_ID")).append('"');
+        query.append(" RETURN c.STANDARDISED_ID AS father_standardised_ID");
+        System.out.println(query);
+        detail = neo4jService.getPerson(query.toString());
+        System.out.println(detail.get("father_standardised_ID"));
+        return detail.get("father_standardised_ID");
+    }
+
     public BirthRecords getBirthRecords(Map<String, String> map) throws Exception {
         String mID = getFatherID(map);
         StringBuilder query = new StringBuilder();
@@ -77,22 +109,13 @@ public class GetFatherQuery {
         return query.toString();
     }
 
-
-//    private static String getMarriageReturn() {
-//        return "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, m.PLACE_OF_MARRIAGE AS MarriagePlace, m.STANDARDISED_ID AS marriage_StandardisedID," +
-//                "m.STORR_ID AS marriage_StorrID, m.YEAR_OF_REGISTRATION AS MarriageRegistration_Year" +
-//                ", m.GROOM_ADDRESS AS SPOUSE_ADDRESS, m.GROOM_SURNAME AS SPOUSE_SURNAME, m.GROOM_FORENAME AS SPOUSE_FORENAME, m.GROOM_IDENTITY AS SPOUSE_IDENTITY," +
-//                "m.GROOM_OCCUPATION AS SPOUSE_OCCUPATION, m.GROOM_BIRTH_RECORD_IDENTITY AS SPOUSE_BIRTH_RECORD_IDENTITY, m.GROOM_MARITAL_STATUS AS SPOUSE_MARITAL_STATUS,  m.GROOM_FATHER_DECEASED AS SPOUSE_FATHER_DECEASED," +
-//                "m.GROOM_FATHER_FORENAME AS SPOUSE_FATHER_FORENAME, m.GROOM_FATHER_SURNAME AS SPOUSE_FATHER_SURNAME, m.GROOM_FATHER_IDENTITY AS SPOUSE_FATHER_IDENTITY, m.GROOM_FATHER_OCCUPATION AS SPOUSE_FATHER_OCCUPATION, " +
-//                "m.GROOM_MOTHER_DECEASED AS SPOUSE_MOTHER_DECEASED, m.GROOM_MOTHER_FORENAME AS SPOUSE_MOTHER_FORENAME, m.GROOM_MOTHER_MAIDEN_SURNAME AS SPOUSE_MOTHER_MAIDEN_SURNAME, m.GROOM_MOTHER_IDENTITY AS SPOUSE_MOTHER_IDENTITY";
-//    }
     private static String getMarriageReturn() {
         return "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, m.PLACE_OF_MARRIAGE AS MarriagePlace, m.STANDARDISED_ID AS marriage_StandardisedID," +
                 "m.STORR_ID AS marriage_StorrID, m.YEAR_OF_REGISTRATION AS MarriageRegistration_Year" +
-                ", m.BRIDE_ADDRESS AS SPOUSE_ADDRESS, m.BRIDE_SURNAME AS SPOUSE_SURNAME, m.BRIDE_FORENAME AS SPOUSE_FORENAME, m.BRIDE_IDENTITY AS SPOUSE_IDENTITY," +
-                "m.BRIDE_OCCUPATION AS SPOUSE_OCCUPATION, m.BRIDE_BIRTH_RECORD_IDENTITY AS SPOUSE_BIRTH_RECORD_IDENTITY, m.BRIDE_MARITAL_STATUS AS SPOUSE_MARITAL_STATUS, m.BRIDE_FATHER_DECEASED AS SPOUSE_FATHER_DECEASED, " +
-                "m.BRIDE_FATHER_FORENAME AS SPOUSE_FATHER_FORENAME, m.BRIDE_FATHER_SURNAME AS SPOUSE_FATHER_SURNAME, m.BRIDE_FATHER_IDENTITY AS SPOUSE_FATHER_IDENTITY, m.BRIDE_FATHER_OCCUPATION AS SPOUSE_FATHER_OCCUPATION," +
-                "m.BRIDE_MOTHER_DECEASED AS SPOUSE_MOTHER_DECEASED, m.BRIDE_MOTHER_FORENAME AS SPOUSE_MOTHER_FORENAME, m.BRIDE_MOTHER_MAIDEN_SURNAME AS SPOUSE_MOTHER_MAIDEN_SURNAME, m.BRIDE_MOTHER_IDENTITY AS SPOUSE_MOTHER_IDENTITY";
-
+                ", m.GROOM_ADDRESS AS SPOUSE_ADDRESS, m.GROOM_SURNAME AS SPOUSE_SURNAME, m.GROOM_FORENAME AS SPOUSE_FORENAME, m.GROOM_IDENTITY AS SPOUSE_IDENTITY," +
+                "m.GROOM_OCCUPATION AS SPOUSE_OCCUPATION, m.GROOM_BIRTH_RECORD_IDENTITY AS SPOUSE_BIRTH_RECORD_IDENTITY, m.GROOM_MARITAL_STATUS AS SPOUSE_MARITAL_STATUS,  m.GROOM_FATHER_DECEASED AS SPOUSE_FATHER_DECEASED," +
+                "m.GROOM_FATHER_FORENAME AS SPOUSE_FATHER_FORENAME, m.GROOM_FATHER_SURNAME AS SPOUSE_FATHER_SURNAME, m.GROOM_FATHER_IDENTITY AS SPOUSE_FATHER_IDENTITY, m.GROOM_FATHER_OCCUPATION AS SPOUSE_FATHER_OCCUPATION, " +
+                "m.GROOM_MOTHER_DECEASED AS SPOUSE_MOTHER_DECEASED, m.GROOM_MOTHER_FORENAME AS SPOUSE_MOTHER_FORENAME, m.GROOM_MOTHER_MAIDEN_SURNAME AS SPOUSE_MOTHER_MAIDEN_SURNAME, m.GROOM_MOTHER_IDENTITY AS SPOUSE_MOTHER_IDENTITY";
     }
+
 }
