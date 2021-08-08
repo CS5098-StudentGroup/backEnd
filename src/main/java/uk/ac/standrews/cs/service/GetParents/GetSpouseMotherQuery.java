@@ -19,24 +19,55 @@ import java.util.Map;
  **/
 
 @Service
-public class GetMotherQuery {
+public class GetSpouseMotherQuery {
     @Autowired
     Neo4jService neo4jService;
     Map<String, String> detail = new HashMap<>();
 
+    public Map<String,String> getGender(Map<String, String> map) throws Exception {
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (b:Birth) ");
+        query.append(" WHERE b.STANDARDISED_ID=").append('"').append(map.get("standardised_ID")).append('"');
+        query.append(" RETURN b.SEX AS gender");
+        System.out.println(query);
+        detail = neo4jService.getPerson(query.toString());
+        map.putAll(detail);
+        System.out.println(map.get("standardised_ID"));
+        return map;
+    }
+
+    public Map<String,String> getSpouseMarriageId(Map<String, String> map) throws Exception {
+        StringBuilder query = new StringBuilder();
+        Map<String,String> gender = getGender(map);
+
+        switch (gender.get("gender")) {
+            case "M": query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_BRIDE_IDENTITY]->(m:Marriage) ");break;
+            case "F":query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m:Marriage) ");break;
+        }
+        query.append(" WHERE m.STANDARDISED_ID=").append('"').append(gender.get("marriage_standardised_ID")).append('"');
+        query.append(" RETURN ");
+        query.append("b.STANDARDISED_ID AS Spouse_Marriage_id");
+        detail=neo4jService.getPerson(query.toString());
+        System.out.println(detail);
+        map.putAll(detail);
+        return map;
+    }
+
     public String getMotherID(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
+        Map<String,String> spouseMarriageId = getSpouseMarriageId(map);
         query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_MOTHER_IDENTITY]->(child:Birth) ");
-        query.append(getAttribute(map));
-        query.append(" RETURN b.STANDARDISED_ID AS standardised_ID");
+        query.append(getAttribute(spouseMarriageId));
+        query.append(" RETURN b.STANDARDISED_ID AS mother_standardised_ID");
         detail = neo4jService.getPerson(query.toString());
-        return detail.get("standardised_ID");
+        return detail.get("mother_standardised_ID");
     }
     public BirthRecords getBirthRecords(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         String mID=getMotherID(map);
         query.append("MATCH (b:Birth) ");
-        query.append("where b.STANDARDISED_ID=").append('"').append(mID).append('"');
+        query.append(" WHERE");
+        query.append(" b.STANDARDISED_ID=").append('"').append(mID).append('"');
         query.append(" RETURN ");
         query.append(DetailsService.getBirthReturn());
         detail = neo4jService.getPerson(query.toString());
@@ -72,11 +103,11 @@ public class GetMotherQuery {
     private static String getAttribute(Map<String, String> attribute) {
         StringBuilder query = new StringBuilder();
         query.append(" WHERE");
-        query.append(" child.STANDARDISED_ID=").append('"').append(attribute.get("standardised_ID")).append('"');
+        query.append(" child.STANDARDISED_ID=").append('"').append(attribute.get("Spouse_Marriage_id")).append('"');
         return query.toString();
     }
 
-//    private static String getMarriageReturn() {
+    //    private static String getMarriageReturn() {
 //        return "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, m.PLACE_OF_MARRIAGE AS MarriagePlace, m.STANDARDISED_ID AS marriage_StandardisedID," +
 //                "m.STORR_ID AS marriage_StorrID, m.YEAR_OF_REGISTRATION AS MarriageRegistration_Year" +
 //                ", m.BRIDE_ADDRESS AS SPOUSE_ADDRESS, m.BRIDE_SURNAME AS SPOUSE_SURNAME, m.BRIDE_FORENAME AS SPOUSE_FORENAME, m.BRIDE_IDENTITY AS SPOUSE_IDENTITY," +

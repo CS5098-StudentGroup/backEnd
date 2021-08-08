@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.ac.standrews.cs.Pojo.Parents.Father;
 import uk.ac.standrews.cs.Pojo.Parents.Mother;
 import uk.ac.standrews.cs.Pojo.Parents.SpouseFather;
+import uk.ac.standrews.cs.Pojo.Parents.SpouseMother;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,9 @@ public class ParentsController {
     Father father = new Father();
     @Autowired
     SpouseFather spousefather = new SpouseFather();
+    @Autowired
+    SpouseMother spouseMother = new SpouseMother();
+
 
     Map<String, String> valueMap = new HashMap<>();
 
@@ -64,6 +68,18 @@ public class ParentsController {
         spousefather.getSpouseFatherDeath(valueMap);
         spousefather.getSpouseFatherMarriage(valueMap);
         return spousefather;
+
+    }
+
+    @RequestMapping("/getSpouseMother")
+    public @ResponseBody
+    SpouseMother getSpouseMother(@RequestParam Map<String, String> params) throws Exception {
+        valueMap.put("standardised_ID", params.get("standardised_id"));
+        valueMap.put("marriage_standardised_ID", params.get("marriage_standardised_id"));
+        spouseMother.getSpouseMotherBirth(valueMap);
+        spouseMother.getSpouseMotherDeath(valueMap);
+        spouseMother.getSpouseMotherMarriage(valueMap);
+        return spouseMother;
 
     }
 }
