@@ -79,7 +79,7 @@ public class GetMarriageById {
         query.append("MATCH (m:Marriage) ");
         query.append(getIdAttribute(groomBrideIdentity));
         query.append(" RETURN ");
-        query.append(getMarriageGroomReturn(groomBrideIdentity));
+        query.append(getMarriageByMarriageBrideId(groomBrideIdentity));
         return neo4jService.getMarriage(query.toString());
 
     }
@@ -90,7 +90,7 @@ public class GetMarriageById {
         query.append("MATCH (m:Marriage) ");
         query.append(getIdAttribute(brideBrideIdentity));
         query.append(" RETURN ");
-        query.append(getMarriageBrideReturn(brideBrideIdentity));
+        query.append(getMarriageByMarriageGroomId(brideBrideIdentity));
         detail = neo4jService.getPerson(query.toString());
         return neo4jService.getMarriage(query.toString());
     }

@@ -58,7 +58,6 @@ public class GetSpouseFatherQuery {
         query.append("MATCH (b:Birth)-[:GROUND_TRUTH_FATHER_GROOM_IDENTITY]->(m:Marriage) ");
         query.append(" MATCH (c:Birth)-[:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m) ");
         query.append(" WHERE b.STANDARDISED_ID=").append('"').append(spouseMarriageId.get("Spouse_Marriage_id")).append('"');
-        query.append(" AND m.STANDARDISED_ID=").append('"').append(spouseMarriageId.get("marriage_standardised_ID")).append('"');
         query.append(" RETURN c.STANDARDISED_ID AS father_standardised_ID");
         System.out.println(query);
         detail = neo4jService.getPerson(query.toString());
