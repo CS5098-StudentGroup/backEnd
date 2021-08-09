@@ -37,7 +37,7 @@ public class IDSearchImpl implements IDSearch {
 
     @Override
     public PersonalDetails setDetailsByBirthId(Map<String, String> params) throws Exception {
-        valueMap.put("standardised_ID", params.get("standardised_id"));
+        valueMap.put("standardised_ID", params.get("standardised_id_birth"));
         valueMap.put("storr_ID", params.get("storr_id"));
         valueMap.put("original_ID", params.get("original_id"));
 
@@ -50,7 +50,7 @@ public class IDSearchImpl implements IDSearch {
 
     @Override
     public PersonalDetails setDetailsByDeathId(Map<String, String> params) throws Exception {
-        valueMap.put("standardised_ID", params.get("standardised_id"));
+        valueMap.put("standardised_ID", params.get("standardised_id_death"));
         valueMap.put("storr_ID", params.get("storr_id"));
         valueMap.put("original_ID", params.get("original_id"));
 
@@ -63,7 +63,7 @@ public class IDSearchImpl implements IDSearch {
 
     @Override
     public PersonalDetails setDetailsByMarriageGroomId(Map<String, String> params) throws Exception {
-        valueMap.put("standardised_ID", params.get("standardised_id"));
+        valueMap.put("standardised_ID", params.get("standardised_id_marriageGroom"));
         valueMap.put("storr_ID", params.get("storr_id"));
         valueMap.put("original_ID", params.get("original_id"));
 
@@ -76,7 +76,7 @@ public class IDSearchImpl implements IDSearch {
 
     @Override
     public PersonalDetails setDetailsByMarriageBrideId(Map<String, String> params) throws Exception {
-        valueMap.put("standardised_ID", params.get("standardised_id"));
+        valueMap.put("standardised_ID", params.get("standardised_id_marriageBride"));
         valueMap.put("storr_ID", params.get("storr_id"));
         valueMap.put("original_ID", params.get("original_id"));
 
@@ -99,15 +99,6 @@ public class IDSearchImpl implements IDSearch {
         setMap.put("standardised_ID", map.get("standardised_id"));
         setMap.put("storr_ID", map.get("storr_id"));
         setMap.put("original_Id", map.get("original_id"));
-    }
-
-    public Map<String,String> getGender(Map<String, String> map) throws Exception {
-        StringBuilder query = new StringBuilder();
-        query.append("MATCH (b:Birth) ");
-        query.append(GetBirthById.getIdAttribute(map));
-        query.append(" RETURN b.SEX");
-        detail = neo4jService.getPerson(query.toString());
-        return detail;
     }
 
 }
