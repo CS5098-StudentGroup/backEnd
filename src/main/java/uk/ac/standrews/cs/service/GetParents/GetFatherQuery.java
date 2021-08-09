@@ -36,12 +36,11 @@ public class GetFatherQuery {
     }
     public BirthRecords getBirthRecords(Map<String, String> map) throws Exception {
         String mID = getFatherID(map);
-        StringBuilder query = new StringBuilder();
-        query.append("MATCH (b:Birth) ");
-        query.append(getFatherAttribute(mID));
-        query.append(" RETURN ");
-        query.append(DetailsService.getBirthReturn());
-        detail = neo4jService.getPerson(query.toString());
+        String query = "MATCH (b:Birth) " +
+                getFatherAttribute(mID) +
+                " RETURN " +
+                DetailsService.getBirthReturn();
+        detail = neo4jService.getPerson(query);
         return new BirthRecords(detail.get("surName"), detail.get("foreName"), detail.get("gender"), detail.get("birthDate"), detail.get("standardised_ID")
                 , detail.get("Address"), detail.get("birth_Storr_ID"), detail.get("birth_OriginalID"), detail.get("Changed_foreName"), detail.get("Changed_surName"), detail.get("Child_identity"), detail.get("Father_foreName")
                 , detail.get("Father_surName"), detail.get("Father_occupation"), detail.get("Mother_identity"), detail.get("Mother_surName"), detail.get("Mother_foreName"), detail.get("Mother_occupation")
@@ -50,31 +49,27 @@ public class GetFatherQuery {
 
     public DeathRecords getDeathRecords(Map<String, String> map) throws Exception {
         String mID = getFatherID(map);
-        StringBuilder query = new StringBuilder();
-        query.append("MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b:Birth) ");
-        query.append(" WHERE b.STANDARDISED_ID=").append('"').append(mID).append('"');
-        query.append(" RETURN ");
-        query.append(DetailsService.getDeathReturn());
-        detail = neo4jService.getPerson(query.toString());
+        String query = "MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b:Birth) " +
+                " WHERE b.STANDARDISED_ID=" + '"' + mID + '"' +
+                " RETURN " +
+                DetailsService.getDeathReturn();
+        detail = neo4jService.getPerson(query);
         return new DeathRecords(detail.get("deathDate"), detail.get("age_at_death"), detail.get("Deceased_Identity"), detail.get("death_StorrID"), detail.get("Marital_Status"), detail.get("Death_Place"),
                 detail.get("DeathRegistration_Year"), detail.get("death_StandardisedID"), detail.get("Birth_Record_Identity"));
     }
 
     public List<MarriageRecords> getMarriageRecords(Map<String, String> map) throws Exception {
         String mID = getFatherID(map);
-        StringBuilder query = new StringBuilder();
-        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m:Marriage) ");
-        query.append(" WHERE b.STANDARDISED_ID=").append('"').append(mID).append('"');
-        query.append(" RETURN ");
-        query.append(getMarriageReturn());
-        return neo4jService.getMarriage(query.toString());
+        String query = "MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m:Marriage) " +
+                " WHERE b.STANDARDISED_ID=" + '"' + mID + '"' +
+                " RETURN " +
+                getMarriageReturn();
+        return neo4jService.getMarriage(query);
     }
 
     private static String getFatherAttribute(String ID) {
-        StringBuilder query = new StringBuilder();
-        query.append(" WHERE");
-        query.append(" b.STANDARDISED_ID=").append('"').append(ID).append('"');
-        return query.toString();
+        return " WHERE" +
+                " b.STANDARDISED_ID=" + '"' + ID + '"';
     }
 
 

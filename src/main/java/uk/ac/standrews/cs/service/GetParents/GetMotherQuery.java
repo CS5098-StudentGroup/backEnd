@@ -25,11 +25,10 @@ public class GetMotherQuery {
     Map<String, String> detail = new HashMap<>();
 
     public String getMotherID(Map<String, String> map) throws Exception {
-        StringBuilder query = new StringBuilder();
-        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_MOTHER_IDENTITY]->(child:Birth) ");
-        query.append(getAttribute(map));
-        query.append(" RETURN b.STANDARDISED_ID AS standardised_ID");
-        detail = neo4jService.getPerson(query.toString());
+        String query = "MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_MOTHER_IDENTITY]->(child:Birth) " +
+                getAttribute(map) +
+                " RETURN b.STANDARDISED_ID AS standardised_ID";
+        detail = neo4jService.getPerson(query);
         return detail.get("standardised_ID");
     }
     public BirthRecords getBirthRecords(Map<String, String> map) throws Exception {
@@ -48,12 +47,11 @@ public class GetMotherQuery {
 
     public DeathRecords getDeathRecords(Map<String, String> map) throws Exception {
         String mID = getMotherID(map);
-        StringBuilder query = new StringBuilder();
-        query.append("MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b:Birth) ");
-        query.append(" WHERE b.STANDARDISED_ID=").append('"').append(mID).append('"');
-        query.append(" RETURN ");
-        query.append(DetailsService.getDeathReturn());
-        detail = neo4jService.getPerson(query.toString());
+        String query = "MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b:Birth) " +
+                " WHERE b.STANDARDISED_ID=" + '"' + mID + '"' +
+                " RETURN " +
+                DetailsService.getDeathReturn();
+        detail = neo4jService.getPerson(query);
         return new DeathRecords(detail.get("deathDate"), detail.get("age_at_death"), detail.get("Deceased_Identity"), detail.get("death_StorrID"), detail.get("Marital_Status"), detail.get("Death_Place"),
                 detail.get("DeathRegistration_Year"), detail.get("death_StandardisedID"), detail.get("Birth_Record_Identity"));
     }
@@ -70,10 +68,8 @@ public class GetMotherQuery {
     }
 
     private static String getAttribute(Map<String, String> attribute) {
-        StringBuilder query = new StringBuilder();
-        query.append(" WHERE");
-        query.append(" child.STANDARDISED_ID=").append('"').append(attribute.get("standardised_ID")).append('"');
-        return query.toString();
+        return " WHERE" +
+                " child.STANDARDISED_ID=" + '"' + attribute.get("standardised_ID") + '"';
     }
 
 //    private static String getMarriageReturn() {
