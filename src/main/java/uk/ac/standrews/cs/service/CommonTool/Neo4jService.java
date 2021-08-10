@@ -14,4 +14,5 @@ public interface Neo4jService {
     public List<Person> getAll(String query, int i, String father, String mother, String self) throws Exception;
 
     public List<MarriageRecords> getMarriage(String query) throws Exception;
+
 }

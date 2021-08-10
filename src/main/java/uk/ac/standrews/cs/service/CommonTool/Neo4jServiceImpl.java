@@ -171,12 +171,31 @@ public class Neo4jServiceImpl implements Neo4jService {
         StringBuilder s = new StringBuilder("[{}]");
         if (s1.toString().equals("[]") && s2.toString().equals("[]")) {
             return s;
-        } else {
+        } else if(s1.toString().equals("[]")) {return s2;}
+        else if (s2.toString().equals("[]")) {return s1; }
+        else{
             s1.deleteCharAt(s1.length() - 1);
             s2.deleteCharAt(0);
             s1.append(",");
             return s1.append(s2);
         }
     }
+
+    public static StringBuilder linkAllJson(StringBuilder s1, StringBuilder s2, StringBuilder s3) {
+        StringBuilder s = new StringBuilder("[{}]");
+        if (s1.toString().equals("[]") && s2.toString().equals("[]")) {
+            return s;
+        } else {
+            s1.deleteCharAt(s1.length() - 1);
+            s2.deleteCharAt(0);
+            s2.deleteCharAt(s2.length() - 1);
+            s1.append(",");
+            s2.append(",");
+            s3.deleteCharAt(0);
+            return s1.append(s2).append(s3);
+        }
+    }
+
+
 
 }

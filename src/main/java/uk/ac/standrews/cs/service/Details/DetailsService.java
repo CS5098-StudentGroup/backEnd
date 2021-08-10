@@ -7,8 +7,6 @@ import uk.ac.standrews.cs.Pojo.details.DeathRecords;
 import uk.ac.standrews.cs.Pojo.details.MarriageRecords;
 import uk.ac.standrews.cs.service.CommonTool.Neo4jService;
 import java.util.*;
-
-
 /**
  * @program: backEnd
  * @description:
@@ -38,7 +36,7 @@ public class DetailsService {
     public DeathRecords getDeathRecords(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b:Birth) ");
-        query.append(getAttribute(map));
+        query.append(getDeathAttribute(map));
         query.append(" RETURN ");
         query.append(getDeathReturn());
         detail = neo4jService.getPerson(query.toString());
@@ -58,7 +56,45 @@ public class DetailsService {
         return neo4jService.getMarriage(query.toString());
     }
 
+    public BirthRecords getOnlyBirthRecords(Map<String, String> map) throws Exception {
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b:Birth) ");
+        query.append(getDeathAttribute(map));
+        query.append(" RETURN ");
+        query.append(getBirthReturn());
+        detail = neo4jService.getPerson(query.toString());
+        System.out.println(detail);
+        return new BirthRecords(detail.get("surName"), detail.get("foreName"), detail.get("gender"), detail.get("birthDate"), detail.get("standardised_ID")
+                , detail.get("Address"), detail.get("birth_Storr_ID"), detail.get("birth_OriginalID"), detail.get("Changed_foreName"), detail.get("Changed_surName"), detail.get("Child_identity"), detail.get("Father_foreName")
+                , detail.get("Father_surName"), detail.get("Father_occupation"), detail.get("Mother_identity"), detail.get("Mother_surName"), detail.get("Mother_foreName"), detail.get("Mother_occupation")
+                , detail.get("Marriage_record_identity1"), detail.get("Marriage_record_identity2"), detail.get("Marriage_record_identity3"), detail.get("Adoption"), detail.get("Father_Identity"), detail.get("Death"));
+    }
 
+
+    public DeathRecords getOnlyDeathRecords(Map<String, String> map) throws Exception {
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (d:Death) ");
+        query.append(getDeathAttribute(map));
+        query.append(" RETURN ");
+        query.append(getDeathReturn());
+        detail = neo4jService.getPerson(query.toString());
+        return new DeathRecords(detail.get("deathDate"), detail.get("age_at_death"), detail.get("Deceased_Identity"), detail.get("death_StorrID"), detail.get("Marital_Status"), detail.get("Death_Place"),
+                detail.get("DeathRegistration_Year"), detail.get("death_StandardisedID"), detail.get("Birth_Record_Identity"));
+    }
+
+
+
+    public List<MarriageRecords> getOnlyMarriageRecords(Map<String, String> map) throws Exception {
+        StringBuilder query = new StringBuilder();
+        switch (map.get("gender")) {
+            case "M": query.append("MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_GROOM_OWN_MARRIAGE]->(m:Marriage) ");break;
+            case "F":query.append("MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BRIDE_OWN_MARRIAGE]->(m:Marriage) ");break;
+        }
+        query.append(getDeathAttribute(map));
+        query.append(" RETURN ");
+        query.append(getMarriageReturn(map));
+        return neo4jService.getMarriage(query.toString());
+    }
 
 
     public static String getBirthReturn() {
@@ -96,6 +132,12 @@ public class DetailsService {
         return r.toString();
     }
 
+    public static String getOnlyDeathReturn() {
+
+        return  "d.DEATH_DAY+'/'+d.DEATH_MONTH+'/'+d.DEATH_YEAR AS deathDate, d.AGE_AT_DEATH AS age_at_death, d.DECEASED_IDENTITY AS Deceased_Identity, d.STORR_ID AS death_StorrID," +
+                "d.MARITAL_STATUS AS Marital_Status, d.PLACE_OF_DEATH AS Death_Place, d.YEAR_OF_REGISTRATION AS DeathRegistration_Year, d.STANDARDISED_ID AS death_StandardisedID, d.BIRTH_RECORD_IDENTITY AS Birth_Record_Identity";
+
+    }
 
     private static void removeEmptyMap(Map<String, String> maps) {
         Set<String> set = maps.keySet();
@@ -127,6 +169,21 @@ public class DetailsService {
         query.delete(query.length()-3, query.length());
         return query.toString();
     }
+
+    private static String getDeathAttribute(Map<String, String> attribute) {
+        StringBuilder query = new StringBuilder();
+        query.append(" WHERE");
+        removeEmptyMap(attribute);
+        attribute.forEach((key, value) -> {
+            switch (key) {
+                case "gender" : query.append(" d.SEX=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "death_standardised_ID" : query.append(" d.STANDARDISED_ID=").append('"').append(value).append('"').append(" AND");break;
+            }
+        });
+        query.delete(query.length()-3, query.length());
+        return query.toString();
+    }
+
 
 
 

@@ -3,6 +3,7 @@ package uk.ac.standrews.cs.Pojo.familyTree;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uk.ac.standrews.cs.service.Details.GetDeathInfo;
 import uk.ac.standrews.cs.service.Details.GetInfo;
 import java.util.*;
 
@@ -19,6 +20,8 @@ public class FamilyTree {
     NodePointer nodePointer;
     @Autowired
     GetInfo getInfo;
+    @Autowired
+    GetDeathInfo getDeathInfo;
 
     List<NodePointer> pointerList;
     List<Person> personList;
@@ -30,34 +33,23 @@ public class FamilyTree {
         categoryList = new ArrayList<>();
     }
 
-    public List<Person> Family(Map<String, String> valueMap) throws Exception {
-        List<Person> family = new ArrayList<>();
-        Person self = getInfo.getSelf(valueMap);
-        Person father = getInfo.getFather(valueMap);
-        Person mother = getInfo.getMother(valueMap);
-        family.add(self);
-        family.add(father);
-        family.add(mother);
-        return family;
-    }
 
     public void getMember(Map<String, String> valueMap) throws Exception {
         personList.clear();
         //self
-        List<Person> familyList = Family(valueMap);
-        if(familyList.get(0).name != null) {personList.add(familyList.get(0));}
+        personList.add(getInfo.getSelf(valueMap));
         //mother
-        if(familyList.get(2).name != null) {personList.add(familyList.get(2));}
+        if(getInfo.getMother(valueMap).getName() != null) {personList.add(getInfo.getMother(valueMap));}
         //bride
         if(!getInfo.getBride(valueMap).isEmpty() && valueMap.get("gender").equals("M")) {personList.addAll(getInfo.getBride(valueMap));}
         //groom
         if(!getInfo.getGroom(valueMap).isEmpty() && valueMap.get("gender").equals("F")) {personList.addAll(getInfo.getGroom(valueMap));}
         //father
-        if(familyList.get(1).name != null) {personList.add(familyList.get(1));}
+        if(getInfo.getFather(valueMap) != null) {personList.add(getInfo.getFather(valueMap));}
         //siblings
         if(!getInfo.getSiblings(valueMap).isEmpty()) {personList.addAll(getInfo.getSiblings(valueMap));}
         if(!getInfo.getChildren(valueMap).isEmpty()) {personList.addAll(getInfo.getChildren(valueMap));}
-        familyList.clear();
+
     }
 
     public void getCategory() {
@@ -73,13 +65,37 @@ public class FamilyTree {
 
     public void getPointer(Map<String, String> valueMap) throws Exception {
         pointerList.clear();
-        List<Person> familyList = Family(valueMap);
-        if(familyList.get(1).name != null) {pointerList.add(nodePointer.toFather(valueMap));}
-        if(familyList.get(2).name != null) {pointerList.add(nodePointer.toMother(valueMap));}
+
+        if(getInfo.getFather(valueMap) != null) {pointerList.add(nodePointer.toFather(valueMap));}
+        if(getInfo.getMother(valueMap).getName() != null) {pointerList.add(nodePointer.toMother(valueMap));}
         if(!getInfo.getBride(valueMap).isEmpty() && valueMap.get("gender").equals("M")) {pointerList.addAll(nodePointer.toBride(valueMap));}
         if(!getInfo.getGroom(valueMap).isEmpty() && valueMap.get("gender").equals("F")) {pointerList.addAll(nodePointer.toGroom(valueMap));}
         if(!getInfo.getSiblings(valueMap).isEmpty()) {pointerList.addAll(nodePointer.toSibling(valueMap));}
         if(!getInfo.getChildren(valueMap).isEmpty()) {pointerList.addAll(nodePointer.toChildren(valueMap));}
-        familyList.clear();
+    }
+
+
+
+
+
+    public void getDeathMember(Map<String, String> valueMap) throws Exception {
+        personList.clear();
+        //self
+        personList.add(getDeathInfo.getSelf(valueMap));
+        //bride
+        if(!getDeathInfo.getBride(valueMap).isEmpty() && valueMap.get("gender").equals("M")) {personList.addAll(getDeathInfo.getBride(valueMap));}
+        //groom
+        if(!getDeathInfo.getGroom(valueMap).isEmpty() && valueMap.get("gender").equals("F")) {personList.addAll(getDeathInfo.getGroom(valueMap));}
+
+        //siblings
+        if(!getDeathInfo.getSiblings(valueMap).isEmpty()) {personList.addAll(getDeathInfo.getSiblings(valueMap));}
+    }
+
+    public void getDeathPointer(Map<String, String> valueMap) throws Exception {
+        pointerList.clear();
+
+        if(!getDeathInfo.getBride(valueMap).isEmpty() && valueMap.get("gender").equals("M")) {pointerList.addAll(nodePointer.toDeathBride(valueMap));}
+        if(!getDeathInfo.getGroom(valueMap).isEmpty() && valueMap.get("gender").equals("F")) {pointerList.addAll(nodePointer.toDeathGroom(valueMap));}
+        if(!getDeathInfo.getSiblings(valueMap).isEmpty()) {pointerList.addAll(nodePointer.toDeathSibling(valueMap));}
     }
 }

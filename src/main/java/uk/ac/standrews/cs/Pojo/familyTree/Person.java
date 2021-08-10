@@ -53,25 +53,4 @@ public class Person {
         this.c = c;
     }
 
-    /*//通过枚举调取category的类型
-    public Category getCategory(int category) {
-        switch (category) {
-            case 0:
-                c = Category.self; break;
-            case 1:
-                c = Category.father;break;
-            case 2:
-                c = Category.mother;break;
-            case 3:
-                c = Category.siblings; break;
-            case 4:
-                c = Category.bride; break;
-            case 5:
-                c = Category.groom; break;
-            case 6:
-                c = Category.children; break;
-            default: throw new RuntimeException("cannot process" + category);
-        }
-        return c;
-    }*/
 }

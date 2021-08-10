@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.standrews.cs.Pojo.details.PersonalDetails;
 import uk.ac.standrews.cs.service.CommonTool.Judge;
-
 import java.util.Map;
 
 /**
@@ -25,7 +24,11 @@ public class DetailController {
 
     @GetMapping(path="/getDetails")
     public @ResponseBody PersonalDetails getDetails(@RequestParam Map<String, String> params) throws Exception {
-
-        return judge.setDetails(params);
+        if(!params.get("birth_Record_Identity").equals("empty")) {
+            return judge.setDetails(params);
+        }
+        else {
+            return judge.setDeathDetails(params);
+        }
     }
 }

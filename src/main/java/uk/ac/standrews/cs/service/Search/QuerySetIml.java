@@ -1,6 +1,5 @@
 package uk.ac.standrews.cs.service.Search;
 
-import lombok.Builder;
 import org.springframework.stereotype.Service;
 import java.util.*;
 /**
@@ -36,16 +35,6 @@ public class QuerySetIml implements QuerySet {
         return query.toString();
     }
 
-    /*public String getBirthDeathQuery(Map<String, String> map) {
-        StringBuilder query = new StringBuilder();
-        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_DEATH_IDENTITY]->(d:Death)");
-        query.append(getAttribute(map));
-        query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
-                "b.BIRTH_DAY+'/'+b.BIRTH_MONTH+'/'+b.BIRTH_YEAR AS birthDate, " +
-                "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, b.STANDARDISED_ID AS standardised_ID, b.DEATH AS Death");
-        return query.toString();
-    }*/
-
     //query when marriage record contains "groom"
     @Override
     public String getBirthGroomQuery(Map<String, String> map) {
@@ -70,14 +59,17 @@ public class QuerySetIml implements QuerySet {
 
     //without return birthday
     @Override
-    public String getBrideQuery(Map<String, String> map) {
+    public String getDeathQuery(Map<String, String> map) {
         StringBuilder query = new StringBuilder();
-        query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_BRIDE_IDENTITY]->(m:Marriage)");
-        query.append(getAttribute(map));
-        query.append(" RETURN b.SURNAME AS surName, b.FORENAME AS foreName, b.SEX AS gender, " +
-                "m.MARRIAGE_DAY+'-'+m.MARRIAGE_MONTH+'-'+m.MARRIAGE_YEAR AS marriageDate, m.BRIDE_AGE_OR_DATE_OF_BIRTH " +
-                "AS BirthDate_of_Bride, m.GROOM_AGE_OR_DATE_OF_BIRTH AS BirthDate_of_Groom, b.DEATH AS Death, b.STANDARDISED_ID AS standardised_ID");
+        query.append("MATCH (d:Death) ");
+        query.append(getDeathAttribute(map));
+        query.append(" AND d.BIRTH_RECORD_IDENTITY= '' ");
+        query.append(" RETURN ");
+        query.append(getDeathReturn());
+        query.append(", d.SURNAME AS surName, d.FORENAME AS foreName,d.SEX AS gender,d.DATE_OF_BIRTH AS birthDate");
+        System.out.println(query.toString());
         return query.toString();
+
     }
 
     @Override
@@ -85,13 +77,11 @@ public class QuerySetIml implements QuerySet {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth) ");
         query.append(getAttribute(map));
+        query.append(" AND b.DEATH='' ");
         query.append(" RETURN ");
         query.append(getBirthReturn());
-        System.out.println(query.toString());
         return query.toString();
     }
-
-
 
     //it has marriage record and die
     @Override
@@ -160,9 +150,8 @@ public class QuerySetIml implements QuerySet {
     public String getDeathBride(Map<String, String> map) {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_BRIDE_IDENTITY]->(m:Marriage)");
-        query.append(" MATCH (d:Death)-[s:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b1:Birth) ");
+        query.append(" MATCH (d:Death)-[s:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b) ");
         query.append(getAttribute(map));
-        query.append("AND b.STANDARDISED_ID=b1.STANDARDISED_ID ");
         query.append(" RETURN ");
         query.append(getBirthReturn());
         query.append(",").append(getDeathReturn()).append(",").append(getMarriageReturn());
@@ -253,6 +242,28 @@ public class QuerySetIml implements QuerySet {
     }
 
 
+    private static String getDeathAttribute(Map<String, String> attribute) {
+        StringBuilder query = new StringBuilder();
+        query.append(" WHERE");
+        removeEmptyMap(attribute);
+        attribute.forEach((key, value) -> {
+            switch (key) {
+                case "surName" : query.append(" d.SURNAME=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "foreName" : query.append(" d.FORENAME=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "sex" : query.append(" d.SEX=").append('"').append(value.toUpperCase()).append('"').append(" AND");break;
+                case "death_Day" : query.append(" d.DEATH_DAY=").append('"').append(value).append('"').append(" AND");break;
+                case "death_Month" : query.append(" d.DEATH_MONTH=").append('"').append(value).append('"').append(" AND");break;
+                case "death_Year" : query.append(" d.DEATH_YEAR=").append('"').append(value).append('"').append(" AND");break;
+                case "marriage_Day" : query.append(" m.MARRIAGE_DAY=").append('"').append(value).append('"').append(" AND");break;
+                case "marriage_Month" : query.append(" m.MARRIAGE_MONTH=").append('"').append(value).append('"').append(" AND");break;
+                case "marriage_Year" : query.append(" m.MARRIAGE_YEAR=").append('"').append(value).append('"').append(" AND");break;
+            }
+        });
+        query.delete(query.length()-3, query.length());
+        return query.toString();
+    }
+
+
 
     //remove empty value stored in Map
     public static void removeEmptyMap(Map<String, String> maps) {
@@ -324,7 +335,6 @@ public class QuerySetIml implements QuerySet {
         }
         return marriage;
     }
-
 
 }
 

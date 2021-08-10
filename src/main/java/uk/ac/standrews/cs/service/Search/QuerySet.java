@@ -12,7 +12,7 @@ public interface QuerySet {
 
     public String getGroomQuery(Map<String, String> map);
 
-    public String getBrideQuery(Map<String, String> map);
+    public String getDeathQuery(Map<String, String> map);
 
     public String addPeopleNotDie(Map<String, String> map);
 
@@ -27,4 +27,5 @@ public interface QuerySet {
     public String getDeathGroom(Map<String, String> map);
 
     public String getDeathBride(Map<String, String> map);
+
 }

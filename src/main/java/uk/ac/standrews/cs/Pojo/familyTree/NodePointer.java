@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uk.ac.standrews.cs.service.Details.GetDeathInfo;
 import uk.ac.standrews.cs.service.Details.GetInfo;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,8 @@ import java.util.Map;
 public class NodePointer {
     @Autowired
     GetInfo getInfo;
+    @Autowired
+    GetDeathInfo getDeathInfo;
     String source;
     String target;
 
@@ -87,4 +90,37 @@ public class NodePointer {
         }
         return a;
     }
+
+
+    public List<NodePointer> toDeathBride(Map<String, String> valueMap) throws Exception {
+        target = getInfo.getSelf(valueMap).name;
+        List<NodePointer> a = new ArrayList<>();
+        List<Person> list = getDeathInfo.getBride(valueMap);
+        for (Person person : list) {
+            a.add(new NodePointer(person.name, target));
+        }
+        return a;
+    }
+
+    public List<NodePointer> toDeathGroom(Map<String, String> valueMap) throws Exception {
+        target = getInfo.getSelf(valueMap).name;
+        List<NodePointer> a = new ArrayList<>();
+        List<Person> list = getDeathInfo.getGroom(valueMap);
+        for (Person person : list) {
+            a.add(new NodePointer(person.name, target));
+        }
+        return a;
+    }
+
+    public List<NodePointer> toDeathSibling(Map<String, String> valueMap) throws Exception {
+        target = getInfo.getSelf(valueMap).name;
+        List<NodePointer> a = new ArrayList<>();
+        List<Person> list = getDeathInfo.getSiblings(valueMap);
+        for (Person person : list) {
+            a.add(new NodePointer(person.name, target));
+        }
+        return a;
+    }
+
+
 }

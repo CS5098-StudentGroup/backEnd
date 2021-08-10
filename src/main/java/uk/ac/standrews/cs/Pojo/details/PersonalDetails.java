@@ -9,7 +9,6 @@ import uk.ac.standrews.cs.service.Details.DetailsService;
 import uk.ac.standrews.cs.service.GetID.GetBirthById;
 import uk.ac.standrews.cs.service.GetID.GetDeathById;
 import uk.ac.standrews.cs.service.GetID.GetMarriageById;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +53,21 @@ public class PersonalDetails {
     public void getMarriage(Map<String, String> valueMap) throws Exception {
         marriageRecordsList.clear();
         marriageRecordsList.addAll(detailsService.getMarriageRecords(valueMap));
+    }
+
+
+    //only death
+    public void getOnlyBirth(Map<String, String> valueMap) throws Exception {
+        birthRecords = detailsService.getOnlyBirthRecords(valueMap);
+    }
+
+    public void getOnlyDeath(Map<String, String> valueMap) throws Exception {
+        deathRecords = detailsService.getOnlyDeathRecords(valueMap);
+    }
+
+    public void getOnlyMarriage(Map<String, String> valueMap) throws Exception {
+        marriageRecordsList.clear();
+        marriageRecordsList.addAll(detailsService.getOnlyMarriageRecords(valueMap));
     }
 
 
