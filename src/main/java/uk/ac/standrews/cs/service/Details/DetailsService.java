@@ -6,7 +6,6 @@ import uk.ac.standrews.cs.Pojo.details.BirthRecords;
 import uk.ac.standrews.cs.Pojo.details.DeathRecords;
 import uk.ac.standrews.cs.Pojo.details.MarriageRecords;
 import uk.ac.standrews.cs.service.CommonTool.Neo4jService;
-
 import java.util.*;
 
 

@@ -93,7 +93,6 @@ public class JudgeImpl implements Judge {
                 }
             } else {
                 //
-                finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.getDeathGroom(map)), neo4jService.printJson(querySet.getDeathBride(map)));
                 System.out.println(finalJson);
                 switch (params.get("gender")) {
                     case "male":
@@ -109,11 +108,11 @@ public class JudgeImpl implements Judge {
         }
         else {
             if (params.get("dateOfDeath").equals("null")) {
-                //not married
+                //not marriedDate input
                 if (neo4jService.printJson(querySet.getBirthDeathQuery(map)).length() > 5) {
                     finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.getBirthDeathQuery(map)), neo4jService.printJson(querySet.addPeopleNotDie(map)));
                 } else {
-                    finalJson = neo4jService.printJson(querySet.addPeopleNotDie(map));
+                    finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.addPeopleNotDie(map)),neo4jService.printJson(querySet.getBirthDeathQuery(map)));
                 }
             } else {
                 finalJson = neo4jService.printJson(querySet.getBirthDeathQuery(map));
