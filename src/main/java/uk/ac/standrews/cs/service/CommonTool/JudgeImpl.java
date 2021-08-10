@@ -75,13 +75,10 @@ public class JudgeImpl implements Judge {
                 if (neo4jService.printJson(querySet.getBirthDeathQuery(map)).length() > 3 && neo4jService.printJson(querySet.addPeopleNotDie(map)).length() > 3 ) {
                     finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.getBirthDeathQuery(map)), neo4jService.printJson(querySet.addPeopleNotDie(map)));
                 } else {
-                    if(querySet.getDeathQuery(map).length() > 3 && querySet.addPeopleNotDie(map).length() > 3) {
-                        finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.addPeopleNotDie(map)), neo4jService.printJson(querySet.getDeathQuery(map)));
-                    }
-                    else { finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.addPeopleNotDie(map)), neo4jService.printJson(querySet.getDeathQuery(map))); }
-                    }
+                    finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.addPeopleNotDie(map)), neo4jService.printJson(querySet.getDeathQuery(map)));
+                }
             } else {
-                finalJson = neo4jService.printJson(querySet.getBirthDeathQuery(map));
+                finalJson = Neo4jServiceImpl.linkJson(neo4jService.printJson(querySet.getBirthDeathQuery(map)), neo4jService.printJson(querySet.getDeathQuery(map)));
             }
         }
         return finalJson;
