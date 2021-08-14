@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import uk.ac.standrews.cs.Pojo.details.MarriageRecords;
 import uk.ac.standrews.cs.Pojo.familyTree.Person;
 import uk.ac.standrews.cs.neoStorr.util.NeoDbCypherBridge;
-
 import java.util.*;
 
 /**
@@ -180,22 +179,4 @@ public class Neo4jServiceImpl implements Neo4jService {
             return s1.append(s2);
         }
     }
-
-    public static StringBuilder linkAllJson(StringBuilder s1, StringBuilder s2, StringBuilder s3) {
-        StringBuilder s = new StringBuilder("[{}]");
-        if (s1.toString().equals("[]") && s2.toString().equals("[]")) {
-            return s;
-        } else {
-            s1.deleteCharAt(s1.length() - 1);
-            s2.deleteCharAt(0);
-            s2.deleteCharAt(s2.length() - 1);
-            s1.append(",");
-            s2.append(",");
-            s3.deleteCharAt(0);
-            return s1.append(s2).append(s3);
-        }
-    }
-
-
-
 }

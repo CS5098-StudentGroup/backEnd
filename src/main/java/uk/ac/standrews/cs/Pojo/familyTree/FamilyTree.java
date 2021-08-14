@@ -75,9 +75,6 @@ public class FamilyTree {
     }
 
 
-
-
-
     public void getDeathMember(Map<String, String> valueMap) throws Exception {
         personList.clear();
         //self

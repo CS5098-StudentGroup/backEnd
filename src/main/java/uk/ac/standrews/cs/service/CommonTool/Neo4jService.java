@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 public interface Neo4jService {
-    public StringBuilder printJson(String query) throws Exception;
+    StringBuilder printJson(String query) throws Exception;
 
-    public Map<String, String> getPerson(String query) throws Exception;
+    Map<String, String> getPerson(String query) throws Exception;
 
-    public List<Person> getAll(String query, int i, String father, String mother, String self) throws Exception;
+    List<Person> getAll(String query, int i, String father, String mother, String self) throws Exception;
 
-    public List<MarriageRecords> getMarriage(String query) throws Exception;
+    List<MarriageRecords> getMarriage(String query) throws Exception;
 
 }
