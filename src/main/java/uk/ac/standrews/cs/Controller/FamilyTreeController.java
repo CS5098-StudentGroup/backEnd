@@ -25,7 +25,7 @@ public class FamilyTreeController {
     @GetMapping(path="/getFamilyTree")
     public @ResponseBody FamilyTree getDetails(@RequestParam Map<String, String> params) throws Exception{
         System.out.println(params);
-        if(!params.get("birth_Record_Identity").equals("")) {
+        if(!params.get("birth_Record_Identity").equals("") && ! params.get("standardised_id").isEmpty()) {
             return judge.setTree(params);
         }
         else {return judge.setDeathTree(params);}

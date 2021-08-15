@@ -101,11 +101,12 @@ public class GetInfo {
         switch (gender) {
             case "M": query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_FATHER_GROOM_IDENTITY]->(m:Marriage) MATCH(c:Birth)-[a:GROUND_TRUTH_BIRTH_GROOM_IDENTITY]->(m) ");
             query.append(" WHERE c.STANDARDISED_ID=").append('"').append(map.get("standardised_ID")).append('"');break;
-            case "F": query.append("MATCH (b:Birth)-[r:GROUND_TRUTH_BIRTH_MOTHER_IDENTITY]->(b1:Birth)");
-                query.append(" WHERE b.STANDARDISED_ID=").append('"').append(map.get("standardised_ID")).append('"');
-                query.append(" AND b.SEX=").append('"').append(map.get("gender")).append('"');break;
+            case "F": query.append("MATCH (b1:Birth)-[r:GROUND_TRUTH_BIRTH_MOTHER_IDENTITY]->(b:Birth)");
+                query.append(" WHERE b1.STANDARDISED_ID=").append('"').append(map.get("standardised_ID")).append('"');
+                query.append(" AND b1.SEX=").append('"').append(map.get("gender")).append('"');break;
         }
         query.append("RETURN b.FORENAME+'-'+b.SURNAME AS Name, b.SEX AS gender");
+        System.out.println(query);
         return neo4jService.getAll(query.toString(),6, self, null, null);
     }
 

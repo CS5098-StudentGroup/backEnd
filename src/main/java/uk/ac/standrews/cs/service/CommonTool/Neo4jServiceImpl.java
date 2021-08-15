@@ -21,6 +21,7 @@ public class Neo4jServiceImpl implements Neo4jService {
 
     NeoDbCypherBridge bridge = new NeoDbCypherBridge();
     Session session = bridge.getNewSession();
+    int number = 0;
 
     //Setting and processing json format
     //return json data
@@ -93,14 +94,14 @@ public class Neo4jServiceImpl implements Neo4jService {
                 //sibling
                 case 3:
                 int s = 0;
-                int count = 1;
                     for (Person person1 : personList) {
                         if (person1.getName().equals(getDetails.get("Name"))) {
                             s++;
                         }
                     }
-                    if(getDetails.get("Name").equals(father) || getDetails.get("Name").equals(mother) || s>0 || self.equals(getDetails.get("Name"))) {
-                        if(s>0|| self.equals(getDetails.get("Name"))) {personList.add(new Person(getDetails.get("Name")+ "(sibling"+count+")", getDetails.get("gender"), 3));
+                    int count = 1;
+                    if(getDetails.get("Name").equals(father) && getDetails.get("Name").equals(mother) && s>0 && self.equals(getDetails.get("Name"))) {
+                        if(s>0&&self.equals(getDetails.get("Name"))) {personList.add(new Person(getDetails.get("Name")+ "(sibling"+count+")", getDetails.get("gender"), 3));
                         count++;}
                         else {personList.add(new Person(getDetails.get("Name")+ "(sibling)", getDetails.get("gender"), 3));}
                     }
@@ -111,20 +112,19 @@ public class Neo4jServiceImpl implements Neo4jService {
 
                     //children
                 case 6: int c = 0;
-                    int number = 1;
                     for (Person person1 : personList) {
                         if (person1.getName().equals(getDetails.get("Name"))) {
                             c++;
                         }
                     }
                     if(getDetails.get("Name").equals(father)|| c>0 ) {
-                        if(c>0) {personList.add(new Person(getDetails.get("Name")+ "(children"+number+")", getDetails.get("gender"), 6));
-                            number++;}
-                        else {personList.add(new Person(getDetails.get("Name")+ "(children)", getDetails.get("gender"), 6));}
+                        number += 1;
+                        personList.add(new Person(getDetails.get("Name")+ "(children"+number+")", getDetails.get("gender"), 6));
+                        System.out.println();
                     }
-                    else {if(c>0) {personList.add(new Person(getDetails.get("Name")+ "(children"+number+")", getDetails.get("gender"), 6));
-                        number++;}
-                    else {personList.add(new Person(getDetails.get("Name"), getDetails.get("gender"), 6));}}break;
+                    else {
+                        personList.add(new Person(getDetails.get("Name"), getDetails.get("gender"), 6));
+                    }break;
 
 
 

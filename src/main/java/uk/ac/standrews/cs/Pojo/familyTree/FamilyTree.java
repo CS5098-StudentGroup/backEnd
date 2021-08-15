@@ -65,7 +65,6 @@ public class FamilyTree {
 
     public void getPointer(Map<String, String> valueMap) throws Exception {
         pointerList.clear();
-
         if(getInfo.getFather(valueMap) != null) {pointerList.add(nodePointer.toFather(valueMap));}
         if(getInfo.getMother(valueMap).getName() != null) {pointerList.add(nodePointer.toMother(valueMap));}
         if(!getInfo.getBride(valueMap).isEmpty() && valueMap.get("gender").equals("M")) {pointerList.addAll(nodePointer.toBride(valueMap));}
