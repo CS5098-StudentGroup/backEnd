@@ -15,12 +15,17 @@ import java.util.Map;
  * @author: Dongyao Liu
  * @create: 2021-08-10 20:16
  **/
+
+
+//This class is mainly for those people who only has information in death record
 @Service
 public class GetDeathInfo {
 
     @Autowired
     Neo4jService neo4jService;
     Map<String, String> detail = new HashMap<>();
+
+    //return and create self pojo
     public Person getSelf(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (d:Death) ");
@@ -31,7 +36,7 @@ public class GetDeathInfo {
         return new Person(detail.get("Name"), detail.get("gender"), 0 );
     }
 
-
+    //return and create bride pojo
     public List<Person> getBride(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BRIDE_OWN_MARRIAGE]->(m:Marriage) ");
@@ -41,6 +46,7 @@ public class GetDeathInfo {
         return neo4jService.getAll(query.toString(), 4, null, null, null);
     }
 
+    //return and create groom pojo
     public List<Person> getGroom(Map<String,String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_GROOM_OWN_MARRIAGE]->(m:Marriage) ");
@@ -50,6 +56,7 @@ public class GetDeathInfo {
         return neo4jService.getAll(query.toString(), 5, null, null, null);
     }
 
+    //return and create sibling pojo
     public List<Person> getSiblings(Map<String ,String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         String self = getSelf(map).getName();

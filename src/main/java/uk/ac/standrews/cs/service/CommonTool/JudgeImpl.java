@@ -36,7 +36,7 @@ public class JudgeImpl implements Judge {
     public static final String EMPTY = "empty";
     Map<String, String> valueMap = new HashMap<>();
 
-
+    //return stringBuilder format json
     @Override
     public StringBuilder setJson(Map<String, String> map, Map<String, String> params) throws Exception {
         if(!params.get("dateOfMarriage").equals("null")) {
@@ -84,6 +84,7 @@ public class JudgeImpl implements Judge {
         return finalJson;
     }
 
+    // Initialize the tree and return to controller
     @Override
     public FamilyTree setTree(Map<String, String> params) throws Exception {
         Map<String, String> valueMap = new HashMap<>();
@@ -95,6 +96,7 @@ public class JudgeImpl implements Judge {
         return familyTree;
     }
 
+    // Initialize the tree and return to controller(only death node information existed)
     @Override
     public FamilyTree setDeathTree(Map<String, String> params) throws Exception {
         Map<String, String> valueMap = new HashMap<>();
@@ -106,6 +108,7 @@ public class JudgeImpl implements Judge {
         return familyTree;
     }
 
+    // Initialize the details and return to controller(only death node information existed)
     @Override
     public PersonalDetails setDeathDetails(Map<String, String> params) throws Exception {
         valueMap.put("death_standardised_ID", params.get("death_standardised_id"));
@@ -117,6 +120,7 @@ public class JudgeImpl implements Judge {
         return personalDetails;
     }
 
+    // Initialize the details and return to controller
     @Override
     public PersonalDetails setDetails(Map<String, String> params) throws Exception {
         valueMap.put("standardised_ID", params.get("standardised_id"));
@@ -131,11 +135,6 @@ public class JudgeImpl implements Judge {
 
         return personalDetails;
     }
-
-
-
-
-
     @Override
     public String toString() {
         return null;

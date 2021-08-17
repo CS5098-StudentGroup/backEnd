@@ -55,6 +55,8 @@ public class Neo4jServiceImpl implements Neo4jService {
         return finalData;
     }
 
+    // return the result of query
+    // the result stored in hash map
     @Override
     public Map<String, String> getPerson(String query) throws Exception {
         Map<String, String> getDetails = new HashMap<>();
@@ -73,10 +75,12 @@ public class Neo4jServiceImpl implements Neo4jService {
                 }
             }
         }
-
         return getDetails;
     }
 
+    // return the result of query
+    // Contains the object that determines what kind of relationship needs to be created.
+    // the result will be stored in ArrayList
     @Override
     public List<Person> getAll(String query, int i, String father, String mother, String self) throws Exception {
         List<Person> personList = new ArrayList<>();
@@ -147,12 +151,10 @@ public class Neo4jServiceImpl implements Neo4jService {
                     break;
 
             }
-        }
-            return personList;
-        }
+        }return personList;
+    }
 
-
-
+    //return person's marriage record
     @Override
     public List<MarriageRecords> getMarriage(String query)throws Exception {
         List<MarriageRecords> marriageRecords = new ArrayList<>();
@@ -177,9 +179,9 @@ public class Neo4jServiceImpl implements Neo4jService {
                     getDetails.get("SPOUSE_FATHER_OCCUPATION"),getDetails.get("SPOUSE_MOTHER_DECEASED"),getDetails.get("SPOUSE_MOTHER_FORENAME"),getDetails.get("SPOUSE_MOTHER_MAIDEN_SURNAME"),getDetails.get("SPOUSE_MOTHER_IDENTITY")));
             }
         return marriageRecords;
-        }
+    }
 
-
+    //link two json format strings
     public static StringBuilder linkJson(StringBuilder s1, StringBuilder s2) {
         StringBuilder s = new StringBuilder("[{}]");
         if (s1.toString().equals("[]") && s2.toString().equals("[]")) {

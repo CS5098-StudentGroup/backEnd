@@ -16,6 +16,8 @@ public class GetInfo {
     @Autowired
     Neo4jService neo4jService;
     Map<String, String> detail = new HashMap<>();
+
+    //get person its self information
     public Person getSelf(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth) ");
@@ -26,6 +28,7 @@ public class GetInfo {
         return new Person(detail.get("Name"), detail.get("gender"), 0 );
     }
 
+    //get person's father's information
     public Person getFather(Map<String, String> map) throws Exception {
         String selfName = getSelf(map).getName();
         StringBuilder query = new StringBuilder();
@@ -41,7 +44,7 @@ public class GetInfo {
                 return new Person(detail.get("Name"), detail.get("gender"), 1);
             }
     }
-
+    //get person's mother's information
     public Person getMother(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         String selfName = getSelf(map).getName();
@@ -57,7 +60,7 @@ public class GetInfo {
             return new Person(detail.get("Name"), detail.get("gender"), 2);
         }
     }
-
+    //get person's bride's information
     public List<Person> getBride(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         String mother = getMother(map).getName();
@@ -68,7 +71,7 @@ public class GetInfo {
 
         return neo4jService.getAll(query.toString(), 4, null, mother, null);
     }
-
+    //get person's groom's information
     public List<Person> getGroom(Map<String,String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         String father = getFather(map).getName();
@@ -79,6 +82,7 @@ public class GetInfo {
         return neo4jService.getAll(query.toString(), 5, father, null, null);
     }
 
+    //get person's siblings's information
     public List<Person> getSiblings(Map<String ,String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         String father = getFather(map).getName();
@@ -90,6 +94,7 @@ public class GetInfo {
         return neo4jService.getAll(query.toString(),3, father, null ,self);
     }
 
+    //get person's children
     public List<Person> getChildren(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         String self = getSelf(map).getName();

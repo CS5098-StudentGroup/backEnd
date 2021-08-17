@@ -19,7 +19,7 @@ public class DetailsService {
     @Autowired
     Neo4jService neo4jService;
     Map<String, String> detail = new HashMap<>();
-
+    //return BirthRecords pojo
     public BirthRecords getBirthRecords(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth) ");
@@ -32,7 +32,7 @@ public class DetailsService {
                 , detail.get("Father_surName"), detail.get("Father_occupation"), detail.get("Mother_identity"), detail.get("Mother_surName"), detail.get("Mother_foreName"), detail.get("Mother_occupation")
                 , detail.get("Marriage_record_identity1"), detail.get("Marriage_record_identity2"), detail.get("Marriage_record_identity3"), detail.get("Adoption"), detail.get("Father_Identity"), detail.get("Death"));
     }
-
+    //return DeathRecords pojo
     public DeathRecords getDeathRecords(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b:Birth) ");
@@ -44,6 +44,7 @@ public class DetailsService {
                 detail.get("DeathRegistration_Year"), detail.get("death_StandardisedID"), detail.get("Birth_Record_Identity"));
     }
 
+    //return BirthRecords pojo
     public List<MarriageRecords> getMarriageRecords(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         switch (map.get("gender")) {
@@ -56,6 +57,7 @@ public class DetailsService {
         return neo4jService.getMarriage(query.toString());
     }
 
+    //get Birth record
     public BirthRecords getOnlyBirthRecords(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (d:Death)-[r:GROUND_TRUTH_DEATH_BIRTH_IDENTITY]->(b:Birth) ");
@@ -70,7 +72,7 @@ public class DetailsService {
                 , detail.get("Marriage_record_identity1"), detail.get("Marriage_record_identity2"), detail.get("Marriage_record_identity3"), detail.get("Adoption"), detail.get("Father_Identity"), detail.get("Death"));
     }
 
-
+    //get Death record
     public DeathRecords getOnlyDeathRecords(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (d:Death) ");
@@ -83,7 +85,7 @@ public class DetailsService {
     }
 
 
-
+    //get Marriage record
     public List<MarriageRecords> getOnlyMarriageRecords(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         switch (map.get("gender")) {
@@ -139,6 +141,7 @@ public class DetailsService {
 
     }
 
+    // remove empty attribute in maps
     private static void removeEmptyMap(Map<String, String> maps) {
         Set<String> set = maps.keySet();
         Iterator<String> it = set.iterator();
@@ -154,7 +157,7 @@ public class DetailsService {
         }
     }
 
-
+    //return the cypher's judgment condition
     private static String getAttribute(Map<String, String> attribute) {
         StringBuilder query = new StringBuilder();
         query.append(" WHERE");
@@ -169,7 +172,8 @@ public class DetailsService {
         query.delete(query.length()-3, query.length());
         return query.toString();
     }
-
+    //return the cypher's judgment condition
+    //for those the information only stored in death node
     private static String getDeathAttribute(Map<String, String> attribute) {
         StringBuilder query = new StringBuilder();
         query.append(" WHERE");

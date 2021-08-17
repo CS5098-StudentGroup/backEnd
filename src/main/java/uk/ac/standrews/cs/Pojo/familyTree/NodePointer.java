@@ -37,7 +37,8 @@ public class NodePointer {
 
 
 
-
+    // define target as self
+    // source as mother
     public NodePointer toMother(Map<String, String> valueMap) throws Exception {
         target = getInfo.getSelf(valueMap).name;
         System.out.println(target);
@@ -45,12 +46,16 @@ public class NodePointer {
         return new NodePointer(source,target);
     }
 
+    // define target as self
+    // source as father
     public NodePointer toFather(Map<String, String> valueMap) throws Exception {
         target = getInfo.getSelf(valueMap).name;
         source = getInfo.getFather(valueMap).name;
         return new NodePointer(source,target);
     }
 
+    // define target as self
+    // source as bride
     public List<NodePointer> toBride(Map<String, String> valueMap) throws Exception {
         target = getInfo.getSelf(valueMap).name;
         List<NodePointer> a = new ArrayList<>();
@@ -61,6 +66,8 @@ public class NodePointer {
         return a;
     }
 
+    // define target as self
+    // source as groom
     public List<NodePointer> toGroom(Map<String, String> valueMap) throws Exception {
         target = getInfo.getSelf(valueMap).name;
         List<NodePointer> a = new ArrayList<>();
@@ -71,6 +78,8 @@ public class NodePointer {
         return a;
     }
 
+    // define target as self
+    // source as siblings
     public List<NodePointer> toSibling(Map<String, String> valueMap) throws Exception {
         target = getInfo.getSelf(valueMap).name;
         List<NodePointer> a = new ArrayList<>();
@@ -81,6 +90,8 @@ public class NodePointer {
         return a;
     }
 
+    // define target as self
+    // source as children
     public List<NodePointer> toChildren(Map<String, String> valueMap) throws Exception {
         target = getInfo.getSelf(valueMap).name;
         List<NodePointer> a = new ArrayList<>();
@@ -91,7 +102,9 @@ public class NodePointer {
         return a;
     }
 
-
+    // define target as self
+    // source as bride
+    //this method only used when the person's information only stored in death nodes
     public List<NodePointer> toDeathBride(Map<String, String> valueMap) throws Exception {
         target = getInfo.getSelf(valueMap).name;
         List<NodePointer> a = new ArrayList<>();
@@ -102,6 +115,9 @@ public class NodePointer {
         return a;
     }
 
+    // define target as self
+    // source as groom
+    //this method only used when the person's information only stored in death nodes
     public List<NodePointer> toDeathGroom(Map<String, String> valueMap) throws Exception {
         target = getInfo.getSelf(valueMap).name;
         List<NodePointer> a = new ArrayList<>();
@@ -111,7 +127,9 @@ public class NodePointer {
         }
         return a;
     }
-
+    // define target as self
+    // source as sibling
+    //this method only used when the person's information only stored in death nodes
     public List<NodePointer> toDeathSibling(Map<String, String> valueMap) throws Exception {
         target = getInfo.getSelf(valueMap).name;
         List<NodePointer> a = new ArrayList<>();

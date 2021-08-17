@@ -131,6 +131,7 @@ public class QuerySetIml implements QuerySet {
         return query.toString();
     }
 
+    //get result of groom(have death record)
     @Override
     public String getDeathGroom(Map<String, String> map) {
         StringBuilder query = new StringBuilder();
@@ -142,10 +143,10 @@ public class QuerySetIml implements QuerySet {
         query.append(getBirthReturn());
         query.append(",").append(getDeathReturn());
         query.append(",").append(getMarriageReturn());
-        System.out.println(query);
         return query.toString();
     }
 
+    //get search result of bride(have death record)
     @Override
     public String getDeathBride(Map<String, String> map) {
         StringBuilder query = new StringBuilder();
@@ -160,7 +161,7 @@ public class QuerySetIml implements QuerySet {
         return query.toString();
     }
 
-    //not die and groom
+    //for people not die and groom
     @Override
     public String getDetailOfGroom(Map<String, String> map) {
         StringBuilder query = new StringBuilder();
@@ -241,7 +242,7 @@ public class QuerySetIml implements QuerySet {
         return query.toString();
     }
 
-
+    // return judgment of cypher(only for death node information)
     private static String getDeathAttribute(Map<String, String> attribute) {
         StringBuilder query = new StringBuilder();
         query.append(" WHERE");
@@ -306,6 +307,7 @@ public class QuerySetIml implements QuerySet {
         return isEmpty;
     }
 
+    //formatting Birth record
     public static String[] splitBirth(String dateOfBirth) {
         String[] birth = new String[3];
         if (!dateOfBirth.equals("null")) {
@@ -315,7 +317,7 @@ public class QuerySetIml implements QuerySet {
         }
         return birth;
     }
-
+    //formatting Death record
     public static String[] splitDeath(String dateOfDeath) {
         String[] death = new String[3];
         if (!dateOfDeath.equals("null")) {
@@ -326,6 +328,7 @@ public class QuerySetIml implements QuerySet {
         return death;
     }
 
+    //formatting marriage record
     public static String[] splitMarriage(String dateOfMarriage) {
         String[] marriage = new String[3];
         if (!dateOfMarriage.equals("null")) {

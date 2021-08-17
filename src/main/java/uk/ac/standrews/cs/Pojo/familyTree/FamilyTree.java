@@ -33,7 +33,7 @@ public class FamilyTree {
         categoryList = new ArrayList<>();
     }
 
-
+    //  put person's all family members in list
     public void getMember(Map<String, String> valueMap) throws Exception {
         personList.clear();
         //self
@@ -52,6 +52,7 @@ public class FamilyTree {
 
     }
 
+    // put all category in list
     public void getCategory() {
         categoryList.clear();
         categoryList.add(Category.self);
@@ -63,6 +64,7 @@ public class FamilyTree {
         categoryList.add(Category.children);
     }
 
+    // put all pointer in list
     public void getPointer(Map<String, String> valueMap) throws Exception {
         pointerList.clear();
         if(getInfo.getFather(valueMap) != null) {pointerList.add(nodePointer.toFather(valueMap));}
@@ -73,7 +75,9 @@ public class FamilyTree {
         if(!getInfo.getChildren(valueMap).isEmpty()) {pointerList.addAll(nodePointer.toChildren(valueMap));}
     }
 
-
+    //  put person's all family members in list
+    // this method for the person's information that only stored
+    // in death record nodes
     public void getDeathMember(Map<String, String> valueMap) throws Exception {
         personList.clear();
         //self
@@ -86,7 +90,9 @@ public class FamilyTree {
         //siblings
         if(!getDeathInfo.getSiblings(valueMap).isEmpty()) {personList.addAll(getDeathInfo.getSiblings(valueMap));}
     }
-
+    //  put all pointers in list
+    // this method for the person's information that only stored
+    // in death record nodes
     public void getDeathPointer(Map<String, String> valueMap) throws Exception {
         pointerList.clear();
 

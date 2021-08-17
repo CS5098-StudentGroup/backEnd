@@ -16,6 +16,7 @@ public class GetBirthById {
     Neo4jServiceImpl neo4jService;
     Map<String, String> detail = new HashMap<>();
 
+
     public BirthRecords getBirthById(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth) ");

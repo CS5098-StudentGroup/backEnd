@@ -8,6 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * @Author Dongyao Liu
  **/
+
+//Configuration server cross-domain problem
 @Configuration
 public class CorsFilter implements WebMvcConfigurer {
     @Override
