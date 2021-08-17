@@ -25,6 +25,7 @@ public class GetSpouseQuery {
     Neo4jService neo4jService;
     Map<String, String> detail = new HashMap<>();
 
+    //get the gender of person
     public Map<String,String> getGender(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (b:Birth) ");
@@ -33,10 +34,10 @@ public class GetSpouseQuery {
         System.out.println(query);
         detail = neo4jService.getPerson(query.toString());
         map.putAll(detail);
-        System.out.println(map.get("standardised_ID"));
         return map;
     }
 
+    //return Spouse Marriage Id
     public Map<String,String> getSpouseMarriageId(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         Map<String,String> gender = getGender(map);
@@ -54,6 +55,7 @@ public class GetSpouseQuery {
         return map;
     }
 
+    //match the
     public BirthRecords getBirthRecords(Map<String, String> map) throws Exception {
         StringBuilder query = new StringBuilder();
         Map<String,String> spouse=getSpouseMarriageId(map);
