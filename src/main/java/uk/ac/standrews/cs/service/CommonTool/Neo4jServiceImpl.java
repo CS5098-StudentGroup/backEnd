@@ -22,33 +22,37 @@ public class Neo4jServiceImpl implements Neo4jService {
     NeoDbCypherBridge bridge = new NeoDbCypherBridge();
     Session session = bridge.getNewSession();
     int number = 0;
+    int count = 1;
 
     //Setting and processing json format
     //return json data
     @Override
     public StringBuilder printJson(String query) throws Exception {
-            JSONObject js1 = new JSONObject();
-            Result result = session.run(query);
-            StringBuilder formatJson = new StringBuilder();
-            StringBuilder finalData = new StringBuilder();
-            while (result.hasNext()) {
-                Record record = result.next();
-                List<String> keys = record.keys();
-                for (String key : keys) {
-                    // keys1.get(i);
-                    Value value = record.get(key);
-                    String[] getValue = value.toString().split("\"");
-                    if (getValue.length == 0) {
-                        js1.put(key, "");
-                    } else {
-                        js1.put(key, getValue[getValue.length-1]);
-                    }
+        JSONObject js1 = new JSONObject();
+        Result result = session.run(query);
+        StringBuilder formatJson = new StringBuilder();
+        StringBuilder finalData = new StringBuilder();
+        while (result.hasNext()) {
+            Record record = result.next();
+            List<String> keys = record.keys();
+            for (String key : keys) {
+                // keys1.get(i);
+                Value value = record.get(key);
+                String[] getValue = value.toString().split("\"");
+                if (getValue.length == 0) {
+                    js1.put(key, "");
+                } else {
+                    js1.put(key, getValue[getValue.length - 1]);
                 }
-                if(!result.hasNext()){formatJson.append(js1);}
-                else {formatJson.append(js1).append(",");}
             }
-            finalData.append("[").append(formatJson).append("]");
-            return finalData;
+            if (!result.hasNext()) {
+                formatJson.append(js1);
+            } else {
+                formatJson.append(js1).append(",");
+            }
+        }
+        finalData.append("[").append(formatJson).append("]");
+        return finalData;
     }
 
     @Override
@@ -90,53 +94,63 @@ public class Neo4jServiceImpl implements Neo4jService {
                 } else {
                     getDetails.put(key, getValue[getValue.length - 1]);
                 }
-            } switch (i) {
+            }
+            switch (i) {
                 //sibling
                 case 3:
-                int s = 0;
+                    int s = 0;
                     for (Person person1 : personList) {
                         if (person1.getName().equals(getDetails.get("Name"))) {
                             s++;
                         }
                     }
-                    int count = 1;
-                    if(getDetails.get("Name").equals(father) && getDetails.get("Name").equals(mother) && s>0 && self.equals(getDetails.get("Name"))) {
-                        if(s>0&&self.equals(getDetails.get("Name"))) {personList.add(new Person(getDetails.get("Name")+ "(sibling"+count+")", getDetails.get("gender"), 3));
-                        count++;}
-                        else {personList.add(new Person(getDetails.get("Name")+ "(sibling)", getDetails.get("gender"), 3));}
+                    if (getDetails.get("Name").equals(father) || getDetails.get("Name").equals(mother) || s > 0 || self.equals(getDetails.get("Name"))) {
+                        personList.add(new Person(getDetails.get("Name") + "(sibling" + count + ")", getDetails.get("gender"), 3));
+                        count++;
+                    } else {
+                        personList.add(new Person(getDetails.get("Name"), getDetails.get("gender"), 3));
                     }
-                    else {if(s>0) {personList.add(new Person(getDetails.get("Name")+ "(sibling"+count+")", getDetails.get("gender"), 3));
-                        count++;}
-                    else {personList.add(new Person(getDetails.get("Name"), getDetails.get("gender"), 3));}}
-                break;
+                    break;
 
-                    //children
-                case 6: int c = 0;
+                //children
+                case 6:
+                    int c = 0;
                     for (Person person1 : personList) {
                         if (person1.getName().equals(getDetails.get("Name"))) {
                             c++;
                         }
                     }
-                    if(getDetails.get("Name").equals(father)|| c>0 ) {
+                    if (getDetails.get("Name").equals(father) || c > 0) {
                         number += 1;
-                        personList.add(new Person(getDetails.get("Name")+ "(children"+number+")", getDetails.get("gender"), 6));
+                        personList.add(new Person(getDetails.get("Name") + "(children" + number + ")", getDetails.get("gender"), 6));
                         System.out.println();
-                    }
-                    else {
+                    } else {
                         personList.add(new Person(getDetails.get("Name"), getDetails.get("gender"), 6));
-                    }break;
+                    }
+                    break;
 
 
+                case 4:
+                    if (getDetails.get("Name").equals(father) || getDetails.get("Name").equals(mother)) {
+                        personList.add(new Person(getDetails.get("Name") + "(Bride)", "F", i));
+                    } else {
+                        personList.add(new Person(getDetails.get("Name"), "F", i));
+                    }
+                    break;
 
-                case 4: if(getDetails.get("Name").equals(father) || getDetails.get("Name").equals(mother)) {personList.add(new Person(getDetails.get("Name") + "(Bride)", "F", i));}
-                else {personList.add(new Person(getDetails.get("Name"), "F", i));} break;
+                case 5:
+                    if (getDetails.get("Name").equals(father) || getDetails.get("Name").equals(mother)) {
+                        personList.add(new Person(getDetails.get("Name") + "(Groom)", "M", i));
+                    } else {
+                        personList.add(new Person(getDetails.get("Name"), "M", i));
+                    }
+                    break;
 
-                case 5: if(getDetails.get("Name").equals(father) || getDetails.get("Name").equals(mother)) {personList.add(new Person(getDetails.get("Name") + "(Groom)", "M", i));}
-                else {personList.add(new Person(getDetails.get("Name"), "M", i));} break;
             }
         }
-        return personList;
-    }
+            return personList;
+        }
+
 
 
     @Override

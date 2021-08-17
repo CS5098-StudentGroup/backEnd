@@ -45,7 +45,7 @@ public class FamilyTree {
         //groom
         if(!getInfo.getGroom(valueMap).isEmpty() && valueMap.get("gender").equals("F")) {personList.addAll(getInfo.getGroom(valueMap));}
         //father
-        if(getInfo.getFather(valueMap) != null) {personList.add(getInfo.getFather(valueMap));}
+        if(getInfo.getFather(valueMap).getName() != null) {personList.add(getInfo.getFather(valueMap));}
         //siblings
         if(!getInfo.getSiblings(valueMap).isEmpty()) {personList.addAll(getInfo.getSiblings(valueMap));}
         if(!getInfo.getChildren(valueMap).isEmpty()) {personList.addAll(getInfo.getChildren(valueMap));}
